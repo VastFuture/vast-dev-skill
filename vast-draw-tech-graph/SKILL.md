@@ -1,11 +1,7 @@
 ---
 name: vast-draw-tech-graph
 description: >-
-  Use when the user wants to create any technical diagram - architecture, data
-  flow, flowchart, sequence, agent/memory, or concept map - and export as
-  SVG+PNG. Trigger on: "画图" "帮我画" "生成图" "做个图" "架构图" "流程图"
-  "可视化一下" "出图" "generate diagram" "draw diagram" "visualize" or any
-  system/flow description the user wants illustrated.
+  当用户想要创建任何技术图表（架构图、数据流图、流程图、时序图、代理/内存图或概念图）并导出为 SVG+PNG 时使用。触发词：“画图”、“帮我画”、“生成图”、“做个图”、“架构图”、“流程图”、“可视化一下”、“出图”、“generate diagram”、“draw diagram”、“visualize” 或任何用户想要插图说明的系统/流程描述。
 ---
 
 # Fireworks Tech Graph

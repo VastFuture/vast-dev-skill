@@ -1,5 +1,5 @@
 ---
-name: vast-work-deep-review
+name: vast-work-deep-reviewer
 description: 深度工作分析与项目洞察，从更长时间维度分析工作模式、项目进展和技术方向
 ---
 

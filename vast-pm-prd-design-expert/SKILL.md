@@ -1,6 +1,6 @@
 ---
 name: vast-pm-prd-design-expert
-description: 'Creates product requirement specification documents from user stories. Use when writing PRDs, defining product features, or converting user stories to specs. Trigger phrases: "产品需求", "PRD", "需求规格说明书", "用户故事"'
+description: '根据用户故事创建产品需求规格文档。在编写 PRD、定义产品功能或将用户故事转换为规格说明时使用。触发词：“产品需求”、“PRD”、“需求规格说明书”、“用户故事”'
 metadata:
   author: woodgaya@gmail.com
   version: 1.3

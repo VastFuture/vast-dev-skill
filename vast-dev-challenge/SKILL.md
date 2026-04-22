@@ -1,6 +1,6 @@
 ---
 name: vast-dev-challenge
-description: "Cross-model adversarial verification. Use a second AI model to challenge your analysis, verify claims, or review code. Modes: challenge (find flaws), verify (fact-check), review (peer review)."
+description: "跨模型对抗性验证。使用第二个 AI 模型来挑战你的分析、验证主张或审查代码。模式：挑战（寻找缺陷）、验证（事实核查）、审查（同行评审）。"
 user_invocable: true
 ---
 

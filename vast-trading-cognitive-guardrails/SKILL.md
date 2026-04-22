@@ -1,3 +1,8 @@
+---
+name: vast-trading-cognitive-guardrails
+description: 防止 AI 只挑你爱听的说。当你询问投资相关问题（买入/卖出/持有/分析）时自动激活。触发于股票代码、投资组合持仓或目标价，以确保客观、方向中立的财务分析。
+---
+
 # Cognitive Guardrails
 
 Stop your AI from telling you what you want to hear. Automatically activates when you ask investment-related questions.

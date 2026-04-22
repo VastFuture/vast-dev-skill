@@ -1,6 +1,6 @@
 ---
 name: vast-social-xhs-content-script
-description: Generates Xiaohongshu viral copy and 2-minute voiceover scripts through multi-turn dialogue. Use when creating Xiaohongshu content, analyzing viral elements, or writing high-engagement posts. Trigger phrases: "小红书爆款", "爆款文案", "口播脚本", "小红书流量"
+description: 通过多轮对话生成小红书爆款文案和 2 分钟口播脚本。在创建小红书内容、分析爆款元素或撰写高参与度帖子时使用。触发词：“小红书爆款”、“爆款文案”、“口播脚本”、“小红书流量”
 metadata:
   author: woodgaya@gmail.com
   version: 1.0.0

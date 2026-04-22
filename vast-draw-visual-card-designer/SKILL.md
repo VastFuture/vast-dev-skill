@@ -1,6 +1,6 @@
 ---
-name: vast-draw-visual-card-desiner
-description: Transforms long content into logic-model or minimal-graphic vertical cards. Use when creating visual summaries, social media cards, or diagram-based content. Trigger phrases: "视觉卡片", "逻辑模型", "竖屏卡片", "图解"
+name: vast-draw-visual-card-designer
+description: 将长内容转换为逻辑模型或极简图形风格的竖屏卡片。在创建视觉摘要、社交媒体卡片或基于图表的内容时使用。触发词：“视觉卡片”、“逻辑模型”、“竖屏卡片”、“图解”
 metadata:
   author: woodgaya@gmail.com
   version: 3.1

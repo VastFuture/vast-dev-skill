@@ -1,5 +1,5 @@
 ---
-name: vast-skill-recommend
+name: vast-skill-recommender
 description: 维护技能推荐列表。支持添加、删除、更新、查看技能推荐，类似 sanyuan-skills 的技能展示。触发词: /skill-recommend、"技能推荐"、"添加技能"、"删除技能"、"更新技能"
 allowed-tools: Read, Write, Glob, Grep, Bash
 ---

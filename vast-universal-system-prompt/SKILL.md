@@ -1,6 +1,6 @@
 ---
 name: vast-universal-system-prompt
-description: Provides a quantum tapestry cognitive engine framework for advanced AI assistants. Use when the user needs deep multi-dimensional thinking, pattern recognition across concepts, or wants to activate comprehensive cognitive protocols. Trigger phrases: "量子织锦", "认知引擎", "深度思考", "系统初始化"
+description: 为高级 AI 助手提供量子织锦认知引擎框架。当用户需要深度多维思考、跨概念模式识别或想要激活全面的认知协议时使用。触发词：“量子织锦”、“认知引擎”、“深度思考”、“系统初始化”
 metadata:
   author: woodgaya@gmail.com
   version: 1.0.0

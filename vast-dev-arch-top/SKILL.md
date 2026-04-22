@@ -1,6 +1,6 @@
 ---
 name: vast-dev-arch-top
-description: Provides project development constitution with 5-layer structure (Strategy, Features, Interaction, Data Model, Visuals). Use when starting software projects, defining architecture, or establishing development constraints. Trigger phrases: "项目开发", "核心宪法", "技术铁律", "五层结构"
+description: 提供具有五层结构（策略、功能、交互、数据模型、视觉）的项目开发宪法。在启动软件项目、定义架构或建立开发约束时使用。触发词：“项目开发”、“核心宪法”、“技术铁律”、“五层结构”
 metadata:
   author: woodgaya@gmail.com
   version: 1.0.0

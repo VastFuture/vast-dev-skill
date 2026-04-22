@@ -1,6 +1,6 @@
 ---
 name: vast-draw-thinking-logic
-description: Transforms complex information into clear visual thinking models. Use when understanding complex concepts, visualizing logic, or creating structured explanations. Trigger phrases: "思维导航", "逻辑可视化", "思维模型", "概念图"
+description: 将复杂信息转换为清晰的视觉思维模型。在理解复杂概念、可视化逻辑或创建结构化解释时使用。触发词：“思维导航”、“逻辑可视化”、“思维模型”、“概念图”
 metadata:
   author: woodgaya@gmail.com
   version: 1.0.0

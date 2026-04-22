@@ -1,6 +1,6 @@
 ---
 name: vast-dev-brainstorming
-description: "You MUST use this before any creative work - creating features, building components, adding functionality, or modifying behavior. Explores user intent, requirements and design before implementation."
+description: "在任何创意工作（创建功能、构建组件、添加功能或修改行为）之前必须使用此技能。在实施前探索用户意图、需求和设计。"
 ---
 
 > **Adapted from [obra/superpowers](https://github.com/obra/superpowers/blob/main/skills/brainstorming/SKILL.md)** — core flow and HARD-GATE concept. This version adds Visual Companion (A/B diagrams for architecture decisions) and spec-review-checklist for audit integration.

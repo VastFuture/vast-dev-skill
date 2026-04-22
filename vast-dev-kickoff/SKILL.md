@@ -1,7 +1,7 @@
 ---
 name: vast-dev-kickoff
 description: >
-  "Interview Me" 启动协议。需求不清晰时，在开始实施之前先反问用户，收集足够上下文再规划。
+  “中场访谈” 启动协议。需求不清晰时，在开始实施之前先反问用户，收集足够上下文再规划。
   触发词: /kickoff、"先问我问题再开始"、"在动手之前了解需求"、"需求还不清楚"
 allowed-tools: Read, Glob, Grep
 ---

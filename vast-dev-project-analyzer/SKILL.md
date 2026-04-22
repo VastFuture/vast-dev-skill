@@ -1,6 +1,6 @@
 ---
 name: vast-dev-project-analyzer
-description: Generate a comprehensive project documentation (whitepaper) based on deep codebase analysis, covering architecture, modules, testing, and deployment.
+description: 基于深度代码库分析生成全面的项目文档（白皮书），涵盖架构、模块、测试和部署。
 ---
 
 # Deep Project Analysis

@@ -1,6 +1,6 @@
 ---
 name: vast-agent-skill-reviewer
-description: Review Agent Skill directories and SKILL.md files against best practices. Use this skill when the user wants to review, validate, or check an Agent Skill implementation.
+description: 根据最佳实践审查代理技能（Agent Skill）目录和 SKILL.md 文件。当用户想要审查、验证或检查代理技能实现时使用此技能。
 ---
 
 # Agent Skill Reviewer

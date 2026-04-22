@@ -1,5 +1,5 @@
 ---
-name: vast-work-daily-review
+name: vast-work-daily-reviewer
 description: 每日工作回顾与洞察分析，对用户前一天的对话历史和使用数据进行总结与建议
 ---
 

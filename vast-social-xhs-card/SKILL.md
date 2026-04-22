@@ -1,6 +1,6 @@
 ---
 name: vast-social-xhs-card
-description: Converts long content into Xiaohongshu/Instagram style visual cards. Use when creating social media card series, knowledge cards, or visual content for Xiaohongshu. Trigger phrases: "小红书卡片", "系列卡片", "视觉卡片", "4:5画布"
+description: 将长内容转换为小红书/Instagram 风格的视觉卡片。在创建社交媒体卡片系列、知识卡片或小红书视觉内容时使用。触发词：“小红书卡片”、“系列卡片”、“视觉卡片”、“4:5画布”
 metadata:
   author: woodgaya@gmail.com
   version: 1.0.0

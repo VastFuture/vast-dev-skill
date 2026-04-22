@@ -1,6 +1,6 @@
 ---
-name: pua
-description: "High-agency dev loop engine. Forces a complete development cycle: Plan → Execute → CodeReview → Security → Verify → GitCommit. Built-in P0 guardrails, pressure escalation on failure, and loop mode for autonomous execution."
+name: vast-dev-kickoff-pua
+description: "高代理开发循环引擎。强制执行完整的开发周期：规划 → 执行 → 代码审查 → 安全检查 → 验证 → Git 提交。内置 P0 护栏、失败压力升级机制以及用于自主执行的循环模式。"
 version: 1.1.0
 license: MIT
 ---

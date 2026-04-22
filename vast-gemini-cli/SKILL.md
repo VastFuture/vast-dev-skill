@@ -1,6 +1,6 @@
 ---
 name: vast-gemini-cli
-description: This skill should be used when the user wants Claude Code to act purely as a manager/architect while Gemini CLI does all the coding work. Claude Code drives Gemini like an intern - issuing tasks, reviewing output, requesting fixes - but never writes code itself. Use when user says "manage gemini", "architect mode", "drive gemini", or wants to delegate all implementation to Gemini.
+description: 当用户希望 Claude Code 纯粹担任经理/架构师角色，而由 Gemini CLI 完成所有编码工作时，应使用此技能。Claude Code 像对待实习生一样驱动 Gemini —— 发布任务、审查输出、要求修复 —— 但从不亲自编写代码。当用户说“manage gemini”、“architect mode”、“drive gemini”或希望将所有实施工作委托给 Gemini 时使用。
 allowed-tools:
   - Bash
   - Read

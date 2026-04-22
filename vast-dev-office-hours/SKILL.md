@@ -1,11 +1,10 @@
 ---
 name: vast-dev-office-hours
 description: |
-  Product Office Hours — reframe the problem before writing code. Two modes:
-  Builder mode (default): challenge premises, force alternatives, find the real problem.
-  Startup mode: YC-style six forcing questions that expose demand reality.
-  Use when: "I have an idea", "help me think through this", "office hours",
-  "is this worth building", or any new product/feature/tool idea.
+  产品 Office Hours —— 在编写代码之前重新定义问题。两种模式：
+  Builder 模式（默认）：挑战前提，强制寻找替代方案，发现真实问题。
+  Startup 模式：YC 风格的六个强制性问题，揭示需求现状。
+  适用场景：“我有一个想法”、“帮我思考一下”、“office hours”、“这是否值得构建”或任何新产品/功能/工具想法。
 allowed-tools:
   - Bash
   - Read

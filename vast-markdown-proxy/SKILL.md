@@ -1,11 +1,7 @@
 ---
 name: vast-markdown-proxy
 description: |
-  Fetch any URL as clean Markdown via proxy services (r.jina.ai / defuddle.md) or built-in scripts.
-  Works with login-required pages like X/Twitter, WeChat 公众号, Feishu/Lark docs, Instagram, etc.
-  Use this BEFORE agent-fetch, defuddle CLI, or WebFetch when the URL might need authentication or when you want the cleanest markdown output.
-  Triggers on any URL the user shares, "fetch this", "read this link", "get content from".
-  Supports X/Twitter posts, WeChat 公众号 articles, Feishu/Lark documents, and login-walled pages.
+  通过代理服务（r.jina.ai / defuddle.md）或内置脚本将任何 URL 获取为干净的 Markdown。适用于需要登录的页面，如 X/Twitter、微信公众号、飞书/Lark 文档、Instagram 等。当 URL 可能需要身份验证或当您想要最干净的 Markdown 输出时，请在 agent-fetch、defuddle CLI 或 WebFetch 之前使用此工具。触发于用户共享的任何 URL、“fetch this”、“read this link”、“get content from”。支持 X/Twitter 帖子、微信公众号文章、飞书/Lark 文档和登录墙页面。
 ---
 
 # Markdown Proxy - URL to Markdown

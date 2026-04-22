@@ -1,6 +1,6 @@
 ---
-name: vast-dev-taste-check
-description: Review code using Linus Torvalds' "good taste" philosophy. Eliminates defensive code, special cases, and deep nesting. Use when reviewing code quality, refactoring, or checking for code smells.
+name: vast-dev-taste-checker
+description: 使用 Linus Torvalds 的 “good taste” 哲学审查代码。消除防御性代码、特殊情况和深度嵌套。在审查代码质量、重构或检查代码异味时使用。
 ---
 
 # Code Taste Review Skill

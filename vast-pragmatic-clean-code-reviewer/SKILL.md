@@ -1,16 +1,8 @@
 ---
-name: pragmatic-clean-code-reviewer
+name: vast-pragmatic-clean-code-reviewer
 version: 1.3.1
 description: >
-  Strict code review following Clean Code, Clean Architecture, and The Pragmatic Programmer
-  principles. Use when: (1) reviewing code or pull requests, (2) detecting code smells or
-  quality issues, (3) auditing architecture decisions, (4) preparing code for merge,
-  (5) refactoring existing code, or (6) checking adherence to SOLID, DRY, YAGNI, KISS principles.
-  Features a 3+4+2 questionnaire system to calibrate strictness from L1 (lab) to L5 (critical).
-  Also triggers on: "is this code good?", "check code quality", "ready to merge?",
-  "technical debt", "code smell", "best practices", "clean up code", "refactor review",
-  "review this PR", "PR review", "code review", "pre-merge check", "code audit",
-  "is this production-ready?", "find bugs", "look at my code", "check for issues".
+  遵循 Clean Code、Clean Architecture 和 The Pragmatic Programmer 原则的严格代码审查。适用于：(1) 审查代码或拉取请求，(2) 检测代码异味或质量问题，(3) 审核架构决策，(4) 准备代码合并，(5) 重构现有代码，或 (6) 检查是否遵循 SOLID、DRY、YAGNI、KISS 原则。具有 3+4+2 问卷系统，可将严格程度从 L1（实验室）校准到 L5（关键）。触发词还包括：“is this code good?”、“check code quality”、“ready to merge?”、“technical debt”、“code smell”、“best practices”、“clean up code”、“refactor review”、“review this PR”、“PR review”、“code review”、“pre-merge check”、“code audit”、“is this production-ready?”、“find bugs”、“look at my code”、“check for issues”。
 ---
 
 # Pragmatic Clean Code Reviewer

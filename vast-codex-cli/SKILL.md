@@ -1,6 +1,6 @@
 ---
 name: vast-codex-cli
-description: Orchestrate OpenAI Codex CLI for parallel task execution. As orchestrator, analyze tasks, inject context, manage sessions, and coordinate parallel instances. Use when delegating coding tasks to Codex or running multi-agent workflows. (user)
+description: 编排 OpenAI Codex CLI 以进行并行任务执行。作为编排者，分析任务、注入上下文、管理会话并协调并行实例。当将编码任务委托给 Codex 或运行多代理工作流时使用。(user)
 ---
 
 # Codex CLI Orchestrator

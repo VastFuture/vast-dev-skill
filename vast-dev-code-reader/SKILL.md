@@ -1,6 +1,6 @@
 ---
 name: vast-dev-code-reader
-description: Use when you want to deeply understand an unfamiliar codebase and generate reusable cognitive skills from it, by providing a local path or GitHub URL
+description: 当您想要深度理解一个陌生的代码库并从中生成可重用的认知技能时使用，通过提供本地路径或 GitHub URL。
 ---
 
 # Deep Code Reader
