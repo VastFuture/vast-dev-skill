@@ -17,9 +17,32 @@ allowed-tools: Read, Write, Glob, Grep, Bash
 
 ## 数据存储
 
-技能列表存储在 `~/.claude/skills-recommend.json`：
+技能列表分两层：
+
+### 内置推荐列表（只读）
+存储在技能目录的 `skills-builtin.json`，随技能发布，包含出厂预置推荐。
+
+### 用户推荐列表（可写）
+存储在 `~/.claude/skills-recommend.json`，用户添加的技能。
 
 ```json
+// skills-builtin.json（内置，只读）
+{
+  "skills": [
+    {
+      "id": "builtin-sanyuan-skills",
+      "name": "sanyuan-skills",
+      "description": "面向 Claude Code 和 AI Agent 终端的技能集合，包含 Code Review、Sigma、Bloom 学习法、Wiki Ingest、Book Study 等5个生产级技能",
+      "url": "https://github.com/sanyuan0704/sanyuan-skills",
+      "tags": ["ai", "claude-code", "skills"],
+      "addedAt": "2024-01-15",
+      "updatedAt": "2024-01-15",
+      "builtin": true
+    }
+  ]
+}
+
+// ~/.claude/skills-recommend.json（用户添加）
 {
   "skills": [
     {
@@ -29,22 +52,23 @@ allowed-tools: Read, Write, Glob, Grep, Bash
       "url": "GitHub链接",
       "tags": ["标签1", "标签2"],
       "addedAt": "2024-01-01",
-      "updatedAt": "2024-01-01"
+      "updatedAt": "2024-01-01",
+      "builtin": false
     }
   ]
 }
 ```
 
-## 操作流程
-
 ### 查看技能列表
 
 当用户要求"查看技能推荐"或类似表达时：
 
-1. 读取 `~/.claude/skills-recommend.json`
-2. 如果文件不存在，提示用户列表为空
-3. 以表格形式展示所有技能：
-   - 名称 | 描述 | 标签 | 添加时间
+1. 读取技能目录的 `skills-builtin.json`（内置列表）
+2. 读取 `~/.claude/skills-recommend.json`（用户列表，如果存在）
+3. 合并两部分展示，`builtin: true` 的标注"内置"
+4. 以表格形式展示所有技能：
+   - 内置列表优先展示
+   - 名称 | 描述 | 标签 | 添加时间 | 来源（内置/用户）
 
 ### 添加技能
 
@@ -84,19 +108,26 @@ allowed-tools: Read, Write, Glob, Grep, Bash
 4. 写回文件
 5. 确认更新成功
 
+### 删除/更新技能
+
+**只能操作用户列表中的技能**，内置技能 (`builtin: true`) 是出厂数据，不允许删除或更新。
+
+如果用户尝试对内置技能操作，提示："该技能为内置技能，无法修改/删除"
+
 ## 响应格式
 
 ### 技能列表展示
 ```
-📋 技能推荐列表（共 X 个）
+📋 技能推荐列表（共 X 个，内置 X 个 + 用户 X 个）
 
-| 名称 | 描述 | 标签 | 添加时间 |
-|------|------|------|----------|
-| xxx  | xxx  | xxx  | xxx      |
+| 名称 | 描述 | 标签 | 添加时间 | 来源 |
+|------|------|------|----------|------|
+| xxx  | xxx  | xxx  | xxx      | 内置 |
+| yyy  | yyy  | yyy  | yyy      | 用户 |
 
 查看详情: /skill-recommend show <id>
-删除技能: /skill-recommend delete <id>
-更新技能: /skill-recommend update <id>
+删除技能: /skill-recommend delete <id>  （仅用户技能）
+更新技能: /skill-recommend update <id>  （仅用户技能）
 添加技能: /skill-recommend add
 ```
 
@@ -125,8 +156,10 @@ allowed-tools: Read, Write, Glob, Grep, Bash
 
 ## 注意事项
 
-- 使用 UUID 作为技能 ID
+- 使用 UUID 作为技能 ID，内置技能使用固定 ID（如 `builtin-sanyuan-skills`）
 - 日期格式：YYYY-MM-DD
-- 文件路径：`~/.claude/skills-recommend.json`
+- 内置列表路径：技能目录的 `skills-builtin.json`（只读）
+- 用户列表路径：`~/.claude/skills-recommend.json`
 - 每次操作后都确认结果
 - 删除/更新前先展示列表让用户确认
+- **内置技能不可删除/更新**，用户操作时需校验 `builtin` 字段

@@ -1,0 +1,14 @@
+{
+  "skills": [
+    {
+      "id": "builtin-sanyuan-skills",
+      "name": "sanyuan-skills",
+      "description": "面向 Claude Code 和 AI Agent 终端的技能集合，包含 Code Review、Sigma、Bloom 学习法、Wiki Ingest、Book Study 等5个生产级技能",
+      "url": "https://github.com/sanyuan0704/sanyuan-skills",
+      "tags": ["ai", "claude-code", "skills"],
+      "addedAt": "2024-01-15",
+      "updatedAt": "2024-01-15",
+      "builtin": true
+    }
+  ]
+}
