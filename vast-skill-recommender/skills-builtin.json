@@ -9,6 +9,16 @@
       "addedAt": "2024-01-15",
       "updatedAt": "2024-01-15",
       "builtin": true
+    },
+    {
+      "id": "builtin-notebooklm-skill",
+      "name": "notebooklm-skill",
+      "description": "让 Claude Code 直接与 Google NotebookLM 交互，查询已上传文档并获取基于来源、带引用的回答。支持浏览器自动化、笔记本库管理和持久认证",
+      "url": "https://github.com/PleasePrompto/notebooklm-skill",
+      "tags": ["ai", "claude-code", "notebooklm", "google", "rag"],
+      "addedAt": "2025-05-09",
+      "updatedAt": "2025-05-09",
+      "builtin": true
     }
   ]
 }
