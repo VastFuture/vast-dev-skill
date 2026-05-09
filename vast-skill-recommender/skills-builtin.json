@@ -19,6 +19,16 @@
       "addedAt": "2025-05-09",
       "updatedAt": "2025-05-09",
       "builtin": true
+    },
+    {
+      "id": "builtin-qiaomu-anything-to-notebooklm",
+      "name": "qiaomu-anything-to-notebooklm",
+      "description": "多源内容处理器，支持微信公众号、网页、YouTube、PDF、Markdown 等格式导入 NotebookLM，可生成 Podcast、PPT、思维导图、测验等多种输出",
+      "url": "https://github.com/joeseesun/qiaomu-anything-to-notebooklm",
+      "tags": ["ai", "claude-code", "notebooklm", "automation", "content-processing"],
+      "addedAt": "2025-05-09",
+      "updatedAt": "2025-05-09",
+      "builtin": true
     }
   ]
 }
