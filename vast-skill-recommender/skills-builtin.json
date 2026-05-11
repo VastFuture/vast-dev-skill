@@ -49,6 +49,16 @@
       "addedAt": "2026-05-11",
       "updatedAt": "2026-05-11",
       "builtin": true
+    },
+    {
+      "id": "builtin-magebyte-power",
+      "name": "magebyte-power",
+      "description": "7-phase feature development workflow with 4-round cross-verification for Claude Code — catches concurrency, idempotency and cross-service bugs before production",
+      "url": "https://github.com/MageByte-Zero/magebyte-power",
+      "tags": ["ai-workflow", "anthropic", "backend", "claude", "claude-code", "code-review", "developer-tools", "prompt-engineering", "software-engineering", "superpowers"],
+      "addedAt": "2026-05-11",
+      "updatedAt": "2026-05-11",
+      "builtin": true
     }
   ]
 }
