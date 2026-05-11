@@ -29,6 +29,16 @@
       "addedAt": "2025-05-09",
       "updatedAt": "2025-05-09",
       "builtin": true
+    },
+    {
+      "id": "builtin-qiaomu-opencli-skills",
+      "name": "qiaomu-opencli-skills",
+      "description": "通过 opencli CLI 与主流社交和内容平台交互，支持 Bilibili、知乎、Twitter/X、YouTube、微博、小红书、V2EX、Reddit、HackerNews、雪球、BOSS直聘等",
+      "url": "https://github.com/joeseesun/qiaomu-opencli-skills",
+      "tags": ["ai", "claude-code", "opencli", "social-media", "content-platform"],
+      "addedAt": "2026-05-11",
+      "updatedAt": "2026-05-11",
+      "builtin": true
     }
   ]
 }
