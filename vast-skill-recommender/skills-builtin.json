@@ -39,6 +39,16 @@
       "addedAt": "2026-05-11",
       "updatedAt": "2026-05-11",
       "builtin": true
+    },
+    {
+      "id": "builtin-autoskills",
+      "name": "autoskills",
+      "description": "One command. Your entire AI skill stack. Installed.",
+      "url": "https://github.com/midudev/autoskills",
+      "tags": ["ai", "claude-code", "skills"],
+      "addedAt": "2026-05-11",
+      "updatedAt": "2026-05-11",
+      "builtin": true
     }
   ]
 }
