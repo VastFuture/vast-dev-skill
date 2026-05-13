@@ -1,9 +1,9 @@
 ---
 name: docs-pipeline
-description: Initialize or repair the docs/ product pipeline (research → prd → exec-plans → handover + lessons) plus root-level AI agent templates (CLAUDE.md, AGENTS.md, MBTI_DEV_TRAPS.md, karpathy-guidelines.md, .mcp.json) and an auto-explored ARCHITECTURE.md for any Claude Code project. Idempotent — detects existing state and skips without overwriting. Use when starting a new project, when docs/ is messy, or when asked to "set up docs structure", "initialize docs pipeline", "应用文档结构", "初始化文档结构", "建立文档流", "搭建文档产物链路".
+description: Initialize or repair docs/ pipeline + root AI agent templates (CLAUDE.md, AGENTS.md, etc.) for any Claude Code project. Idempotent. Use for: "初始化文档结构", "搭建 docs pipeline", "set up docs structure", "initialize docs pipeline", "fix docs structure".
 metadata:
   author: tracker-system
-  version: "0.5.0"
+  version: "1.1.0"
 allowed-tools: Bash Read Write Edit Glob Agent
 ---
 
@@ -100,6 +100,21 @@ CLAUDE.md 的写入由 step 4 完成。本步只做一件事：如果 step 4 走
   - 不存在 → 用 `Edit` 把 `assets/templates/claude-md-snippet.md` 追加到文件末尾
   - 已存在 → 跳过，提示"已有文档段落，未变更"
 
+Pensieve 集成按以下分支处理：
+
+**分支 A — `.pensieve/` 已存在**：
+
+1. 按 [references/pensieve-integration.md](./references/pensieve-integration.md) 执行 doctor → sync-instructions → .gitignore 保护 → doctor 验证流程
+2. 检测 CLAUDE.md 是否已有 `## Pensieve 版本控制` 段落：`Bash grep -q "^## Pensieve 版本控制" CLAUDE.md`
+   - 不存在 → 用 `Edit` 把 `assets/templates/pensieve-gitignore-snippet.md` 追加到文件末尾
+   - 已存在 → 跳过
+
+**分支 B — `.pensieve/` 不存在**：
+
+1. 用 `AskUserQuestion` 询问用户是否要安装 Pensieve
+2. 用户确认 → 按 [references/pensieve-integration.md](./references/pensieve-integration.md) 的"安装"章节执行（读取 GitHub 仓库最新 README 获取安装步骤，不要硬编码），然后走分支 A 的完整流程
+3. 用户拒绝 → 跳过，报告"已跳过 Pensieve 集成"
+
 ### 6. 生成 ARCHITECTURE.md（探索型模板）
 
 `ARCHITECTURE.md` 不能简单 cp，必须基于目标项目的实际代码生成。流程：
@@ -168,6 +183,16 @@ test -f ARCHITECTURE.md && echo "EXISTS" || echo "MISSING"
 - **不破坏**：项目根 CLAUDE.md 只追加，不修改原有内容
 - **不假设技术栈**：只管文档与 AI 代理配置，不碰业务代码
 
+## Gotchas
+
+- **Explore 子代理超时或返回空内容**：不要卡住，直接降级到 `ARCHITECTURE.md.template` 骨架，报告"探索失败，需手动填充"
+- **项目根 CLAUDE.md 已有大量自定义内容**：只追加"## 文档"段落到末尾，绝不修改或删除已有内容。用 `grep -q "^## 文档"` 检测，存在就跳过
+- **重复调用后误报"已建"**：幂等检测必须用 `Read` 确认文件实际存在，不能靠 `mkdir -p` 的返回值推断
+- **Pensieve 不存在时强制创建**：`.pensieve/` 不存在就跳过 Step 5，不要 `mkdir .pensieve/`
+- **`.pensieve/state.md` 漏加 .gitignore**：state.md 是运行时状态，每次操作都变，必须排除。`.state/` 由 Pensieve 自带 `.gitignore` 排除，但 state.md 需要项目根 `.gitignore` 兜底
+- **用户拒绝安装 Pensieve 却继续执行**：分支 B 中用户拒绝后必须跳过，不要自动创建 `.pensieve/` 或暗示 Pensieve 是必需的
+- **模板里的 TODO 占位被自动填充**：`<!-- TODO(docs-pipeline): ... -->` 是留给用户的，不要替换
+
 ## 不要做
 
 - ❌ 不要在模板里塞业务示例（保持骨架空白）
@@ -177,4 +202,3 @@ test -f ARCHITECTURE.md && echo "EXISTS" || echo "MISSING"
 - ❌ 不要修改项目根 CLAUDE.md 已有内容（只追加"## 文档"段落，不改其他）
 - ❌ 不要覆盖已有的 CLAUDE.md / AGENTS.md / MBTI_DEV_TRAPS.md / karpathy-guidelines.md / .mcp.json / ARCHITECTURE.md（用户可能已有定制版本）
 - ❌ 不要让 Explore 子代理偏离 5 章节固定结构（保持跨项目一致）
-- ❌ 不要替换模板里的 `<!-- TODO(docs-pipeline): ... -->` 占位（让用户自己填项目特有内容）
