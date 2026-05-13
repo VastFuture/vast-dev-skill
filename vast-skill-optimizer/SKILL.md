@@ -1,6 +1,6 @@
 ---
 name: vast-skill-optimizer
-description: 优化和重构现有 skill。用于检查目标 skill 的触发描述、SKILL.md 工作流、确认门槛、渐进式披露，以及 references/scripts/assets 的组织方式。当用户提到“优化 skill”“检查 skill 质量”“改进某个 skill”“重构技能说明”，或直接说明要优化哪些方面时使用。默认先审查、再出计划、等待用户确认后再修改目标 skill。
+description: 优化和重构现有 skill。用于检查目标 skill 的触发描述、SKILL.md 工作流、确认门槛、渐进式披露，以及 references/scripts/assets 的组织方式。当用户提到”优化 skill””检查 skill 质量””改进某个 skill””重构技能说明””vast-skill-optimizer””技能优化”，或直接说明要优化哪些方面时使用。默认先审查、再出计划、等待用户确认后再修改目标 skill。
 ---
 
 # Skill Optimizer
