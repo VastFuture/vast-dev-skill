@@ -1,0 +1,78 @@
+﻿{
+    "mcpServers":
+    {
+        "playwright":
+        {
+            "args":
+            [
+                "@playwright/mcp@latest"
+            ],
+            "command": "npx",
+            "type": "stdio"
+        },
+        "thinking":
+        {
+            "args":
+            [
+                "-y",
+                "@modelcontextprotocol/server-sequential-thinking"
+            ],
+            "command": "npx",
+            "type": "stdio"
+        },
+        "chrome-devtools":
+        {
+            "command": "npx",
+            "args":
+            [
+                "-y",
+                "chrome-devtools-mcp@latest"
+            ]
+        },
+        "fetch":
+        {
+            "command": "uvx",
+            "args":
+            [
+                "mcp-server-fetch"
+            ],
+            "type": "stdio"
+        },
+        "time":
+        {
+            "command": "npx",
+            "args":
+            [
+                "-y",
+                "@modelcontextprotocol/server-time"
+            ],
+            "type": "stdio",
+            "env":
+            {
+                "TZ": "Asia/Shanghai"
+            }
+        },
+        "context7":
+        {
+            "command": "npx",
+            "args":
+            [
+                "-y",
+                "@upstash/context7-mcp@latest"
+            ],
+            "type": "stdio"
+        },
+        "serena":
+        {
+            "command": "uvx",
+            "args":
+            [
+                "--from",
+                "git+https://github.com/oraios/serena",
+                "serena",
+                "start-mcp-server"
+            ],
+            "type": "stdio"
+        }
+    }
+}
