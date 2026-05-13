@@ -1,3 +1,8 @@
+---
+name: vast-dev-cross-verify
+description: 7阶段高风险功能开发工作流，包含4轮独立交叉验证，在投入生产前捕获并发、幂等性和跨服务 bug。用于金融交易、订单/库存状态机、分布式锁、跨服务接口变更、在线 schema 迁移等高风险场景。触发词：'cross-verified'、'交叉验证'、'高风险功能开发'、'vast-dev-cross-verify'。
+---
+
 # Cross-Verified Feature Development Skill
 
 > 7阶段高风险功能开发工作流，包含4轮独立交叉验证，在投入生产前捕获并发、幂等性和跨服务 bug。

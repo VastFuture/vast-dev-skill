@@ -1,4 +1,4 @@
-# Cross-Verified Feature Development
+# vast-dev-cross-verify
 
 > 源自 [MageByte-Zero/magebyte-power](https://github.com/MageByte-Zero/magebyte-power)，经重构适配本仓库。
 
@@ -18,12 +18,12 @@
 
 ## 触发词
 
-`/cross-verified`、`交叉验证`、`高风险功能开发`
+`/vast-dev-cross-verify`、`交叉验证`、`高风险功能开发`
 
 ## 目录结构
 
 ```
-skills/vast-cross-verify/
+vast-dev-cross-verify/
 ├── SKILL.md                    # 主入口
 ├── README.md                   # 本文件
 └── references/                 # 参考资料
