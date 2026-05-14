@@ -3,7 +3,7 @@ name: docs-pipeline
 description: Initialize or repair docs/ pipeline + root AI agent templates (CLAUDE.md, AGENTS.md, etc.) for any Claude Code project. Idempotent. Use for: "初始化文档结构", "搭建 docs pipeline", "set up docs structure", "initialize docs pipeline", "fix docs structure".
 metadata:
   author: tracker-system
-  version: "1.2.0"
+  version: "1.3.0"
 allowed-tools: Bash Read Write Edit Glob Agent
 ---
 
@@ -21,6 +21,9 @@ allowed-tools: Bash Read Write Edit Glob Agent
 ├── karpathy-guidelines.md    # 不存在则建（LLM 编码行为指南）
 ├── ARCHITECTURE.md           # 不存在则用 Explore 子代理探索后生成
 ├── .mcp.json                 # 不存在则建（7 个常用 MCP 服务）
+├── .claude/
+│   └── commands/
+│       └── ideas.md          # 不存在则建（/ideas 随手记命令）
 └── docs/
     ├── CLAUDE.md             # 总规则
     ├── ideas/
@@ -93,7 +96,17 @@ mkdir -p docs/ideas docs/research docs/prd docs/exec-plans/active docs/exec-plan
 
 注意：这五个文件**不属于** `docs/` 链路，是项目根级的 AI 代理配置文档。
 
-### 5. 处理项目根 CLAUDE.md 的"## 文档"段落
+### 5. 写入项目级命令
+
+同样的"已存在则跳过"策略：
+
+| 模板 | 目标路径 | 用途 |
+|------|---------|------|
+| `assets/templates/commands/ideas.md` | `.claude/commands/ideas.md` | `/ideas` 随手记命令，将灵感直接写入 `docs/ideas/` |
+
+命令文件是 Claude Code 的项目级 slash command，放在 `.claude/commands/` 下即可被 `/命令名` 调用。
+
+### 6. 处理项目根 CLAUDE.md 的"## 文档"段落
 
 CLAUDE.md 的写入由 step 4 完成。本步只做一件事：如果 step 4 走的是"已存在跳过"分支（即用户已有自己的 CLAUDE.md），那么尝试追加"## 文档"段落，让用户的现有 CLAUDE.md 也能链接到 `docs/` 产物链路。
 
@@ -118,11 +131,11 @@ Pensieve 集成按以下分支处理：
 2. 用户确认 → 按 [references/pensieve-integration.md](./references/pensieve-integration.md) 的"安装"章节执行（读取 GitHub 仓库最新 README 获取安装步骤，不要硬编码），然后走分支 A 的完整流程
 3. 用户拒绝 → 跳过，报告"已跳过 Pensieve 集成"
 
-### 6. 生成 ARCHITECTURE.md（探索型模板）
+### 7. 生成 ARCHITECTURE.md（探索型模板）
 
 `ARCHITECTURE.md` 不能简单 cp，必须基于目标项目的实际代码生成。流程：
 
-#### 6.1 检测
+#### 7.1 检测
 
 ```bash
 test -f ARCHITECTURE.md && echo "EXISTS" || echo "MISSING"
@@ -131,7 +144,7 @@ test -f ARCHITECTURE.md && echo "EXISTS" || echo "MISSING"
 - **EXISTS** → 跳过，记入"已存在跳过"清单
 - **MISSING** → 进入 6.2
 
-#### 6.2 调用 Explore 子代理
+#### 7.2 调用 Explore 子代理
 
 用 `Agent` 工具，`subagent_type: "Explore"`，提示词如下（中文）：
 
@@ -152,11 +165,11 @@ test -f ARCHITECTURE.md && echo "EXISTS" || echo "MISSING"
 >
 > 探索完成后，用 `Write` 工具写入 `<项目根绝对路径>/ARCHITECTURE.md`，然后简短报告"已生成"。
 
-#### 6.3 失败降级
+#### 7.3 失败降级
 
 如果 Explore 子代理失败（返回错误、超时、或未能写入文件），用 `Read` 读取 `assets/templates/ARCHITECTURE.md.template`，用 `Write` 落地为 `ARCHITECTURE.md`。在报告中标注"探索失败，已落地骨架，需手动填充"。
 
-### 7. 输出报告
+### 8. 输出报告
 
 按以下格式向用户总结：
 

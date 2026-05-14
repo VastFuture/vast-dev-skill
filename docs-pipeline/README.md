@@ -23,9 +23,10 @@ ideas（随手记）→ research（调研）→ prd（需求）→ exec-plans/ac
 
 | 状态 | 动作 |
 |------|------|
-| `docs/` 不存在 | 全新初始化（建 7 目录 + 7 README + 1 CLAUDE.md） |
+| `docs/` 不存在 | 全新初始化（建 7 目录 + 7 README + 1 CLAUDE.md + 1 command） |
 | `docs/` 部分存在 | 修复模式，只补缺失项 |
 | `docs/` 全部齐全 | 跳过，输出"已规范" |
+| `.claude/commands/ideas.md` 不存在 | 写入 `/ideas` 随手记命令 |
 | 项目根 `CLAUDE.md` 不存在 | 写入模板 |
 | 项目根 `ARCHITECTURE.md` 不存在 | 调用 Explore 子代理探索后生成 |
 | `.pensieve/` 存在且 CLAUDE.md 无 `## Pensieve 版本控制` | 追加版本控制规则（四层结构哪些提交、哪些排除） |
