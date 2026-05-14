@@ -191,6 +191,7 @@ test -f ARCHITECTURE.md && echo "EXISTS" || echo "MISSING"
 - **Pensieve 不存在时强制创建**：`.pensieve/` 不存在就跳过 Step 5，不要 `mkdir .pensieve/`
 - **`.pensieve/state.md` 漏加 .gitignore**：state.md 是运行时状态，每次操作都变，必须排除。`.state/` 由 Pensieve 自带 `.gitignore` 排除，但 state.md 需要项目根 `.gitignore` 兜底
 - **用户拒绝安装 Pensieve 却继续执行**：分支 B 中用户拒绝后必须跳过，不要自动创建 `.pensieve/` 或暗示 Pensieve 是必需的
+- **sync-instructions 路由不覆盖 skill 调用**：`sync-instructions.sh` 只插入 `commit`/`git commit` 触发词，不覆盖 skill 调用场景。必须执行 Step 4 替换为"any commit-related skill invocation"通用模式，否则 Pensieve 在 skill 调用时不触发
 - **模板里的 TODO 占位被自动填充**：`<!-- TODO(docs-pipeline): ... -->` 是留给用户的，不要替换
 
 ## 不要做

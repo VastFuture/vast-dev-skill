@@ -41,7 +41,21 @@ grep -q '^\.pensieve/state\.md$' .gitignore || echo '.pensieve/state.md' >> .git
 
 `state.md` 是 Pensieve 的运行时生命周期状态（Last Event、Short-Term 计数等），每次操作都变，不应提交到 git。`.state/` 子目录由 Pensieve 自带的 `.gitignore` 排除，但 `state.md` 在 `.state/` 外面，需要项目根 `.gitignore` 兜底。
 
-### Step 4：验证
+### Step 4：补全路由为通用模式
+
+`sync-instructions.sh` 只插入基础触发词（`commit`、`git commit`），不覆盖 skill 调用场景。需要替换为通用模式：
+
+```bash
+# 检查是否已是通用模式
+grep -q 'any commit-related skill invocation' CLAUDE.md || {
+  # 替换 CLAUDE.md 和 AGENTS.md 中的 commit 路由行
+  sed -i 's/Commit requests (`commit`, `git commit`): use `.pensieve\/pipelines\/run-when-committing.md`. Check staged diff, decide whether reusable insight should be captured, then make atomic commits./Commit requests (`commit`, `git commit`, or any commit-related skill invocation): before executing `git commit`, always read `.pensieve\/pipelines\/run-when-committing.md` and execute Task 1 (insight judgment) + Task 2 (auto-capture). Task 3 (atomic commits) is handled by your commit flow or skill./' CLAUDE.md AGENTS.md
+}
+```
+
+**为什么需要这步**：`sync-instructions.sh` 写死的触发词只覆盖裸命令，不覆盖 `/vast-dev-commit-as-prompt` 等 skill 调用。用"any commit-related skill invocation"通用模式一劳永逸，不再依赖具体 skill 名称。
+
+### Step 5：验证
 
 再次运行 Step 1 的 doctor 命令，确认 must_fix=0。
 
