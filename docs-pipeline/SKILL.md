@@ -3,7 +3,7 @@ name: docs-pipeline
 description: Initialize or repair docs/ pipeline + root AI agent templates (CLAUDE.md, AGENTS.md, etc.) for any Claude Code project. Idempotent. Use for: "初始化文档结构", "搭建 docs pipeline", "set up docs structure", "initialize docs pipeline", "fix docs structure".
 metadata:
   author: tracker-system
-  version: "1.1.0"
+  version: "1.2.0"
 allowed-tools: Bash Read Write Edit Glob Agent
 ---
 
@@ -23,6 +23,8 @@ allowed-tools: Bash Read Write Edit Glob Agent
 ├── .mcp.json                 # 不存在则建（7 个常用 MCP 服务）
 └── docs/
     ├── CLAUDE.md             # 总规则
+    ├── ideas/
+    │   └── README.md         # 灵感池（随手记，零结构）
     ├── research/
     │   └── README.md
     ├── prd/
@@ -52,7 +54,7 @@ allowed-tools: Bash Read Write Edit Glob Agent
 ### 2. 建目录
 
 ```bash
-mkdir -p docs/research docs/prd docs/exec-plans/active docs/exec-plans/completed docs/handover docs/lessons
+mkdir -p docs/ideas docs/research docs/prd docs/exec-plans/active docs/exec-plans/completed docs/handover docs/lessons
 ```
 
 `mkdir -p` 本身是幂等的，已有目录不会报错。
@@ -70,6 +72,7 @@ mkdir -p docs/research docs/prd docs/exec-plans/active docs/exec-plans/completed
 | 模板 | 目标路径 |
 |------|---------|
 | `assets/templates/docs-CLAUDE.md` | `docs/CLAUDE.md` |
+| `assets/templates/ideas-README.md` | `docs/ideas/README.md` |
 | `assets/templates/research-README.md` | `docs/research/README.md` |
 | `assets/templates/prd-README.md` | `docs/prd/README.md` |
 | `assets/templates/exec-plans-README.md` | `docs/exec-plans/README.md` |

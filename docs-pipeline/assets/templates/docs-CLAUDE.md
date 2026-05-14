@@ -3,9 +3,9 @@
 ## 产物链路
 
 ```
-research（调研）→ prd（需求）→ exec-plans/active（计划进行中）→ exec-plans/completed（计划完成）
-                                                                   ↓
-                                                               lessons（踩坑教训，按需横切）
+ideas（随手记）→ research（调研）→ prd（需求）→ exec-plans/active（计划进行中）→ exec-plans/completed（计划完成）
+                                                                              ↓
+                                                                          lessons（踩坑教训，按需横切）
 ```
 
 **按需推进，不强制全流程：**
@@ -18,6 +18,7 @@ research（调研）→ prd（需求）→ exec-plans/active（计划进行中�
 
 | 目录 | 内容 | 时机 |
 |------|------|------|
+| `ideas/` | 灵感、模糊想法、随笔记录 | 随时，零摩擦捕获 |
 | `research/` | 技术方案、可行性分析 | 立项前，不确定怎么做时 |
 | `prd/` | 需求规格（做什么、为什么） | 需求方视角，相对稳定 |
 | `exec-plans/active/` | 执行计划（怎么做、做到哪） | 开工时建，频繁更新状态 |

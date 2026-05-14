@@ -14,16 +14,16 @@ skill 会自动识别并执行。
 ## 产物链路
 
 ```
-research（调研）→ prd（需求）→ exec-plans/active（计划进行中）→ exec-plans/completed（计划完成）
-                                                                   ↓
-                                                               lessons（踩坑教训，按需横切）
+ideas（随手记）→ research（调研）→ prd（需求）→ exec-plans/active（计划进行中）→ exec-plans/completed（计划完成）
+                                                                              ↓
+                                                                          lessons（踩坑教训，按需横切）
 ```
 
 ## 行为契约
 
 | 状态 | 动作 |
 |------|------|
-| `docs/` 不存在 | 全新初始化（建 6 目录 + 6 README + 1 CLAUDE.md） |
+| `docs/` 不存在 | 全新初始化（建 7 目录 + 7 README + 1 CLAUDE.md） |
 | `docs/` 部分存在 | 修复模式，只补缺失项 |
 | `docs/` 全部齐全 | 跳过，输出"已规范" |
 | 项目根 `CLAUDE.md` 不存在 | 写入模板 |
