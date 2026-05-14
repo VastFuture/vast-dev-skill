@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>提示词工程系统教程</title>
+<style>
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans SC', sans-serif;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    line-height: 1.6;
+    color: #333;
+}
+h1 { font-size: 2em; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+h2 { font-size: 1.5em; border-bottom: 1px solid #eee; padding-bottom: 8px; margin-top: 30px; }
+h3 { font-size: 1.2em; margin-top: 24px; }
+table { border-collapse: collapse; width: 100%; margin: 16px 0; }
+th, td { border: 1px solid #ddd; padding: 8px 12px; text-align: left; }
+th { background-color: #f5f5f5; font-weight: bold; }
+tr:nth-child(even) { background-color: #f9f9f9; }
+code { background-color: #f4f4f4; padding: 2px 6px; border-radius: 3px; font-size: 0.9em; }
+pre { background-color: #f4f4f4; padding: 16px; border-radius: 6px; overflow-x: auto; }
+pre code { background: none; padding: 0; }
+blockquote { border-left: 4px solid #ddd; margin: 16px 0; padding: 8px 16px; color: #666; }
+hr { border: none; border-top: 2px solid #eee; margin: 30px 0; }
+ul, ol { padding-left: 24px; }
+li { margin: 4px 0; }
+</style>
+</head>
+<body>
+<h1>提示词工程系统教程：从原理到实战</h1>
+<h2>1. 学习者快照</h2>
+<table>
+<thead>
+<tr>
+<th>维度</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>当前水平</strong></td>
+<td>中级 — 了解 few-shot、CoT 等技术，但缺乏系统化框架</td>
+</tr>
+<tr>
+<td><strong>学习目标</strong></td>
+<td>① 日常工作提效 ② 系统掌握理论</td>
+</tr>
+<tr>
+<td><strong>时间预算</strong></td>
+<td>不限，追求全面</td>
+</tr>
+<tr>
+<td><strong>输出格式</strong></td>
+<td>Markdown + PDF + 网页</td>
+</tr>
+</tbody>
+</table>
+<h2>2. 目标与成功标准</h2>
+<p>完成本教程后，你将能够：</p>
+<ol>
+<li><strong>解释</strong>提示词工程的核心原理和心理模型</li>
+<li><strong>分类</strong>主流提示词技术（Zero-shot、Few-shot、CoT、ReAct 等）</li>
+<li><strong>设计</strong>高质量的系统提示词</li>
+<li><strong>应用</strong>提示词框架（CO-STAR、RISEN 等）解决实际问题</li>
+<li><strong>调试</strong>效果不佳的提示词</li>
+<li><strong>识别</strong>前沿技术方向</li>
+</ol>
+<h2>3. 前置知识</h2>
+<ul>
+<li>使用过 ChatGPT、Claude 或 Gemini 等 AI 对话工具</li>
+<li>了解&quot;提示词&quot;的基本概念（给 AI 的指令）</li>
+<li>无需编程或数学背景</li>
+</ul>
+<h2>4. 概念地图</h2>
+<pre><code>提示词工程
+├── 基础层：清晰指令 + 上下文 + 格式控制
+├── 技术层
+│   ├── Zero-shot（零样本）
+│   ├── Few-shot（少样本）
+│   ├── Chain-of-Thought（思维链）
+│   ├── Self-Consistency（自洽采样）
+│   ├── ReAct（推理+行动）
+│   └── Tree of Thoughts（思维树）
+├── 框架层
+│   ├── CO-STAR
+│   ├── RISEN
+│   └── 系统提示词设计
+├── 进阶层
+│   ├── 提示词链（Prompt Chaining）
+│   ├── 检索增强（RAG）
+│   └── 自动提示优化
+└── 调试层：评估 + 迭代 + 常见错误
+</code></pre>
+<hr />
+<h2>5. 核心课程</h2>
+<h3>5.1 提示词工程的本质</h3>
+<blockquote>
+<p>&quot;提示词工程是一种不更新模型权重来引导 LLM 行为的方法，本质上是一门经验科学。&quot; — Lilian Weng, OpenAI</p>
+</blockquote>
+<p><strong>关键洞察</strong>：提示词工程不是&quot;写咒语&quot;，而是<strong>用清晰的沟通让 AI 理解你的意图</strong>。</p>
+<p><strong>心理模型</strong>：把 AI 想象成一个聪明但没有上下文的新同事。你给的背景越清晰、指令越具体，结果越好。</p>
+<h3>5.2 基础原则（来自 Anthropic、Google、OpenAI 官方文档）</h3>
+<h4>原则一：清晰直接</h4>
+<p><strong>黄金测试</strong>：把你的提示词给一个不了解任务的同事看，如果他会困惑，AI 也会。</p>
+<table>
+<thead>
+<tr>
+<th>差的提示词</th>
+<th>好的提示词</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>写个分析报告</td>
+<td>写一份 500 字的季度销售分析报告，包含：① 三个关键趋势 ② 每个趋势的数据支撑 ③ 一条行动建议</td>
+</tr>
+<tr>
+<td>帮我改代码</td>
+<td>将这个 Python 函数的执行时间优化到 O(n log n) 以内，保持输入输出接口不变</td>
+</tr>
+</tbody>
+</table>
+<h4>原则二：提供上下文</h4>
+<p>告诉 AI <strong>为什么</strong>要这样做，而不仅仅是<strong>做什么</strong>。</p>
+<pre><code>❌ 不要用省略号
+✅ 你的回复会被语音引擎朗读，所以不要用省略号，因为语音引擎不知道怎么发音
+</code></pre>
+<p>AI 足够聪明，能从解释中泛化出规则。</p>
+<h4>原则三：结构化你的提示词</h4>
+<p>使用 XML 标签或 Markdown 分隔不同内容块：</p>
+<pre><code class="language-xml">&lt;instructions&gt;
+分析以下客户反馈，提取关键问题
+&lt;/instructions&gt;
+
+&lt;context&gt;
+我们是一家 SaaS 公司，产品是项目管理工具
+&lt;/context&gt;
+
+&lt;input&gt;
+{{客户反馈内容}}
+&lt;/input&gt;
+
+&lt;output_format&gt;
+输出 JSON 格式：{&quot;issues&quot;: [...], &quot;sentiment&quot;: &quot;...&quot;}
+&lt;/output_format&gt;
+</code></pre>
+<h4>原则四：给 AI 一个角色</h4>
+<p>角色设定能聚焦 AI 的行为和语调：</p>
+<pre><code>你是一位资深的数据分析师，擅长用简单的语言解释复杂的数据发现。
+你的受众是非技术背景的管理层。
+</code></pre>
+<h4>原则五：控制输出格式</h4>
+<p><strong>告诉 AI 做什么，而不是不做什么</strong>：</p>
+<pre><code>❌ 不要用 Markdown
+✅ 用流畅的段落散文写，不要用列表
+</code></pre>
+<hr />
+<h3>5.3 主流技术详解</h3>
+<h4>技术一：Zero-shot Prompting（零样本提示）</h4>
+<p><strong>定义</strong>：不提供任何示例，直接给指令。</p>
+<p><strong>适用场景</strong>：简单任务、通用问答、文本改写。</p>
+<p><strong>示例</strong>：</p>
+<pre><code>将以下英文翻译成中文，保持专业术语准确：
+&quot;The neural network architecture uses attention mechanisms
+to process sequential data.&quot;
+</code></pre>
+<p><strong>要点</strong>：</p>
+<ul>
+<li>依赖模型的预训练知识</li>
+<li>对简单任务效果好</li>
+<li>复杂任务需要更多引导</li>
+</ul>
+<h4>技术二：Few-shot Prompting（少样本提示）</h4>
+<p><strong>定义</strong>：提供 3-5 个输入-输出示例，让模型学习模式。</p>
+<p><strong>适用场景</strong>：格式化输出、分类任务、风格模仿。</p>
+<p><strong>示例</strong>：</p>
+<pre><code>将客户反馈分类为正面、负面或中性。
+
+反馈：你们的产品太好用了！
+分类：正面
+
+反馈：退货流程太复杂了
+分类：负面
+
+反馈：产品还行，没什么特别的
+分类：中性
+
+反馈：客服响应很快，但问题没解决
+分类：
+</code></pre>
+<p><strong>关键技巧</strong>（来自 Google 和 Anthropic 官方）：</p>
+<ul>
+<li>用 <code>&lt;example&gt;</code> 标签包裹示例，让 AI 区分示例和指令</li>
+<li>示例要<strong>相关</strong>（贴近实际用例）、<strong>多样</strong>（覆盖边界情况）、<strong>结构一致</strong></li>
+<li>3-5 个示例效果最佳</li>
+<li>示例的排列顺序会影响结果，保持随机或多样化</li>
+</ul>
+<p><strong>高级技巧</strong>：用嵌入向量（embedding）选择语义最相似的示例，而不是随机选。</p>
+<h4>技术三：Chain-of-Thought（思维链，CoT）</h4>
+<p><strong>定义</strong>：让 AI 展示推理过程，而不是直接给答案。</p>
+<p><strong>为什么有效</strong>：复杂任务需要多步推理，直接给答案容易出错。CoT 让 AI &quot;想清楚再说&quot;。</p>
+<p><strong>两种变体</strong>：</p>
+<p><strong>1. Few-shot CoT</strong>：提供含推理链的示例</p>
+<pre><code>问题：小明有 5 个苹果，给了小红 2 个，又买了 3 个，他现在有几个？
+
+推理过程：
+- 开始有 5 个苹果
+- 给了小红 2 个：5 - 2 = 3 个
+- 又买了 3 个：3 + 3 = 6 个
+
+答案：6 个
+</code></pre>
+<p><strong>2. Zero-shot CoT</strong>：只需加一句提示</p>
+<pre><code>请一步一步思考这个问题：[你的问题]
+</code></pre>
+<p>或者更简单的版本（来自 Google 研究）：</p>
+<pre><code>Let's think step by step
+</code></pre>
+<p><strong>进阶变体</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>变体</th>
+<th>描述</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Self-Consistency</strong></td>
+<td>多次采样 + 多数投票</td>
+<td>需要高准确率的推理任务</td>
+</tr>
+<tr>
+<td><strong>Tree of Thoughts</strong></td>
+<td>每步探索多条推理路径</td>
+<td>复杂规划和创意任务</td>
+</tr>
+<tr>
+<td><strong>Self-Ask</strong></td>
+<td>迭代生成子问题</td>
+<td>需要多步信息检索的任务</td>
+</tr>
+</tbody>
+</table>
+<h4>技术四：ReAct（Reasoning + Acting）</h4>
+<p><strong>定义</strong>：让 AI 交替进行推理和行动（如搜索、计算、调用工具）。</p>
+<p><strong>示例框架</strong>：</p>
+<pre><code>思考：我需要查找 2024 年的 GDP 数据来回答这个问题
+行动：搜索&quot;2024年中国GDP&quot;
+观察：2024年中国GDP为 134.9 万亿元
+思考：现在我有了数据，可以给出答案了
+答案：...
+</code></pre>
+<p><strong>适用场景</strong>：需要外部信息的任务、多步骤工作流、智能体（Agent）系统。</p>
+<h4>技术五：Self-Consistency（自洽采样）</h4>
+<p><strong>定义</strong>：对同一个问题生成多个回答，通过多数投票选出最佳答案。</p>
+<p><strong>原理</strong>：如果一个问题有明确答案，多次推理应该收敛到同一个结果。</p>
+<p><strong>操作方法</strong>：</p>
+<ol>
+<li>设置 temperature &gt; 0（如 0.7）</li>
+<li>生成 5-10 个回答</li>
+<li>选择出现次数最多的答案</li>
+</ol>
+<p><strong>适用场景</strong>：数学推理、逻辑判断、有明确正确答案的任务。</p>
+<hr />
+<h3>5.4 系统提示词设计</h3>
+<p>系统提示词（System Prompt）是 AI 的&quot;操作系统&quot;，定义了它的基础行为。</p>
+<p><strong>结构模板</strong>（综合 Anthropic 和 Google 最佳实践）：</p>
+<pre><code class="language-markdown">## 角色定义
+你是一位 [具体角色]，擅长 [核心能力]。
+
+## 行为规则
+1. 始终用 [语言] 回复
+2. 回复长度控制在 [范围]
+3. 当不确定时，[处理方式]
+
+## 输出格式
+- 使用 [格式要求]
+- 包含 [必要元素]
+
+## 边界约束
+- 不要 [禁止行为]
+- 遇到 [情况] 时，[处理方式]
+</code></pre>
+<p><strong>实际案例 — 客服 AI 的系统提示词</strong>：</p>
+<pre><code>你是一家电商平台的客服助手。
+
+## 核心职责
+- 回答用户关于订单、物流、退换货的问题
+- 用友好但专业的语气沟通
+- 每次回复不超过 150 字
+
+## 规则
+1. 只回答与平台相关的问题
+2. 涉及退款超过 500 元的，引导用户联系人工客服
+3. 不要透露内部系统信息或公司策略细节
+4. 如果用户情绪激动，先表达理解，再提供解决方案
+
+## 输出格式
+- 先确认用户问题
+- 给出解决方案或下一步指引
+- 结尾询问是否还有其他问题
+</code></pre>
+<hr />
+<h3>5.5 提示词框架</h3>
+<h4>CO-STAR 框架</h4>
+<table>
+<thead>
+<tr>
+<th>组件</th>
+<th>含义</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>C</strong> - Context（背景）</td>
+<td>任务的上下文</td>
+<td>&quot;我们是一家电商公司&quot;</td>
+</tr>
+<tr>
+<td><strong>O</strong> - Objective（目标）</td>
+<td>你想要什么</td>
+<td>&quot;分析客户流失原因&quot;</td>
+</tr>
+<tr>
+<td><strong>S</strong> - Style（风格）</td>
+<td>输出风格</td>
+<td>&quot;用数据驱动的分析风格&quot;</td>
+</tr>
+<tr>
+<td><strong>T</strong> - Tone（语调）</td>
+<td>语气</td>
+<td>&quot;专业但易懂&quot;</td>
+</tr>
+<tr>
+<td><strong>A</strong> - Audience（受众）</td>
+<td>给谁看</td>
+<td>&quot;给非技术背景的管理层&quot;</td>
+</tr>
+<tr>
+<td><strong>R</strong> - Response（格式）</td>
+<td>输出格式</td>
+<td>&quot;用 Markdown 表格和要点&quot;</td>
+</tr>
+</tbody>
+</table>
+<p><strong>完整示例</strong>：</p>
+<pre><code>背景：我们是一家在线教育平台，最近三个月用户流失率上升了 15%。
+目标：分析可能的流失原因，给出 3 条可执行的改进建议。
+风格：数据驱动，引用行业基准。
+语调：专业但易懂，避免技术术语。
+受众：CEO 和产品总监，非技术背景。
+格式：用 Markdown，包含一个原因表格和对应的建议列表。
+</code></pre>
+<h4>RISEN 框架</h4>
+<table>
+<thead>
+<tr>
+<th>组件</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>R</strong> - Role（角色）</td>
+<td>AI 扮演什么角色</td>
+</tr>
+<tr>
+<td><strong>I</strong> - Instructions（指令）</td>
+<td>具体要做什么</td>
+</tr>
+<tr>
+<td><strong>S</strong> - Steps（步骤）</td>
+<td>分步执行</td>
+</tr>
+<tr>
+<td><strong>E</strong> - End goal（终态）</td>
+<td>最终期望的结果</td>
+</tr>
+<tr>
+<td><strong>N</strong> - Narrowing（约束）</td>
+<td>限制条件</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3>5.6 长上下文处理技巧</h3>
+<p>当输入内容超过 20,000 tokens 时（如长文档分析），需要特别注意：</p>
+<p><strong>1. 把长数据放在顶部，问题放在底部</strong></p>
+<p>Anthropic 官方测试表明，查询放在末尾可以提升响应质量高达 30%。</p>
+<p><strong>2. 用 XML 标签组织多文档</strong></p>
+<pre><code class="language-xml">&lt;documents&gt;
+  &lt;document index=&quot;1&quot;&gt;
+    &lt;source&gt;年度报告2024.pdf&lt;/source&gt;
+    &lt;document_content&gt;{{报告内容}}&lt;/document_content&gt;
+  &lt;/document&gt;
+  &lt;document index=&quot;2&quot;&gt;
+    &lt;source&gt;竞品分析.xlsx&lt;/source&gt;
+    &lt;document_content&gt;{{竞品数据}}&lt;/document_content&gt;
+  &lt;/document&gt;
+&lt;/documents&gt;
+
+基于以上文档，分析我们的竞争优势，给出 Q3 战略建议。
+</code></pre>
+<p><strong>3. 先引用再分析</strong></p>
+<pre><code>先从文档中找出与问题相关的原文引用，放在 &lt;quotes&gt; 标签中。
+然后基于这些引用给出分析。
+</code></pre>
+<p>这能帮助 AI 在大量文本中&quot;锚定&quot;关键信息。</p>
+<hr />
+<h3>5.7 提示词链（Prompt Chaining）</h3>
+<p><strong>定义</strong>：将复杂任务拆分为多个子任务，前一步的输出作为后一步的输入。</p>
+<p><strong>为什么用</strong>：</p>
+<ul>
+<li>每步更简单，准确率更高</li>
+<li>可以在中间步骤检查和修正</li>
+<li>降低单次提示词的复杂度</li>
+</ul>
+<p><strong>示例 — 生成产品分析报告</strong>：</p>
+<pre><code>步骤 1：数据提取
+&quot;从以下原始数据中提取关键指标：[数据]&quot;
+
+步骤 2：趋势分析
+&quot;基于以下指标，识别三个主要趋势：[步骤1输出]&quot;
+
+步骤 3：建议生成
+&quot;基于以下趋势分析，给出三条可执行建议：[步骤2输出]&quot;
+
+步骤 4：报告整合
+&quot;将以下分析和建议整合为一份 500 字的报告：[步骤2+3输出]&quot;
+</code></pre>
+<hr />
+<h3>5.8 参数调优</h3>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>作用</th>
+<th>建议值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>temperature</strong></td>
+<td>控制随机性。0 = 确定性，1 = 创造性</td>
+<td>事实任务：0-0.3；创意任务：0.7-1.0</td>
+</tr>
+<tr>
+<td><strong>max_tokens</strong></td>
+<td>最大输出长度</td>
+<td>根据预期输出长度设置</td>
+</tr>
+<tr>
+<td><strong>top_p</strong></td>
+<td>核采样概率</td>
+<td>一般保持默认（1.0）</td>
+</tr>
+<tr>
+<td><strong>stop_sequences</strong></td>
+<td>停止生成的标记</td>
+<td>用于控制输出边界</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Google Gemini 特别建议</strong>：Gemini 3 建议 temperature 保持默认 1.0，不要随意调低。</p>
+<hr />
+<h3>5.9 提示词调试指南</h3>
+<p><strong>常见问题与解决方案</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>问题</th>
+<th>可能原因</th>
+<th>解决方案</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AI 不按格式输出</td>
+<td>指令不够具体</td>
+<td>提供格式示例，用结构化输出功能</td>
+</tr>
+<tr>
+<td>AI 输出太长/太短</td>
+<td>没有长度约束</td>
+<td>明确指定字数或段落数</td>
+</tr>
+<tr>
+<td>AI 编造信息</td>
+<td>没有约束幻觉</td>
+<td>要求引用来源，加&quot;如果不确定请说明&quot;</td>
+</tr>
+<tr>
+<td>AI 忽略部分指令</td>
+<td>提示词太长或有冲突</td>
+<td>简化指令，用编号列表，把关键要求放前面</td>
+</tr>
+<tr>
+<td>AI 回答过于泛化</td>
+<td>缺少上下文</td>
+<td>提供具体背景和约束条件</td>
+</tr>
+<tr>
+<td>AI 拒绝回答</td>
+<td>安全过滤误触发</td>
+<td>调整措辞，提供合法使用场景说明</td>
+</tr>
+</tbody>
+</table>
+<p><strong>调试流程</strong>：</p>
+<ol>
+<li><strong>明确问题</strong>：是格式、内容还是行为不对？</li>
+<li><strong>简化测试</strong>：用最简单的提示词复现问题</li>
+<li><strong>逐步添加</strong>：每次只加一个约束，定位哪个指令导致问题</li>
+<li><strong>对比实验</strong>：A/B 测试不同版本的提示词</li>
+<li><strong>记录结果</strong>：建立提示词版本日志</li>
+</ol>
+<hr />
+<h3>5.10 前沿技术（2024-2025）</h3>
+<h4>自动提示优化（APE / DSPy）</h4>
+<ul>
+<li><strong>APE（Automatic Prompt Engineer）</strong>：让 LLM 自己生成提示词候选，用评分函数选最优</li>
+<li><strong>DSPy</strong>：将提示词视为可编程模块，用代码定义优化目标</li>
+</ul>
+<h4>多模态提示</h4>
+<ul>
+<li>图像 + 文本组合提示</li>
+<li>视频理解提示</li>
+<li>音频转录 + 分析提示</li>
+</ul>
+<h4>Agentic 提示设计</h4>
+<p>智能体系统中的提示词需要额外考虑：</p>
+<ul>
+<li><strong>推理深度</strong>：何时深入思考，何时快速响应</li>
+<li><strong>工具使用</strong>：何时调用外部工具</li>
+<li><strong>状态管理</strong>：如何跟踪多步任务的进度</li>
+<li><strong>错误恢复</strong>：遇到失败时如何调整策略</li>
+</ul>
+<hr />
+<h2>6. 实战演练</h2>
+<h3>练习 1：改写提示词</h3>
+<p>将以下差的提示词改写为好的版本：</p>
+<pre><code>帮我写个邮件
+</code></pre>
+<p><strong>参考答案</strong>：</p>
+<pre><code>写一封商务邮件，收件人是我们的供应商张经理。
+
+背景：上个月订购的 500 件办公椅，有 30 件存在扶手松动的质量问题。
+目标：要求对方在 5 个工作日内给出解决方案（换货或退款）。
+语调：专业但坚定，不要对抗性。
+格式：200 字以内，包含明确的行动要求和截止日期。
+</code></pre>
+<h3>练习 2：设计系统提示词</h3>
+<p>为一个&quot;代码审查助手&quot;设计系统提示词，要求：</p>
+<ul>
+<li>能发现常见代码问题</li>
+<li>用建设性的语气</li>
+<li>输出结构化的审查意见</li>
+</ul>
+<h3>练习 3：应用 CoT</h3>
+<p>用思维链技术解决以下问题：</p>
+<pre><code>一个水池有两个进水管和一个出水管。
+进水管 A 每小时注入 30 升，进水管 B 每小时注入 20 升。
+出水管每小时排出 10 升。
+水池容量 200 升。从空池开始，多久能注满？
+</code></pre>
+<h3>练习 4：设计提示词链</h3>
+<p>将&quot;分析用户评论并生成产品改进建议&quot;这个任务拆分为 3-4 步的提示词链。</p>
+<hr />
+<h2>7. 常见错误</h2>
+<h3>错误 1：过度依赖&quot;魔法词&quot;</h3>
+<p>以为加上&quot;请一步一步思考&quot;就能解决所有问题。实际上，CoT 对简单任务帮助不大，对复杂推理任务才有效。</p>
+<h3>错误 2：提示词过长</h3>
+<p>塞了太多指令，导致 AI 遵循不到一半。保持提示词简洁，每条指令明确。</p>
+<h3>错误 3：忽略示例的力量</h3>
+<p>很多人只写指令不给示例。3-5 个好示例比 10 条规则更有效。</p>
+<h3>错误 4：不做测试</h3>
+<p>同一个提示词对不同模型效果不同。必须针对你的目标模型测试。</p>
+<h3>错误 5：否定式指令</h3>
+<p>&quot;不要做 X&quot;不如&quot;请做 Y&quot;。AI 对正面指令的遵循率更高。</p>
+<h3>错误 6：忽略模型差异</h3>
+<ul>
+<li>Claude 擅长长文本分析和结构化输出</li>
+<li>GPT-4 擅长创意写作和代码生成</li>
+<li>Gemini 擅长多模态任务</li>
+</ul>
+<p>针对不同模型调整提示词策略。</p>
+<hr />
+<h2>8. 推荐下一步</h2>
+<ol>
+<li><strong>实践</strong>：选择一个日常工作场景，用本教程的方法重写你的提示词</li>
+<li><strong>建立库</strong>：收集和整理你验证有效的提示词模板</li>
+<li><strong>深入阅读</strong>：
+<ul>
+<li>Anthropic 官方提示词工程指南</li>
+<li>Google Gemini 提示词最佳实践</li>
+<li>&quot;The Prompt Report&quot; 论文（最全面的技术分类）</li>
+</ul>
+</li>
+<li><strong>关注前沿</strong>：自动提示优化、多模态提示、Agentic 系统设计</li>
+</ol>
+<hr />
+<h2>9. 来源附录</h2>
+<table>
+<thead>
+<tr>
+<th>来源</th>
+<th>URL</th>
+<th>类型</th>
+<th>可信度</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Anthropic Claude 提示词最佳实践</td>
+<td>platform.claude.com/docs</td>
+<td>官方文档</td>
+<td>⭐⭐⭐⭐⭐</td>
+</tr>
+<tr>
+<td>Google Gemini 提示词指南</td>
+<td>ai.google.dev/gemini-api/docs/prompting-intro</td>
+<td>官方文档</td>
+<td>⭐⭐⭐⭐⭐</td>
+</tr>
+<tr>
+<td>OpenAI 提示词工程指南</td>
+<td>platform.openai.com/docs/guides/prompt-engineering</td>
+<td>官方文档</td>
+<td>⭐⭐⭐⭐⭐</td>
+</tr>
+<tr>
+<td>The Prompt Report (Schulhoff et al., 2024)</td>
+<td>arxiv.org/abs/2406.06608</td>
+<td>学术论文</td>
+<td>⭐⭐⭐⭐⭐</td>
+</tr>
+<tr>
+<td>Lilian Weng: Prompt Engineering</td>
+<td>lilianweng.github.io</td>
+<td>技术博客</td>
+<td>⭐⭐⭐⭐</td>
+</tr>
+</tbody>
+</table>
+<p><strong>来源选择理由</strong>：</p>
+<ul>
+<li><strong>官方文档</strong>（Anthropic、Google、OpenAI）：直接来自模型开发者，反映最新支持的行为</li>
+<li><strong>The Prompt Report</strong>：2024 年最全面的提示词工程综述，涵盖 58 种 LLM 提示技术</li>
+<li><strong>Lilian Weng 博客</strong>：OpenAI 研究员撰写，将学术研究转化为实用指南</li>
+</ul>
+
+</body>
+</html>

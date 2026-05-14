@@ -1,0 +1,32 @@
+{
+  "topic": "提示词工程（Prompt Engineering）",
+  "learner_role": "非技术背景的 AI 使用者",
+  "current_level": "中级 — 了解 few-shot、CoT 等技术，但缺乏系统化框架",
+  "target_outcome": "1) 日常工作提效：用提示词让 AI 帮写文档、分析数据、回答问题；2) 系统掌握理论：理解提示词工程的原理、方法论和前沿技术",
+  "time_budget": "不限时间，追求最全面的内容",
+  "language": "zh-CN",
+  "preferred_tone": "简洁、直接、用简单语言解释复杂概念",
+  "preferred_examples": ["日常工作场景（写文档、分析数据、回答问题）", "实际提示词对比（好 vs 坏）"],
+  "must_cover": [
+    "提示词工程的核心原理和心理模型",
+    "主流技术分类（Zero-shot、Few-shot、CoT、ReAct 等）",
+    "系统提示词设计",
+    "提示词模板和框架",
+    "常见错误和调试技巧",
+    "前沿技术（2024-2025）"
+  ],
+  "out_of_scope": [
+    "模型训练和微调",
+    "深度学习数学原理",
+    "特定编程语言实现细节"
+  ],
+  "required_domains": [
+    "OpenAI 官方文档",
+    "Anthropic 官方文档",
+    "Google DeepMind 研究论文",
+    "学术综述论文"
+  ],
+  "forbidden_domains": [],
+  "deliverables": ["markdown", "pdf", "webpage"],
+  "want_personalized_webpage": true
+}
