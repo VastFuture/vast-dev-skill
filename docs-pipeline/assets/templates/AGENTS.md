@@ -506,8 +506,51 @@
 
 ---
 
+## 📁 项目文档
+
+- **@ARCHITECTURE.md** — 项目架构概览，包含：
+  - Monorepo 子项目清单及技术栈
+  - 各子项目的构建/运行命令
+  - 关键架构模式与分支策略
+
+### 📂 docs/ 目录使用说明
+
+**产物链路：**
+
+```
+ideas（随手记）→ research（调研）→ prd（需求）→ exec-plans/active（计划进行中）→ exec-plans/completed（计划完成）
+                                                                               ↓
+                                                                           lessons（踩坑教训，按需横切）
+```
+
+**按需推进，不强制全流程：**
+- 小功能：直接进 `docs/exec-plans/active/`，无需 PRD/research
+- 中功能：`docs/prd/` → `docs/exec-plans/active/` → `completed/`
+- 大功能（schema 变更 / 跨 3+ 模块 / 分阶段交付）：走全流程
+- 踩坑了：当下写 `docs/lessons/`，不等流程结束
+
+**目录职责：**
+
+| 目录 | 内容 | 时机 |
+|------|------|------|
+| `docs/ideas/` | 灵感、模糊想法、随笔记录 | 随时，零摩擦捕获 |
+| `docs/research/` | 技术方案、可行性分析 | 立项前，不确定怎么做时 |
+| `docs/prd/` | 需求规格（做什么、为什么） | 需求方视角，相对稳定 |
+| `docs/exec-plans/active/` | 执行计划（怎么做、做到哪） | 开工时建，频繁更新状态 |
+| `docs/exec-plans/completed/` | 已完成的执行计划 | 计划完成后从 `active/` 搬家 |
+| `docs/exec-plans/tech-debt-tracker.md` | 技术债务清单 | 发现技术债时追加 |
+| `docs/handover/` | 已落地的架构、数据流、设计决策 | 沉淀已发生的事实 |
+| `docs/lessons/` | 踩坑教训（XX 不能这么做） | 当下记录，独立于流程 |
+
+**铁律：**
+- 检索子目录前先读对应 `README.md`；增删文件后同步更新索引
+- 一个产物只能在一个目录里；状态流转必须搬家
+- `docs/prd/` vs `docs/handover/`：面向未来要做 → `prd/`；记录已发生的设计 → `handover/`
+- `docs/lessons/` vs `knowledge/`：教训型（不能这么做）→ `lessons/`；知识型（XX 是怎么工作的）→ `knowledge/`
+
 ## 📝 维护
 
 - 本文件为活文档，定期复查（每季度或重要架构变更后）
 - 更新时修改版本号和"最后更新"时间
 - 项目特定规则放在项目根目录的 `AGENTS.md` 中
+- 架构变更请参考 @ARCHITECTURE.md

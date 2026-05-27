@@ -1,9 +1,9 @@
 ---
 name: docs-pipeline
-description: Initialize or repair docs/ pipeline + root AI agent templates (CLAUDE.md, AGENTS.md, etc.) for any Claude Code project. Idempotent. Use for: "初始化文档结构", "搭建 docs pipeline", "set up docs structure", "initialize docs pipeline", "fix docs structure".
+description: Initialize or repair docs/ pipeline + root AI agent templates (CLAUDE.md, AGENTS.md, etc.) for any Claude Code project. Supports both inline docs/ and separate docs repo. Idempotent. Use for: "初始化文档结构", "搭建 docs pipeline", "set up docs structure", "initialize docs pipeline", "fix docs structure".
 metadata:
   author: tracker-system
-  version: "1.3.0"
+  version: "1.5.0"
 allowed-tools: Bash Read Write Edit Glob Agent
 ---
 
@@ -12,6 +12,8 @@ allowed-tools: Bash Read Write Edit Glob Agent
 一键初始化或修复 Claude Code 项目的 `docs/` 产物链路 + 项目根 AI 代理模板 + 自动探索生成的 `ARCHITECTURE.md`。
 
 ## 核心结构
+
+### 模式 A：文档跟随项目（默认）
 
 ```
 项目根/
@@ -36,19 +38,135 @@ allowed-tools: Bash Read Write Edit Glob Agent
     │   ├── README.md
     │   ├── active/
     │   └── completed/
+    │   └── tech-debt-tracker.md
     ├── handover/
+    │   └── README.md
+    ├── issues/               # Bug 追踪
     │   └── README.md
     └── lessons/
         └── README.md
 ```
 
+### 模式 B：独立文档仓库
+
+```
+项目根/                          文档仓库根/
+├── CLAUDE.md                   ├── .git/
+├── AGENTS.md                   ├── CLAUDE.md             # docs-pipeline 模板
+├── ...（项目代码）              ├── docs/                 # 标准 docs 结构
+│                               │   ├── CLAUDE.md
+│                               │   ├── ideas/
+│                               │   ├── research/
+│                               │   ├── prd/
+│                               │   ├── exec-plans/
+│                               │   ├── handover/
+│                               │   ├── issues/
+│                               │   └── lessons/
+│                               └── ...（其他文档内容）
+
+项目根 CLAUDE.md/AGENTS.md 中的文档引用指向：文档仓库根/docs/
+```
+
+**触发模式 B 的条件：**
+1. 设置环境变量 `DOCS_ROOT=/path/to/docs/repo`
+2. 或检测到 `docs/` 目录是一个独立的 git 仓库（有 `.git` 子目录）
+3. 或用户明确指定文档仓库路径
+
 ## 工作流
 
 调用此 skill 时，按以下步骤执行：
 
+### 0. 检测文档模式
+
+**Step 0.1：检查环境变量 `DOCS_ROOT`**
+- 已设置 → 进入 **模式 B（独立文档仓库）**，文档根 = `$DOCS_ROOT`
+- 未设置 → 进入 **Step 0.2**
+
+**Step 0.2：自动检测 `docs/` 是否独立 git 仓库**
+```bash
+test -d docs/.git && echo "INDEPENDENT_REPO" || echo "INLINE"
+```
+- `INDEPENDENT_REPO` → **模式 B**，文档根 = `docs/`（相对于当前目录）
+- `INLINE` → **模式 A**，文档根 = `docs/`（相对于当前目录）
+
+**Step 0.3：确定文档根路径**
+- 模式 A：`docs_root = ./docs`
+- 模式 B：`docs_root = $DOCS_ROOT` 或 `./docs`（如果 docs 是独立仓库）
+
+**Step 0.4：确定文档根路径**
+- 模式 A：`docs_root = ./docs`
+- 模式 B：`docs_root = $DOCS_ROOT` 或 `./docs`（如果 docs 是独立仓库）
+
+**Step 0.5：确定项目根路径**
+- 模式 A：`project_root = ./`
+- 模式 B：`project_root = ./`（项目代码根），文档引用路径 = `docs_root 相对于 project_root 的路径`
+
+### 0.5. 主动询问确认（交互流程）
+
+**Step 0.5.1：展示检测结果**
+
+向用户展示当前检测到的配置：
+
+```
+📋 docs-pipeline 配置检测
+
+📌 文档模式：模式 A（文档跟随项目）/ 模式 B（独立文档仓库）
+📁 文档根路径：$docs_root
+📂 项目根路径：$project_root
+🔍 docs/ 状态：全新 / 部分存在 / 已齐全
+📎 文档引用路径：$relative_path（项目根文件中引用 docs 的路径）
+```
+
+**Step 0.5.2：询问用户确认**
+
+使用 `AskUserQuestion` 询问：
+
+```
+检测到以下配置，请确认或修改：
+
+1. 文档模式：模式 A（文档跟随项目）/ 模式 B（独立文档仓库）
+   - 模式 A：docs/ 在项目根目录下，与代码一起管理
+   - 模式 B：docs/ 在独立仓库中，通过环境变量或自动检测
+
+2. 文档根路径：$docs_root
+   - 如需修改，请输入新路径
+
+3. 是否跳过 ARCHITECTURE.md 生成？
+   - 是：跳过自动探索生成
+   - 否：调用 Explore 子代理基于项目代码生成
+
+4. 是否跳过 Pensieve 集成？
+   - 是：跳过 Pensieve 安装和配置
+   - 否：检测并集成 Pensieve
+```
+
+**Step 0.5.3：处理用户输入**
+
+| 用户选择 | 动作 |
+|---------|------|
+| 确认默认 | 继续执行 Step 1 |
+| 修改模式 | 根据选择切换模式 A/B，更新 `docs_root` |
+| 修改路径 | 使用用户输入的路径作为 `docs_root` |
+| 跳过 ARCHITECTURE.md | 跳过 Step 7，报告中注明 |
+| 跳过 Pensieve | 跳过 Pensieve 集成，报告中注明 |
+
+**Step 0.5.4：记录配置**
+
+将最终确认的配置写入报告头部：
+
+```
+📋 docs-pipeline 执行报告
+
+📌 文档模式：模式 A/B（用户确认）
+📁 文档根路径：$docs_root（用户确认/自动检测）
+📂 项目根路径：$project_root
+📎 文档引用路径：$relative_path
+⏭️ 跳过项：ARCHITECTURE.md / Pensieve（如有）
+```
+
 ### 1. 检测目标项目状态
 
-目标项目默认为当前工作目录。先用 `Bash ls docs/ 2>/dev/null || echo "MISSING"` 检测：
+先用 `Bash ls "$docs_root" 2>/dev/null || echo "MISSING"` 检测：
 
 - 不存在 `docs/` → 全新初始化
 - 存在 `docs/` 但缺部分目录/README → 修复模式
@@ -57,7 +175,7 @@ allowed-tools: Bash Read Write Edit Glob Agent
 ### 2. 建目录
 
 ```bash
-mkdir -p docs/ideas docs/research docs/prd docs/exec-plans/active docs/exec-plans/completed docs/handover docs/lessons
+mkdir -p "$docs_root/ideas" "$docs_root/research" "$docs_root/prd" "$docs_root/exec-plans/active" "$docs_root/exec-plans/completed" "$docs_root/handover" "$docs_root/issues" "$docs_root/lessons"
 ```
 
 `mkdir -p` 本身是幂等的，已有目录不会报错。
@@ -74,13 +192,14 @@ mkdir -p docs/ideas docs/research docs/prd docs/exec-plans/active docs/exec-plan
 
 | 模板 | 目标路径 |
 |------|---------|
-| `assets/templates/docs-CLAUDE.md` | `docs/CLAUDE.md` |
-| `assets/templates/ideas-README.md` | `docs/ideas/README.md` |
-| `assets/templates/research-README.md` | `docs/research/README.md` |
-| `assets/templates/prd-README.md` | `docs/prd/README.md` |
-| `assets/templates/exec-plans-README.md` | `docs/exec-plans/README.md` |
-| `assets/templates/handover-README.md` | `docs/handover/README.md` |
-| `assets/templates/lessons-README.md` | `docs/lessons/README.md` |
+| `assets/templates/docs-CLAUDE.md` | `$docs_root/CLAUDE.md` |
+| `assets/templates/ideas-README.md` | `$docs_root/ideas/README.md` |
+| `assets/templates/research-README.md` | `$docs_root/research/README.md` |
+| `assets/templates/prd-README.md` | `$docs_root/prd/README.md` |
+| `assets/templates/exec-plans-README.md` | `$docs_root/exec-plans/README.md` |
+| `assets/templates/handover-README.md` | `$docs_root/handover/README.md` |
+| `assets/templates/issues-README.md` | `$docs_root/issues/README.md` |
+| `assets/templates/lessons-README.md` | `$docs_root/lessons/README.md` |
 
 ### 4. 写入项目根 AI 代理模板
 
@@ -89,12 +208,16 @@ mkdir -p docs/ideas docs/research docs/prd docs/exec-plans/active docs/exec-plan
 | 模板 | 目标路径 | 用途 |
 |------|---------|------|
 | `assets/templates/CLAUDE.md` | `CLAUDE.md` | 项目根 Claude 行为规范（Linus 角色 + 沟通规范 + 通用开发规则；含 TODO 占位让用户填项目特有部分） |
-| `assets/templates/AGENTS.md` | `AGENTS.md` | Codex CLI 全局指令 |
+| `assets/templates/AGENTS.md` | `AGENTS.md` | Codex CLI 全局指令（含 docs/ 目录使用说明、@ARCHITECTURE.md 引用） |
 | `assets/templates/MBTI_DEV_TRAPS.md` | `MBTI_DEV_TRAPS.md` | 16 种 MBTI 人格的开发陷阱清单 |
 | `assets/templates/karpathy-guidelines.md` | `karpathy-guidelines.md` | LLM 编码行为指南 |
 | `assets/templates/mcp.json` | `.mcp.json` | 7 个常用 MCP 服务（playwright / thinking / chrome-devtools / fetch / time / context7 / serena），注意源文件名是 `mcp.json`，目标文件名是 `.mcp.json` |
 
 注意：这五个文件**不属于** `docs/` 链路，是项目根级的 AI 代理配置文档。
+
+**模式 B 特殊处理：**
+- 文档引用路径 = `docs_root 相对于 project_root 的相对路径`
+- 例如：`DOCS_ROOT=../ai-dev-log` → 引用为 `../ai-dev-log/docs/prd/`
 
 ### 5. 写入项目级命令
 
@@ -102,19 +225,23 @@ mkdir -p docs/ideas docs/research docs/prd docs/exec-plans/active docs/exec-plan
 
 | 模板 | 目标路径 | 用途 |
 |------|---------|------|
-| `assets/templates/commands/ideas.md` | `.claude/commands/ideas.md` | `/ideas` 随手记命令，将灵感直接写入 `docs/ideas/` |
+| `assets/templates/commands/ideas.md` | `.claude/commands/ideas.md` | `/ideas` 随手记命令，将灵感直接写入 `$docs_root/ideas/` |
 
 命令文件是 Claude Code 的项目级 slash command，放在 `.claude/commands/` 下即可被 `/命令名` 调用。
 
+**模式 B 特殊处理：** `/ideas` 命令需写入到 `$docs_root/ideas/` 而非项目根 `docs/ideas/`
+
 ### 6. 处理项目根 CLAUDE.md 的"## 文档"段落
 
-CLAUDE.md 的写入由 step 4 完成。本步只做一件事：如果 step 4 走的是"已存在跳过"分支（即用户已有自己的 CLAUDE.md），那么尝试追加"## 文档"段落，让用户的现有 CLAUDE.md 也能链接到 `docs/` 产物链路。
+CLAUDE.md 的写入由 step 4 完成。本步只做一件事：如果 step 4 走的是"已存在跳过"分支（即用户已有自己的 CLAUDE.md），那么尝试追加"## 文档"段落，让用户的现有 CLAUDE.md 也能链接到 docs 产物链路。
 
 - **step 4 写入了完整模板** → 跳过本步（模板自带"## 文档"段落）
 - **step 4 因为已存在跳过** → 进入下面的子流程：
   - 检测：`Bash grep -q "^## 文档" CLAUDE.md`
   - 不存在 → 用 `Edit` 把 `assets/templates/claude-md-snippet.md` 追加到文件末尾
   - 已存在 → 跳过，提示"已有文档段落，未变更"
+
+**模式 B 特殊处理：** 追加的"## 文档"段落中的路径引用需指向文档仓库路径
 
 Pensieve 集成按以下分支处理：
 
@@ -142,7 +269,7 @@ test -f ARCHITECTURE.md && echo "EXISTS" || echo "MISSING"
 ```
 
 - **EXISTS** → 跳过，记入"已存在跳过"清单
-- **MISSING** → 进入 6.2
+- **MISSING** → 进入 7.2
 
 #### 7.2 调用 Explore 子代理
 
@@ -175,6 +302,8 @@ test -f ARCHITECTURE.md && echo "EXISTS" || echo "MISSING"
 
 ```
 📋 docs-pipeline 执行报告
+
+📌 模式：模式 A（文档跟随项目）/ 模式 B（独立文档仓库：$DOCS_ROOT）
 
 ✅ 已建（新增）：
   - <path>
@@ -209,6 +338,10 @@ test -f ARCHITECTURE.md && echo "EXISTS" || echo "MISSING"
 - **用户拒绝安装 Pensieve 却继续执行**：分支 B 中用户拒绝后必须跳过，不要自动创建 `.pensieve/` 或暗示 Pensieve 是必需的
 - **sync-instructions 路由不覆盖 skill 调用**：`sync-instructions.sh` 只插入 `commit`/`git commit` 触发词，不覆盖 skill 调用场景。必须执行 Step 4 替换为"any commit-related skill invocation"通用模式，否则 Pensieve 在 skill 调用时不触发
 - **模板里的 TODO 占位被自动填充**：`<!-- TODO(docs-pipeline): ... -->` 是留给用户的，不要替换
+- **模式 B 路径引用错误**：独立文档仓库模式下，项目根 CLAUDE.md/AGENTS.md 中的文档引用必须是正确的相对路径。用 `realpath --relative-to=project_root docs_root` 计算
+- **docs/ 目录既是独立 git 仓库又是项目子目录**：检测优先级 `DOCS_ROOT` > `docs/.git` 存在 > 默认 inline
+- **交互询问被跳过**：如果用户明确说"直接执行"或"不要问我"，则跳过 Step 0.5 直接执行，报告中注明"用户要求跳过交互确认"
+- **用户修改路径后路径不存在**：用户输入的路径不存在时，询问是否创建，不自动创建
 
 ## 不要做
 
@@ -219,3 +352,7 @@ test -f ARCHITECTURE.md && echo "EXISTS" || echo "MISSING"
 - ❌ 不要修改项目根 CLAUDE.md 已有内容（只追加"## 文档"段落，不改其他）
 - ❌ 不要覆盖已有的 CLAUDE.md / AGENTS.md / MBTI_DEV_TRAPS.md / karpathy-guidelines.md / .mcp.json / ARCHITECTURE.md（用户可能已有定制版本）
 - ❌ 不要让 Explore 子代理偏离 5 章节固定结构（保持跨项目一致）
+- ❌ 模式 B 不要往项目根写 docs/ 目录（文档完全在独立仓库）
+- ❌ 模式 B 不要硬编码文档仓库路径（用 `DOCS_ROOT` 环境变量或自动检测）
+- ❌ 不要跳过交互询问（除非用户明确要求）
+- ❌ 不要强制用户接受自动检测结果（始终提供修改选项）
