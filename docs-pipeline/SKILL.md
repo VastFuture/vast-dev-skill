@@ -1,9 +1,9 @@
 ---
 name: docs-pipeline
-description: Initialize or repair docs/ pipeline + root AI agent templates (CLAUDE.md, AGENTS.md, etc.) for any Claude Code project. Supports both inline docs/ and separate docs repo. Idempotent. Use for: "初始化文档结构", "搭建 docs pipeline", "set up docs structure", "initialize docs pipeline", "fix docs structure".
+description: Initialize or repair docs/ pipeline + root AI agent templates (CLAUDE.md, AGENTS.md, etc.) for any Claude Code project. Supports both inline docs/ and separate docs repo. Idempotent.基于 AGE (Attractor-Guided Engineering) 增强：Task Routing + Planning Triggers + Verification Baseline. Use for: "初始化文档结构", "搭建 docs pipeline", "set up docs structure", "initialize docs pipeline", "fix docs structure".
 metadata:
   author: tracker-system
-  version: "1.5.0"
+  version: "2.0.0"
 allowed-tools: Bash Read Write Edit Glob Agent
 ---
 
@@ -15,6 +15,41 @@ allowed-tools: Bash Read Write Edit Glob Agent
 
 ### 模式 A：文档跟随项目（默认）
 
+```
+项目根/
+├── CLAUDE.md                 # 不存在则建（Linus 角色 + 沟通规范 + 通用开发规则模板）
+├── AGENTS.md                 # 不存在则建（Codex CLI 全局指令，含 AGE Task Routing + Planning Triggers）
+├── MBTI_DEV_TRAPS.md         # 不存在则建（16 种人格陷阱清单）
+├── karpathy-guidelines.md    # 不存在则建（LLM 编码行为指南）
+├── ARCHITECTURE.md           # 不存在则用 Explore 子代理探索后生成
+├── .mcp.json                 # 不存在则建（7 个常用 MCP 服务）
+├── .claude/
+│   └── commands/
+│       └── ideas.md          # 不存在则建（/ideas 随手记命令）
+└── docs/
+    ├── CLAUDE.md             # 总规则（含 Owner Docs 职责）
+    ├── context/              # ★ 新增：强制 AI 上下文
+    │   ├── project-context.md       # 项目上下文、验证命令
+    │   ├── ai-autonomy-policy.md   # AI 自主级别、受保护区域
+    │   ├── codebase-map.md         # 代码库地图
+    │   └── source-of-truth-and-precedence.md  # 真相优先级
+    ├── ideas/
+    │   └── README.md         # 灵感池（随手记，零结构）
+    ├── research/
+    │   └── README.md
+    ├── prd/
+    │   └── README.md
+    ├── exec-plans/
+    │   ├── README.md         # 含 Plan Audit + Closure Audit 要求
+    │   ├── active/
+    │   └── completed/
+    │       └── tech-debt-tracker.md
+    ├── handover/
+    │   └── README.md
+    ├── issues/               # Bug 追踪
+    │   └── README.md
+    └── lessons/
+        └── README.md
 ```
 项目根/
 ├── CLAUDE.md                 # 不存在则建（Linus 角色 + 沟通规范 + 通用开发规则模板）
@@ -175,10 +210,12 @@ test -d docs/.git && echo "INDEPENDENT_REPO" || echo "INLINE"
 ### 2. 建目录
 
 ```bash
-mkdir -p "$docs_root/ideas" "$docs_root/research" "$docs_root/prd" "$docs_root/exec-plans/active" "$docs_root/exec-plans/completed" "$docs_root/handover" "$docs_root/issues" "$docs_root/lessons"
+mkdir -p "$docs_root/context" "$docs_root/ideas" "$docs_root/research" "$docs_root/prd" "$docs_root/exec-plans/active" "$docs_root/exec-plans/completed" "$docs_root/handover" "$docs_root/issues" "$docs_root/lessons"
 ```
 
 `mkdir -p` 本身是幂等的，已有目录不会报错。
+
+**新增 `context/` 目录**：AGE 强制 AI 上下文层，包含 4 个模板文件。
 
 ### 3. 写入 docs/ 模板
 
@@ -193,6 +230,10 @@ mkdir -p "$docs_root/ideas" "$docs_root/research" "$docs_root/prd" "$docs_root/e
 | 模板 | 目标路径 |
 |------|---------|
 | `assets/templates/docs-CLAUDE.md` | `$docs_root/CLAUDE.md` |
+| `assets/templates/context/project-context.md` | `$docs_root/context/project-context.md` |
+| `assets/templates/context/ai-autonomy-policy.md` | `$docs_root/context/ai-autonomy-policy.md` |
+| `assets/templates/context/codebase-map.md` | `$docs_root/context/codebase-map.md` |
+| `assets/templates/context/source-of-truth-and-precedence.md` | `$docs_root/context/source-of-truth-and-precedence.md` |
 | `assets/templates/ideas-README.md` | `$docs_root/ideas/README.md` |
 | `assets/templates/research-README.md` | `$docs_root/research/README.md` |
 | `assets/templates/prd-README.md` | `$docs_root/prd/README.md` |
@@ -208,7 +249,7 @@ mkdir -p "$docs_root/ideas" "$docs_root/research" "$docs_root/prd" "$docs_root/e
 | 模板 | 目标路径 | 用途 |
 |------|---------|------|
 | `assets/templates/CLAUDE.md` | `CLAUDE.md` | 项目根 Claude 行为规范（Linus 角色 + 沟通规范 + 通用开发规则；含 TODO 占位让用户填项目特有部分） |
-| `assets/templates/AGENTS.md` | `AGENTS.md` | Codex CLI 全局指令（含 docs/ 目录使用说明、@ARCHITECTURE.md 引用） |
+| `assets/templates/AGENTS.md` | `AGENTS.md` | Codex CLI 全局指令（含 AGE Task Routing + Planning Triggers + Verification Baseline） |
 | `assets/templates/MBTI_DEV_TRAPS.md` | `MBTI_DEV_TRAPS.md` | 16 种 MBTI 人格的开发陷阱清单 |
 | `assets/templates/karpathy-guidelines.md` | `karpathy-guidelines.md` | LLM 编码行为指南 |
 | `assets/templates/mcp.json` | `.mcp.json` | 7 个常用 MCP 服务（playwright / thinking / chrome-devtools / fetch / time / context7 / serena），注意源文件名是 `mcp.json`，目标文件名是 `.mcp.json` |
@@ -342,6 +383,7 @@ test -f ARCHITECTURE.md && echo "EXISTS" || echo "MISSING"
 - **docs/ 目录既是独立 git 仓库又是项目子目录**：检测优先级 `DOCS_ROOT` > `docs/.git` 存在 > 默认 inline
 - **交互询问被跳过**：如果用户明确说"直接执行"或"不要问我"，则跳过 Step 0.5 直接执行，报告中注明"用户要求跳过交互确认"
 - **用户修改路径后路径不存在**：用户输入的路径不存在时，询问是否创建，不自动创建
+- **context/ 目录的 4 个文件是整体**：project-context.md、ai-autonomy-policy.md、codebase-map.md、source-of-truth-and-precedence.md 必须一起存在，才能保证 AI 上下文完整
 
 ## 不要做
 

@@ -1,8 +1,9 @@
 # AGENTS 全局配置
 
-> 版本: 3.5
-> 最后更新: 2025-11-30
+> 版本: 4.0
+> 最后更新: 2026-06-02
 > 说明: Codex CLI 全局指令，为 AI 编码代理提供统一行为约束
+> 基于 AGE (Attractor-Guided Engineering) 增强：Task Routing + Planning Triggers + Verification Baseline
 
 ---
 
@@ -304,6 +305,48 @@
 
 ---
 
+## 🔀 Task Routing / 任务路由
+
+Before writing non-trivial code, agents **MUST classify the task first**:
+
+```
+1. Determine the task type:
+   - requirement clarification     (需求澄清)
+   - app-layer design change      (设计变更)
+   - architecture change         (架构变更)
+   - implementation-only change  (纯实现)
+   - bug investigation           (Bug 调查)
+   - verification or audit work  (验证/审计)
+
+2. Use docs/index.md to read the owner docs for that task type before acting.
+
+3. Check docs/skills/README.md for candidate reusable skills before drafting or revising a plan.
+
+4. For non-trivial work, record the chosen route and planned skill usage in the plan before implementation.
+```
+
+**Do not jump from a feature request directly to code** unless the route is already obvious from the active requirement and owner docs.
+
+---
+
+## 📋 Planning Rule / 规划规则
+
+Create a plan when the task has **any** of these traits:
+
+| 触发条件 | 说明 |
+|---------|------|
+| Changes API, database/model, auth, integration, deployment, or public contract | 变更公共契约 |
+| Changes user-visible behavior across more than one feature surface | 跨表面用户行为变更 |
+| Touches multiple modules and changes shared behavior | 多模块共享变更 |
+| Expected to take more than one AI session | 需多会话 |
+| Modifies more than 5 total files or ~200+ changed lines | 大规模变更 |
+| Needs staged execution or explicit closure gates | 需分阶段 |
+| Has unresolved product or technical risk that must not be hidden | 有未解决风险 |
+
+**Skip a formal plan only for**: local low-risk edits (copy changes, small styling fixes, test-only cleanups, single-file behavior fixes with clear existing tests).
+
+---
+
 ### Plan 模式（可选，用于复杂任务的规划）
 
 🎯 使用场景
@@ -494,15 +537,24 @@
 
 ---
 
-## ✅ 实施检查清单
+## 🔍 Verification Baseline / 验证基线
 
-**任务完成前自检，任何项目失败需重做**：
+**Do not assume this project's verification commands are the same as the template.**
 
-- [ ] 接触工具前已记录接收与现实检查
-- [ ] 首次上下文收集在 5-8 次工具调用内（或已记录例外）
-- [ ] 已记录 ≥2 步计划，使用 TodoWrite 追踪进度
-- [ ] 验证包括测试/检查及 `<self_reflection>` 自评
-- [ ] 最终交接包含文件引用（`file:line`）、风险和后续步骤
+Use the real commands listed in `docs/context/project-context.md`.
+
+**If verification commands are blank or still placeholders, STOP and do not report verification success.**
+
+```
+❌ 错误示例：
+  验证：运行测试 ✓
+  结果：所有测试通过 ✓
+  （但测试命令实际是占位符，从未真正运行）
+
+✓ 正确示例：
+  验证：运行测试
+  结果：测试命令为空占位符，停止验证，填充 docs/context/project-context.md 中的真实命令
+```
 
 ---
 
