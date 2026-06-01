@@ -43,3 +43,4 @@ coverage/
 
 # Build artifacts
 *.tgz
+.working
