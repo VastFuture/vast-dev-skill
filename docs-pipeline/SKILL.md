@@ -247,6 +247,11 @@ mkdir -p "$docs_root/context" "$docs_root/backlog" "$docs_root/prd" "$docs_root/
 | `assets/templates/AGENTS.md` | `AGENTS.md` | Codex CLI 全局指令（含 AGE Task Routing + Planning Triggers + Verification Baseline） |
 | `assets/templates/MBTI_DEV_TRAPS.md` | `MBTI_DEV_TRAPS.md` | 16 种 MBTI 人格的开发陷阱清单 |
 | `assets/templates/karpathy-guidelines.md` | `karpathy-guidelines.md` | LLM 编码行为指南 |
+| `assets/templates/output-modes.md` | `output-modes.md` | 混合输出模式详细说明（模式 A/B 结构、示例、状态标记） |
+| `assets/templates/engineering-rules.md` | `engineering-rules.md` | AGE 工程规则详细说明（任务路由、计划触发器、运营规则） |
+| `assets/templates/plan-mode.md` | `plan-mode.md` | Plan 模式详细说明（复杂度分级、Plan 文件规范） |
+| `assets/templates/requirement-confirmation.md` | `requirement-confirmation.md` | 需求确认流程详细说明（5 层思考维度、决策输出） |
+| `assets/templates/content-organization.md` | `content-organization.md` | 内容组织规范详细说明（列表限制、段落优先） |
 | `assets/templates/mcp.json` | `.mcp.json` | 7 个常用 MCP 服务（playwright / thinking / chrome-devtools / fetch / time / context7 / serena），注意源文件名是 `mcp.json`，目标文件名是 `.mcp.json` |
 
 注意：这五个文件**不属于** `docs/` 链路，是项目根级的 AI 代理配置文档。
