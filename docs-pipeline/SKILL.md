@@ -36,45 +36,50 @@ allowed-tools: Bash Read Write Edit Glob Agent
 
 ```
 项目根/
-├── CLAUDE.md                 # 不存在则建（Linus 角色 + 沟通规范 + 通用开发规则模板）
-├── AGENTS.md                 # 不存在则建（AI 代理全局指令，含 AGE 10 条运营规则）
-├── MBTI_DEV_TRAPS.md         # 不存在则建（16 种人格陷阱清单）
-├── karpathy-guidelines.md    # 不存在则建（LLM 编码行为指南）
-├── ARCHITECTURE.md           # 不存在则用 Explore 子代理探索后生成
-├── .mcp.json                 # 不存在则建（7 个常用 MCP 服务）
+├── CLAUDE.md                 # 不存在则建（Linus 角色 + 沟通规范 + 通用开发规则模板）【必需】
+├── AGENTS.md                 # 不存在则建（AI 代理全局指令，含 AGE 10 条运营规则）【必需】
+├── MBTI_DEV_TRAPS.md         # 不存在则建（16 种人格陷阱清单）【推荐】
+├── karpathy-guidelines.md    # 不存在则建（LLM 编码行为指南）【推荐】
+├── ARCHITECTURE.md           # 不存在则用 Explore 子代理探索后生成【推荐】
+├── .mcp.json                 # 不存在则建（7 个常用 MCP 服务）【可选】
 ├── .claude/
 │   └── commands/
 │       └── ideas.md          # 不存在则建（/ideas 随手记命令）
 └── docs/
     ├── CLAUDE.md             # 总规则（含 Owner Docs 职责）
     ├── index.md              # ★ 文档路由中枢
-    ├── context/              # ★ 强制 AI 上下文
+    ├── context/              # ★ 强制 AI 上下文【必需】
     │   ├── project-context.md       # 项目上下文、验证命令
     │   ├── ai-autonomy-policy.md   # AI 自主级别、受保护区域
     │   ├── codebase-map.md         # 代码库地图
     │   └── source-of-truth-and-precedence.md  # 真相优先级
-    ├── backlog/              # ★ 工作队列、AI 自主级别标签
+    ├── backlog/              # ★ 工作队列、AI 自主级别标签【必需】
     │   └── README.md
-    ├── prd/                  # 实现就绪的需求
+    ├── prd/                  # 实现就绪的需求【必需】
     │   └── README.md
-    ├── design/               # ★ 稳定的应用层设计基线
+    ├── design/               # ★ 稳定的应用层设计基线【推荐】
     │   └── README.md
-    ├── exec-plans/           # 执行计划（含 Plan/Closure 审计）
+    ├── exec-plans/           # 执行计划（含 Plan/Closure 审计）【必需】
     │   ├── README.md
     │   ├── active/
     │   └── completed/
     │       └── tech-debt-tracker.md
-    ├── ideas/                # 灵感池（随手记，零结构）
+    ├── ideas/                # 灵感池（随手记，零结构）【可选】
     │   └── README.md
-    ├── research/
+    ├── research/             # 调研文档【推荐】
     │   └── README.md
-    ├── handover/
+    ├── handover/             # 项目交接【可选】
     │   └── README.md
-    ├── issues/               # Bug 追踪
+    ├── issues/               # Bug 追踪【推荐】
     │   └── README.md
-    └── lessons/
+    └── lessons/              # 经验教训【必需】
         └── README.md
 ```
+
+**目录优先级说明**：
+- 【必需】：核心工作流必需，始终创建
+- 【推荐】：大多数项目推荐使用
+- 【可选】：按需激活，见下文"可选目录"章节
 
 ### 可选目录（按需激活，不在默认初始化范围内）
 
@@ -136,72 +141,12 @@ test -d docs/.git && echo "INDEPENDENT_REPO" || echo "INLINE"
 - 模式 A：`docs_root = ./docs`
 - 模式 B：`docs_root = $DOCS_ROOT` 或 `./docs`（如果 docs 是独立仓库）
 
+检测结果将在 Step 9 报告中展示，用户可事后调整配置。
+
 **Step 0.4：确定项目根路径**
 - 模式 A：`project_root = ./`
 - 模式 B：`project_root = ./`（项目代码根），文档引用路径 = `docs_root 相对于 project_root 的路径`
 
-### 0.4. 主动询问确认（交互流程）
-
-**Step 0.4.1：展示检测结果**
-
-向用户展示当前检测到的配置：
-
-```
-📋 docs-pipeline 配置检测
-
-📌 文档模式：模式 A（文档跟随项目）/ 模式 B（独立文档仓库）
-📁 文档根路径：$docs_root
-📂 项目根路径：$project_root
-🔍 docs/ 状态：全新 / 部分存在 / 已齐全
-📎 文档引用路径：$relative_path（项目根文件中引用 docs 的路径）
-```
-
-**Step 0.4.2：询问用户确认**
-
-使用 `AskUserQuestion` 询问：
-
-```
-检测到以下配置，请确认或修改：
-
-1. 文档模式：模式 A（文档跟随项目）/ 模式 B（独立文档仓库）
-   - 模式 A：docs/ 在项目根目录下，与代码一起管理
-   - 模式 B：docs/ 在独立仓库中，通过环境变量或自动检测
-
-2. 文档根路径：$docs_root
-   - 如需修改，请输入新路径
-
-3. 是否跳过 ARCHITECTURE.md 生成？
-   - 是：跳过自动探索生成
-   - 否：调用 Explore 子代理基于项目代码生成
-
-4. 是否跳过 Pensieve 集成？
-   - 是：跳过 Pensieve 安装和配置
-   - 否：检测并集成 Pensieve
-```
-
-**Step 0.4.3：处理用户输入**
-
-| 用户选择 | 动作 |
-|---------|------|
-| 确认默认 | 继续执行 Step 1 |
-| 修改模式 | 根据选择切换模式 A/B，更新 `docs_root` |
-| 修改路径 | 使用用户输入的路径作为 `docs_root` |
-| 跳过 ARCHITECTURE.md | 跳过 Step 8，报告中注明 |
-| 跳过 Pensieve | 跳过 Step 7，报告中注明 |
-
-**Step 0.4.4：记录配置**
-
-将最终确认的配置写入报告头部：
-
-```
-📋 docs-pipeline 执行报告
-
-📌 文档模式：模式 A/B（用户确认）
-📁 文档根路径：$docs_root（用户确认/自动检测）
-📂 项目根路径：$project_root
-📎 文档引用路径：$relative_path
-⏭️ 跳过项：ARCHITECTURE.md / Pensieve（如有）
-```
 
 ### 1. 检测目标项目状态
 
@@ -486,7 +431,6 @@ test -f ARCHITECTURE.md && echo "EXISTS" || echo "MISSING"
 - **模板里的 TODO 占位被自动填充**：`<!-- TODO(docs-pipeline): ... -->` 是留给用户的，不要替换
 - **模式 B 路径引用错误**：独立文档仓库模式下，项目根 CLAUDE.md/AGENTS.md 中的文档引用必须是正确的相对路径。用 `realpath --relative-to=project_root docs_root` 计算
 - **docs/ 目录既是独立 git 仓库又是项目子目录**：检测优先级 `DOCS_ROOT` > `docs/.git` 存在 > 默认 inline
-- **交互询问被跳过**：如果用户明确说"直接执行"或"不要问我"，则跳过 Step 0.4 直接执行，报告中注明"用户要求跳过交互确认"
 - **用户修改路径后路径不存在**：用户输入的路径不存在时，询问是否创建，不自动创建
 - **context/ 目录的 4 个文件是整体**：project-context.md、ai-autonomy-policy.md、codebase-map.md、source-of-truth-and-precedence.md 必须一起存在，才能保证 AI 上下文完整
 
