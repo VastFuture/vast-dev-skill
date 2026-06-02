@@ -37,6 +37,8 @@
 
 验证命令可能依赖以下配置文件。首次使用前，请确认这些文件存在：
 
+> **注意**：以下配置文件示例适用于 Node.js/TypeScript 项目。其他语言项目请根据实际技术栈调整（如 Python: `pytest.ini`/`setup.py`，Go: `go.mod`，Rust: `Cargo.toml`）。
+
 | 配置文件 | 用途 | 检查命令 |
 |---------|------|----------|
 | `tsconfig.json` | TypeScript 配置 | `test -f tsconfig.json` |

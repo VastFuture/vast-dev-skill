@@ -3,7 +3,7 @@ name: docs-pipeline
 description: Initialize or repair docs/ pipeline + root AI agent templates (CLAUDE.md, AGENTS.md, etc.) for any Claude Code project. Supports both inline docs/ and separate docs repo. Idempotent.基于 AGE (Attractor-Guided Engineering) 增强：Task Routing + Planning Triggers + Verification Baseline. 来源: https://github.com/entropy-cloud/attractor-guided-engineering-template. Use for: "初始化文档结构", "搭建 docs pipeline", "set up docs structure", "initialize docs pipeline", "fix docs structure".
 metadata:
   author: tracker-system
-  version: "3.0.0"
+  version: "4.2"
 allowed-tools: Bash Read Write Edit Glob Agent
 ---
 
@@ -20,7 +20,7 @@ allowed-tools: Bash Read Write Edit Glob Agent
 ```
 项目根/
 ├── CLAUDE.md                 # 不存在则建（Linus 角色 + 沟通规范 + 通用开发规则模板）
-├── AGENTS.md                 # 不存在则建（AI 代理全局指令，含 AGE 15 条运营规则）
+├── AGENTS.md                 # 不存在则建（AI 代理全局指令，含 AGE 10 条运营规则）
 ├── MBTI_DEV_TRAPS.md         # 不存在则建（16 种人格陷阱清单）
 ├── karpathy-guidelines.md    # 不存在则建（LLM 编码行为指南）
 ├── ARCHITECTURE.md           # 不存在则用 Explore 子代理探索后生成
