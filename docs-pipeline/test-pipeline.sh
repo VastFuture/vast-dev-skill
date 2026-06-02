@@ -101,9 +101,9 @@ cp "$TEMPLATES_DIR/docs-CLAUDE.md" "$DOCS_ROOT/CLAUDE.md"
 cp "$TEMPLATES_DIR/docs-index.md" "$DOCS_ROOT/index.md"
 
 # 复制 README 模板
-cp "$TEMPLATES_DIR/docs-backlog/README.md" "$DOCS_ROOT/backlog/"
-cp "$TEMPLATES_DIR/prd-README.md" "$DOCS_ROOT/prd/"
-cp "$TEMPLATES_DIR/docs-design/README.md" "$DOCS_ROOT/design/"
+cp "$TEMPLATES_DIR/backlog-README.md" "$DOCS_ROOT/backlog/README.md"
+cp "$TEMPLATES_DIR/prd-README.md" "$DOCS_ROOT/prd/README.md"
+cp "$TEMPLATES_DIR/design-README.md" "$DOCS_ROOT/design/README.md"
 cp "$TEMPLATES_DIR/exec-plans-README.md" "$DOCS_ROOT/exec-plans/"
 cp "$TEMPLATES_DIR/ideas-README.md" "$DOCS_ROOT/ideas/"
 cp "$TEMPLATES_DIR/research-README.md" "$DOCS_ROOT/research/"

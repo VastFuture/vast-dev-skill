@@ -13,6 +13,23 @@ allowed-tools: Bash Read Write Edit Glob Agent
 
 基于 [AGE (Attractor-Guided Engineering)](https://github.com/entropy-cloud/attractor-guided-engineering-template) 增强。
 
+## ⚡ 快速入门（30 秒）
+
+```bash
+# 1. 初始化（自动检测项目类型）
+/docs-pipeline
+
+# 2. 开始使用
+打开 docs/index.md 查看文档路由
+
+# 3. 第一个任务
+在 docs/backlog/README.md 添加你的第一个任务
+```
+
+就这么简单！详细配置见下文 ⬇️
+
+---
+
 ## 核心结构
 
 ### 模式 A：文档跟随项目（默认）
@@ -223,10 +240,10 @@ mkdir -p "$docs_root/context" "$docs_root/backlog" "$docs_root/prd" "$docs_root/
 | `assets/templates/context/ai-autonomy-policy.md` | `$docs_root/context/ai-autonomy-policy.md` |
 | `assets/templates/context/codebase-map.md` | `$docs_root/context/codebase-map.md` |
 | `assets/templates/context/source-of-truth-and-precedence.md` | `$docs_root/context/source-of-truth-and-precedence.md` |
-| `assets/templates/docs-backlog/README.md` | `$docs_root/backlog/README.md` |
+| `assets/templates/backlog-README.md` | `$docs_root/backlog/README.md` |
 | `assets/templates/prd-README.md` | `$docs_root/prd/README.md` |
 | `assets/templates/prd-TEMPLATE.md` | `$docs_root/prd/TEMPLATE.md` |
-| `assets/templates/docs-design/README.md` | `$docs_root/design/README.md` |
+| `assets/templates/design-README.md` | `$docs_root/design/README.md` |
 | `assets/templates/exec-plans-README.md` | `$docs_root/exec-plans/README.md` |
 | `assets/templates/exec-plans-TEMPLATE.md` | `$docs_root/exec-plans/TEMPLATE.md` |
 | `assets/templates/ideas-README.md` | `$docs_root/ideas/README.md` |
@@ -236,6 +253,50 @@ mkdir -p "$docs_root/context" "$docs_root/backlog" "$docs_root/prd" "$docs_root/
 | `assets/templates/issues-README.md` | `$docs_root/issues/README.md` |
 | `assets/templates/issues-TEMPLATE.md` | `$docs_root/issues/TEMPLATE.md` |
 | `assets/templates/lessons-README.md` | `$docs_root/lessons/README.md` |
+
+#### 自动填充验证命令
+
+写入 `project-context.md` 后，自动检测项目类型并填充验证命令：
+
+**检测逻辑**：
+```bash
+# 检测项目类型
+if [ -f "package.json" ]; then
+  # Node.js 项目
+  BUILD_CMD="npm run build"
+  TEST_CMD="npm test"
+  START_CMD="npm start"
+elif [ -f "setup.py" ] || [ -f "pyproject.toml" ]; then
+  # Python 项目
+  BUILD_CMD="无"
+  TEST_CMD="pytest"
+  START_CMD="python main.py"
+elif [ -f "go.mod" ]; then
+  # Go 项目
+  BUILD_CMD="go build"
+  TEST_CMD="go test ./..."
+  START_CMD="go run ."
+elif [ -f "Cargo.toml" ]; then
+  # Rust 项目
+  BUILD_CMD="cargo build"
+  TEST_CMD="cargo test"
+  START_CMD="cargo run"
+else
+  # 无法检测
+  BUILD_CMD="<构建命令，占位则填\"无\">"
+  TEST_CMD="<测试命令，占位则填\"无\">"
+  START_CMD="<启动命令，占位则填\"无\">"
+fi
+```
+
+用检测到的命令替换 `project-context.md` 中的占位符。如果无法检测，保留占位符并在报告中添加提醒：
+
+```
+⚠️ 需人工处理：
+  - 验证命令未自动检测，请手动填写 docs/context/project-context.md
+```
+
+**不要因为验证命令是占位符就停止工作**。继续执行，让用户在实际使用时再填充。
 
 ### 4. 写入项目根 AI 代理模板
 
@@ -361,7 +422,49 @@ test -f ARCHITECTURE.md && echo "EXISTS" || echo "MISSING"
 
 ⚠️ 需人工处理：
   - <说明>
+
+---
+
+⏭️ 下一步（重要）：
+1. 🔧 填写验证命令：编辑 docs/context/project-context.md
+2. 📖 了解文档结构：打开 docs/index.md
+3. ✅ 添加第一个任务：编辑 docs/backlog/README.md
+4. 🧪 验证初始化：运行项目测试命令
+
+💡 快速入门指南：docs/CLAUDE.md
 ```
+
+## 使用场景
+
+初始化完成后，常见的使用场景：
+
+### 场景 1：添加新功能
+
+1. 在 `docs/prd/` 创建 `feature-name.md`（使用 `prd/TEMPLATE.md`）
+2. 填写需求、验收标准、技术方案
+3. 如果符合计划触发器（> 5 文件或 > 200 行），在 `docs/exec-plans/active/` 创建计划
+4. 实施并运行验证命令
+5. 在 `docs/lessons/` 记录教训（如有）
+
+### 场景 2：修复 Bug
+
+1. 在 `docs/issues/` 创建 `bug-name.md`（使用 `issues/TEMPLATE.md`）
+2. 记录问题描述、复现步骤、根因分析
+3. 实施修复并验证
+4. 更新 issue 状态为"已解决"
+
+### 场景 3：AI 不知道做什么
+
+1. 检查 `docs/backlog/README.md`
+2. 确保至少有一个 `status=ready`、`AI 自主级别=implement` 的任务
+3. AI 会自动选择优先级最高的任务
+4. 如果所有任务都是 `blocked`，在阻塞项中说明原因
+
+### 场景 4：项目交接
+
+1. 在 `docs/handover/` 创建 `handover-YYYY-MM-DD.md`（使用 `handover/TEMPLATE.md`）
+2. 填写项目概述、技术架构、关键决策、待办事项、已知问题
+3. 提供给接手人阅读
 
 ## 关键原则
 
