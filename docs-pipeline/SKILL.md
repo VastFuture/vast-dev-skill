@@ -119,17 +119,13 @@ test -d docs/.git && echo "INDEPENDENT_REPO" || echo "INLINE"
 - 模式 A：`docs_root = ./docs`
 - 模式 B：`docs_root = $DOCS_ROOT` 或 `./docs`（如果 docs 是独立仓库）
 
-**Step 0.4：确定文档根路径**
-- 模式 A：`docs_root = ./docs`
-- 模式 B：`docs_root = $DOCS_ROOT` 或 `./docs`（如果 docs 是独立仓库）
-
-**Step 0.5：确定项目根路径**
+**Step 0.4：确定项目根路径**
 - 模式 A：`project_root = ./`
 - 模式 B：`project_root = ./`（项目代码根），文档引用路径 = `docs_root 相对于 project_root 的路径`
 
-### 0.5. 主动询问确认（交互流程）
+### 0.4. 主动询问确认（交互流程）
 
-**Step 0.5.1：展示检测结果**
+**Step 0.4.1：展示检测结果**
 
 向用户展示当前检测到的配置：
 
@@ -143,7 +139,7 @@ test -d docs/.git && echo "INDEPENDENT_REPO" || echo "INLINE"
 📎 文档引用路径：$relative_path（项目根文件中引用 docs 的路径）
 ```
 
-**Step 0.5.2：询问用户确认**
+**Step 0.4.2：询问用户确认**
 
 使用 `AskUserQuestion` 询问：
 
@@ -166,17 +162,17 @@ test -d docs/.git && echo "INDEPENDENT_REPO" || echo "INLINE"
    - 否：检测并集成 Pensieve
 ```
 
-**Step 0.5.3：处理用户输入**
+**Step 0.4.3：处理用户输入**
 
 | 用户选择 | 动作 |
 |---------|------|
 | 确认默认 | 继续执行 Step 1 |
 | 修改模式 | 根据选择切换模式 A/B，更新 `docs_root` |
 | 修改路径 | 使用用户输入的路径作为 `docs_root` |
-| 跳过 ARCHITECTURE.md | 跳过 Step 7，报告中注明 |
-| 跳过 Pensieve | 跳过 Pensieve 集成，报告中注明 |
+| 跳过 ARCHITECTURE.md | 跳过 Step 8，报告中注明 |
+| 跳过 Pensieve | 跳过 Step 7，报告中注明 |
 
-**Step 0.5.4：记录配置**
+**Step 0.4.4：记录配置**
 
 将最终确认的配置写入报告头部：
 
@@ -254,7 +250,7 @@ mkdir -p "$docs_root/context" "$docs_root/backlog" "$docs_root/prd" "$docs_root/
 | `assets/templates/content-organization.md` | `content-organization.md` | 内容组织规范详细说明（列表限制、段落优先） |
 | `assets/templates/mcp.json` | `.mcp.json` | 7 个常用 MCP 服务（playwright / thinking / chrome-devtools / fetch / time / context7 / serena），注意源文件名是 `mcp.json`，目标文件名是 `.mcp.json` |
 
-注意：这五个文件**不属于** `docs/` 链路，是项目根级的 AI 代理配置文档。
+注意：这十个文件**不属于** `docs/` 链路，是项目根级的 AI 代理配置文档。
 
 **模式 B 特殊处理：**
 - 文档引用路径 = `docs_root 相对于 project_root 的相对路径`
@@ -284,6 +280,8 @@ CLAUDE.md 的写入由 step 4 完成。本步只做一件事：如果 step 4 走
 
 **模式 B 特殊处理：** 追加的"## 文档"段落中的路径引用需指向文档仓库路径
 
+### 7. Pensieve 集成（可选）
+
 Pensieve 集成按以下分支处理：
 
 **分支 A — `.pensieve/` 已存在**：
@@ -299,20 +297,20 @@ Pensieve 集成按以下分支处理：
 2. 用户确认 → 按 [references/pensieve-integration.md](./references/pensieve-integration.md) 的"安装"章节执行（读取 GitHub 仓库最新 README 获取安装步骤，不要硬编码），然后走分支 A 的完整流程
 3. 用户拒绝 → 跳过，报告"已跳过 Pensieve 集成"
 
-### 7. 生成 ARCHITECTURE.md（探索型模板）
+### 8. 生成 ARCHITECTURE.md（探索型模板）
 
 `ARCHITECTURE.md` 不能简单 cp，必须基于目标项目的实际代码生成。流程：
 
-#### 7.1 检测
+#### 8.1 检测
 
 ```bash
 test -f ARCHITECTURE.md && echo "EXISTS" || echo "MISSING"
 ```
 
 - **EXISTS** → 跳过，记入"已存在跳过"清单
-- **MISSING** → 进入 7.2
+- **MISSING** → 进入 8.2
 
-#### 7.2 调用 Explore 子代理
+#### 8.2 调用 Explore 子代理
 
 用 `Agent` 工具，`subagent_type: "Explore"`，提示词如下（中文）：
 
@@ -333,11 +331,11 @@ test -f ARCHITECTURE.md && echo "EXISTS" || echo "MISSING"
 >
 > 探索完成后，用 `Write` 工具写入 `<项目根绝对路径>/ARCHITECTURE.md`，然后简短报告"已生成"。
 
-#### 7.3 失败降级
+#### 8.3 失败降级
 
 如果 Explore 子代理失败（返回错误、超时、或未能写入文件），用 `Read` 读取 `assets/templates/ARCHITECTURE.md.template`，用 `Write` 落地为 `ARCHITECTURE.md`。在报告中标注"探索失败，已落地骨架，需手动填充"。
 
-### 8. 输出报告
+### 9. 输出报告
 
 按以下格式向用户总结：
 
@@ -374,14 +372,14 @@ test -f ARCHITECTURE.md && echo "EXISTS" || echo "MISSING"
 - **Explore 子代理超时或返回空内容**：不要卡住，直接降级到 `ARCHITECTURE.md.template` 骨架，报告"探索失败，需手动填充"
 - **项目根 CLAUDE.md 已有大量自定义内容**：只追加"## 文档"段落到末尾，绝不修改或删除已有内容。用 `grep -q "^## 文档"` 检测，存在就跳过
 - **重复调用后误报"已建"**：幂等检测必须用 `Read` 确认文件实际存在，不能靠 `mkdir -p` 的返回值推断
-- **Pensieve 不存在时强制创建**：`.pensieve/` 不存在就跳过 Step 5，不要 `mkdir .pensieve/`
+- **Pensieve 不存在时强制创建**：`.pensieve/` 不存在就跳过 Step 7，不要 `mkdir .pensieve/`
 - **`.pensieve/state.md` 漏加 .gitignore**：state.md 是运行时状态，每次操作都变，必须排除。`.state/` 由 Pensieve 自带 `.gitignore` 排除，但 state.md 需要项目根 `.gitignore` 兜底
 - **用户拒绝安装 Pensieve 却继续执行**：分支 B 中用户拒绝后必须跳过，不要自动创建 `.pensieve/` 或暗示 Pensieve 是必需的
-- **sync-instructions 路由不覆盖 skill 调用**：`sync-instructions.sh` 只插入 `commit`/`git commit` 触发词，不覆盖 skill 调用场景。必须执行 Step 4 替换为"any commit-related skill invocation"通用模式，否则 Pensieve 在 skill 调用时不触发
+- **sync-instructions 路由不覆盖 skill 调用**：`sync-instructions.sh` 只插入 `commit`/`git commit` 触发词，不覆盖 skill 调用场景。必须在 Step 7 中执行替换为"any commit-related skill invocation"通用模式，否则 Pensieve 在 skill 调用时不触发
 - **模板里的 TODO 占位被自动填充**：`<!-- TODO(docs-pipeline): ... -->` 是留给用户的，不要替换
 - **模式 B 路径引用错误**：独立文档仓库模式下，项目根 CLAUDE.md/AGENTS.md 中的文档引用必须是正确的相对路径。用 `realpath --relative-to=project_root docs_root` 计算
 - **docs/ 目录既是独立 git 仓库又是项目子目录**：检测优先级 `DOCS_ROOT` > `docs/.git` 存在 > 默认 inline
-- **交互询问被跳过**：如果用户明确说"直接执行"或"不要问我"，则跳过 Step 0.5 直接执行，报告中注明"用户要求跳过交互确认"
+- **交互询问被跳过**：如果用户明确说"直接执行"或"不要问我"，则跳过 Step 0.4 直接执行，报告中注明"用户要求跳过交互确认"
 - **用户修改路径后路径不存在**：用户输入的路径不存在时，询问是否创建，不自动创建
 - **context/ 目录的 4 个文件是整体**：project-context.md、ai-autonomy-policy.md、codebase-map.md、source-of-truth-and-precedence.md 必须一起存在，才能保证 AI 上下文完整
 
