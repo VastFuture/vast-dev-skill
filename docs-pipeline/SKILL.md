@@ -225,12 +225,16 @@ mkdir -p "$docs_root/context" "$docs_root/backlog" "$docs_root/prd" "$docs_root/
 | `assets/templates/context/source-of-truth-and-precedence.md` | `$docs_root/context/source-of-truth-and-precedence.md` |
 | `assets/templates/docs-backlog/README.md` | `$docs_root/backlog/README.md` |
 | `assets/templates/prd-README.md` | `$docs_root/prd/README.md` |
+| `assets/templates/prd-TEMPLATE.md` | `$docs_root/prd/TEMPLATE.md` |
 | `assets/templates/docs-design/README.md` | `$docs_root/design/README.md` |
 | `assets/templates/exec-plans-README.md` | `$docs_root/exec-plans/README.md` |
+| `assets/templates/exec-plans-TEMPLATE.md` | `$docs_root/exec-plans/TEMPLATE.md` |
 | `assets/templates/ideas-README.md` | `$docs_root/ideas/README.md` |
 | `assets/templates/research-README.md` | `$docs_root/research/README.md` |
 | `assets/templates/handover-README.md` | `$docs_root/handover/README.md` |
+| `assets/templates/handover-TEMPLATE.md` | `$docs_root/handover/TEMPLATE.md` |
 | `assets/templates/issues-README.md` | `$docs_root/issues/README.md` |
+| `assets/templates/issues-TEMPLATE.md` | `$docs_root/issues/TEMPLATE.md` |
 | `assets/templates/lessons-README.md` | `$docs_root/lessons/README.md` |
 
 ### 4. 写入项目根 AI 代理模板

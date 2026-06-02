@@ -33,6 +33,31 @@
 <启动命令，占位则填"无">
 ```
 
+### ⚠️ 验证命令前置条件
+
+验证命令可能依赖以下配置文件。首次使用前，请确认这些文件存在：
+
+| 配置文件 | 用途 | 检查命令 |
+|---------|------|----------|
+| `tsconfig.json` | TypeScript 配置 | `test -f tsconfig.json` |
+| `.eslintrc.*` / `eslint.config.*` | ESLint 配置 | `ls .eslintrc* eslint.config.* 2>/dev/null` |
+| `jest.config.*` | Jest 测试配置 | `ls jest.config.* 2>/dev/null` |
+| `package-lock.json` / `yarn.lock` / `pnpm-lock.yaml` | 依赖锁定文件 | `ls package-lock.json yarn.lock pnpm-lock.yaml 2>/dev/null` |
+
+**如果配置文件缺失**：
+1. 检查 `package.json` 中的 scripts 是否依赖这些配置
+2. 如果依赖，先安装或创建配置文件
+3. 如果不依赖，可以跳过
+
+**示例**：
+```bash
+# 检查 TypeScript 配置
+test -f tsconfig.json && echo "✅ tsconfig.json 存在" || echo "❌ 缺少 tsconfig.json，运行 tsc --init 创建"
+
+# 检查 ESLint 配置
+ls .eslintrc* eslint.config.* 2>/dev/null && echo "✅ ESLint 配置存在" || echo "❌ 缺少 ESLint 配置"
+```
+
 ## 活跃的 Plan（进行中）
 
 | Plan 文件 | 状态 | 最后更新 |

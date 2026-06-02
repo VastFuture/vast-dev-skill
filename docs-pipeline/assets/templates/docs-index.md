@@ -29,6 +29,25 @@
 | 开始或审查非平凡实现 | `AGENTS.md` | `docs/exec-plans/README.md`、活跃计划 |
 | 审查持久可复用的工程教训 | `docs/lessons/README.md` | 相关教训 |
 
+## 任务路由
+
+根据任务类型，读取对应文档并产出结果：
+
+| 任务类型 | 必读文档 | 产出位置 | 是否写计划 |
+|---------|---------|---------|-----------|
+| 需求澄清 | `context/project-context.md`, `prd/` | `docs/prd/<topic>.md` | 否 |
+| 设计变更 | `context/source-of-truth-and-precedence.md`, `design/` | `docs/design/<topic>.md` | 视规模 |
+| 架构变更 | `context/codebase-map.md`, `design/`, `ARCHITECTURE.md` | `docs/exec-plans/active/<task>.md` | 必须 |
+| 纯实现 | `context/project-context.md`, `prd/`, `design/` | 代码 + 测试 | 视规模 |
+| Bug 调查 | `context/codebase-map.md`, `issues/` | `docs/issues/<issue>.md` | 视风险 |
+| 验证审计 | `context/project-context.md` | 测试结果摘要 | 否 |
+
+**使用方法**：
+1. 确定任务类型（从上表选择）
+2. 读取对应的"必读文档"
+3. 按需写计划（参考"是否写计划"列）
+4. 将产出放到指定位置
+
 ## 推荐默认路径
 
 大多数任务的默认路径：
