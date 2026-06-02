@@ -24,6 +24,18 @@
 | 预计需要多个 AI 会话 | 长期任务 |
 | 有未解决的产品或技术风险 | 有风险 |
 
+**可跳过正式计划的场景**：本地低风险编辑（文案改动、小样式修复、仅测试清理、有清晰测试的单文件修复）。
+
+---
+
+## Plan Decision Table
+
+| 范围 | 计划级别 | 审计规则 | 示例 |
+|------|---------|---------|------|
+| 琐碎本地编辑 | 无计划 | 无审计 | typo、单样式调整、测试清理 |
+| 非平凡跟踪工作 | 完整计划 | 独立 plan audit + closure audit | 小 UI 优化、简单本地 bug 修复 |
+| 契约/数据/API/权限/集成/部署/跨表面 | 完整计划 | 独立 plan audit + closure audit | 结算流程、登录行为、数据迁移 |
+
 ---
 
 ## 审计要求
@@ -35,18 +47,30 @@
 
 ### Plan Audit 检查项
 
-- [ ] 目标清晰，与 `docs/requirements/` 或 `docs/design/` 一致
-- [ ] 拆分步骤具体可执行
-- [ ] 风险已识别并有应对方案
-- [ ] 依赖项已确认
-- [ ] 验收标准明确
+- [ ] 当前基线是否诚实
+- [ ] 目标和非目标是否清晰
+- [ ] 闭包门控是否真实
+- [ ] 是否有隐藏依赖或未解决的需求缺口
+- [ ] 是否有范围内的缺陷被悄悄降级
+- [ ] 任务路由和技能选择是否诚实、必要、匹配 owner docs
+- [ ] 证明和验证是否覆盖每个验收标准
 
 ### Closure Audit 检查项
 
-- [ ] 所有步骤已完成
-- [ ] 验证命令已运行并通过
-- [ ] 受影响的 owner docs 已更新
-- [ ] 计划与实际执行无重大偏离
+- [ ] 线上行为是否真正落地
+- [ ] 文档是否对齐
+- [ ] 声称的证明是否实际存在于文件中
+- [ ] 计划闭包门控是否全部满足
+- [ ] 是否有范围内项目被降级为模糊的 follow-up
+- [ ] 验证失败是否被当作非阻塞处理（需明确裁决）
+
+---
+
+## Anti-Slacking Rule / 反拖延规则
+
+每个范围内项目在闭包前必须处于以下状态之一：`landed`、`adjudicated as residual-risk-only`、`moved to explicit successor ownership`、`removed from scope with recorded reason`。
+
+以下词汇在范围内项目中**禁止使用**：`optional`、`if time permits`、`consider`、`maybe`、`nice to have`、`as needed`。
 
 ---
 
@@ -55,23 +79,87 @@
 ```markdown
 # {功能名称}
 
+> Plan Status: planned
 > 创建时间：YYYY-MM-DD
 > 最后更新：YYYY-MM-DD
+> Source: <requirement / bug / analysis / request>
+> Audit: required
 
-## 状态
+## Current Baseline
 
-| Phase | 内容 | 状态 | 备注 |
-|-------|------|------|------|
-| Phase 0 | ... | 📋 待开始 / 🔄 进行中 / ✅ 已完成 / ⏸ 暂缓 | |
+- <what is true today>
+- <what gap remains>
 
-## 决策日志
+## Goals
 
-- YYYY-MM-DD: 决策内容及原因
+- <result to achieve>
 
-## 详细设计
+## Non-Goals
 
-（目标、技术方案、拆分步骤、依赖项、验收标准）
+- <explicitly excluded work>
+
+## Task Route
+
+- Type: <requirement clarification | design change | architecture change | implementation-only | bug investigation | verification>
+- Owner Docs: <paths>
+
+## Execution Plan
+
+### Phase 1 - <name>
+
+Status: planned
+Targets: `<paths>`
+Skill: `<skill-name | none>`
+
+- [ ] <Fix: defect repair>
+- [ ] <Add: net-new code or config>
+- [ ] <Decision: record rationale and alternatives>
+- [ ] <Proof: test strategy and verification commands>
+
+Exit Criteria:
+
+- [ ] <behavior lands>
+- [ ] <relevant docs updated, or No owner-doc update required>
+- [ ] `docs/lessons/` updated if lesson learned
+
+## Plan Audit
+
+- Status: <pending | passed>
+- Reviewer: <independent reviewer or subagent>
+- Evidence: <task id / audit file>
+
+## Closure Gates
+
+- [ ] in-scope behavior is complete
+- [ ] relevant docs are aligned
+- [ ] verification has run
+- [ ] no in-scope item downgraded to deferred/follow-up
+- [ ] plan audit passed before implementation
+- [ ] closure audit was independent
+- [ ] closure evidence exists in files
+
+## Deferred But Adjudicated
+
+### <item name>
+
+- Classification: `watch-only residual | optimization candidate | out-of-scope improvement`
+- Why Not Blocking Closure: <reason>
+
+## Closure
+
+Status Note: <why the plan can close>
+
+Closure Audit Evidence:
+
+- Reviewer: <independent reviewer or subagent>
+- Evidence: <task id / log link / walkthrough record>
+
+Follow-up:
+
+- <non-blocking follow-up items only>
 ```
+
+---
 
 ## 索引
 

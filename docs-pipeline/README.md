@@ -2,6 +2,8 @@
 
 一键初始化或修复 Claude Code 项目的 `docs/` 产物链路结构。支持**文档跟随项目**和**独立文档仓库**两种模式。
 
+基于 [AGE (Attractor-Guided Engineering)](https://github.com/entropy-cloud/attractor-guided-engineering-template) 增强：Task Routing + Planning Triggers + Verification Baseline。
+
 ## 使用
 
 在 Claude Code 里说：
@@ -30,16 +32,27 @@ export DOCS_ROOT=/path/to/docs/repo
 ## 产物链路
 
 ```
-ideas（随手记）→ research（调研）→ prd（需求）→ exec-plans/active（计划进行中）→ exec-plans/completed（计划完成）
-                                                                                           ↓
-                                                                                       issues/lessons（Bug/教训，按需横切）
+backlog → prd → design → exec-plans/active → exec-plans/completed
+                                                  ↓
+                                              lessons（踩坑教训）
 ```
+
+## 核心目录（默认初始化）
+
+| 目录 | 职责 |
+|------|------|
+| `docs/context/` | 强制 AI 上下文、真相优先级、项目约定 |
+| `docs/backlog/` | 工作队列、AI 自主级别标签 |
+| `docs/prd/` | 实现就绪的需求文档 |
+| `docs/design/` | 稳定的应用层设计基线 |
+| `docs/exec-plans/` | 执行计划（含 Plan/Closure 审计） |
+| `docs/lessons/` | 可复用的工程教训 |
 
 ## 行为契约
 
 | 状态 | 动作 |
 |------|------|
-| `docs/` 不存在 | 全新初始化（建 8 目录 + 8 README + 1 CLAUDE.md + 1 command） |
+| `docs/` 不存在 | 全新初始化（建 11 目录 + 15 模板 + 根级 AI 代理模板） |
 | `docs/` 部分存在 | 修复模式，只补缺失项 |
 | `docs/` 全部齐全 | 跳过，输出"已规范" |
 | `.claude/commands/ideas.md` 不存在 | 写入 `/ideas` 随手记命令 |

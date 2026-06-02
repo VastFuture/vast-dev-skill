@@ -1,15 +1,17 @@
 ---
 name: docs-pipeline
-description: Initialize or repair docs/ pipeline + root AI agent templates (CLAUDE.md, AGENTS.md, etc.) for any Claude Code project. Supports both inline docs/ and separate docs repo. Idempotent.基于 AGE (Attractor-Guided Engineering) 增强：Task Routing + Planning Triggers + Verification Baseline. Use for: "初始化文档结构", "搭建 docs pipeline", "set up docs structure", "initialize docs pipeline", "fix docs structure".
+description: Initialize or repair docs/ pipeline + root AI agent templates (CLAUDE.md, AGENTS.md, etc.) for any Claude Code project. Supports both inline docs/ and separate docs repo. Idempotent.基于 AGE (Attractor-Guided Engineering) 增强：Task Routing + Planning Triggers + Verification Baseline. 来源: https://github.com/entropy-cloud/attractor-guided-engineering-template. Use for: "初始化文档结构", "搭建 docs pipeline", "set up docs structure", "initialize docs pipeline", "fix docs structure".
 metadata:
   author: tracker-system
-  version: "2.0.0"
+  version: "3.0.0"
 allowed-tools: Bash Read Write Edit Glob Agent
 ---
 
 # Docs Pipeline Skill
 
 一键初始化或修复 Claude Code 项目的 `docs/` 产物链路 + 项目根 AI 代理模板 + 自动探索生成的 `ARCHITECTURE.md`。
+
+基于 [AGE (Attractor-Guided Engineering)](https://github.com/entropy-cloud/attractor-guided-engineering-template) 增强。
 
 ## 核心结构
 
@@ -18,7 +20,7 @@ allowed-tools: Bash Read Write Edit Glob Agent
 ```
 项目根/
 ├── CLAUDE.md                 # 不存在则建（Linus 角色 + 沟通规范 + 通用开发规则模板）
-├── AGENTS.md                 # 不存在则建（Codex CLI 全局指令，含 AGE Task Routing + Planning Triggers）
+├── AGENTS.md                 # 不存在则建（AI 代理全局指令，含 AGE 15 条运营规则）
 ├── MBTI_DEV_TRAPS.md         # 不存在则建（16 种人格陷阱清单）
 ├── karpathy-guidelines.md    # 不存在则建（LLM 编码行为指南）
 ├── ARCHITECTURE.md           # 不存在则用 Explore 子代理探索后生成
@@ -28,22 +30,27 @@ allowed-tools: Bash Read Write Edit Glob Agent
 │       └── ideas.md          # 不存在则建（/ideas 随手记命令）
 └── docs/
     ├── CLAUDE.md             # 总规则（含 Owner Docs 职责）
-    ├── context/              # ★ 新增：强制 AI 上下文
+    ├── index.md              # ★ 文档路由中枢
+    ├── context/              # ★ 强制 AI 上下文
     │   ├── project-context.md       # 项目上下文、验证命令
     │   ├── ai-autonomy-policy.md   # AI 自主级别、受保护区域
     │   ├── codebase-map.md         # 代码库地图
     │   └── source-of-truth-and-precedence.md  # 真相优先级
-    ├── ideas/
-    │   └── README.md         # 灵感池（随手记，零结构）
-    ├── research/
+    ├── backlog/              # ★ 工作队列、AI 自主级别标签
     │   └── README.md
-    ├── prd/
+    ├── prd/                  # 实现就绪的需求
     │   └── README.md
-    ├── exec-plans/
-    │   ├── README.md         # 含 Plan Audit + Closure Audit 要求
+    ├── design/               # ★ 稳定的应用层设计基线
+    │   └── README.md
+    ├── exec-plans/           # 执行计划（含 Plan/Closure 审计）
+    │   ├── README.md
     │   ├── active/
     │   └── completed/
     │       └── tech-debt-tracker.md
+    ├── ideas/                # 灵感池（随手记，零结构）
+    │   └── README.md
+    ├── research/
+    │   └── README.md
     ├── handover/
     │   └── README.md
     ├── issues/               # Bug 追踪
@@ -51,35 +58,19 @@ allowed-tools: Bash Read Write Edit Glob Agent
     └── lessons/
         └── README.md
 ```
-项目根/
-├── CLAUDE.md                 # 不存在则建（Linus 角色 + 沟通规范 + 通用开发规则模板）
-├── AGENTS.md                 # 不存在则建（Codex CLI 全局指令）
-├── MBTI_DEV_TRAPS.md         # 不存在则建（16 种人格陷阱清单）
-├── karpathy-guidelines.md    # 不存在则建（LLM 编码行为指南）
-├── ARCHITECTURE.md           # 不存在则用 Explore 子代理探索后生成
-├── .mcp.json                 # 不存在则建（7 个常用 MCP 服务）
-├── .claude/
-│   └── commands/
-│       └── ideas.md          # 不存在则建（/ideas 随手记命令）
-└── docs/
-    ├── CLAUDE.md             # 总规则
-    ├── ideas/
-    │   └── README.md         # 灵感池（随手记，零结构）
-    ├── research/
-    │   └── README.md
-    ├── prd/
-    │   └── README.md
-    ├── exec-plans/
-    │   ├── README.md
-    │   ├── active/
-    │   └── completed/
-    │   └── tech-debt-tracker.md
-    ├── handover/
-    │   └── README.md
-    ├── issues/               # Bug 追踪
-    │   └── README.md
-    └── lessons/
-        └── README.md
+
+### 可选目录（按需激活，不在默认初始化范围内）
+
+```
+docs/
+├── input/            # 原始 PM 素材
+├── discussions/      # 需求澄清讨论
+├── audits/           # 审计记录
+├── bugs/             # 非显而易见的 bug 历史
+├── logs/             # 每日实现记录
+├── testing/          # 手动/探索性测试记录
+├── skills/           # 可复用提示词模板
+└── retrospectives/   # 交付后复盘
 ```
 
 ### 模式 B：独立文档仓库
@@ -210,12 +201,13 @@ test -d docs/.git && echo "INDEPENDENT_REPO" || echo "INLINE"
 ### 2. 建目录
 
 ```bash
-mkdir -p "$docs_root/context" "$docs_root/ideas" "$docs_root/research" "$docs_root/prd" "$docs_root/exec-plans/active" "$docs_root/exec-plans/completed" "$docs_root/handover" "$docs_root/issues" "$docs_root/lessons"
+mkdir -p "$docs_root/context" "$docs_root/backlog" "$docs_root/prd" "$docs_root/design" "$docs_root/exec-plans/active" "$docs_root/exec-plans/completed" "$docs_root/ideas" "$docs_root/research" "$docs_root/handover" "$docs_root/issues" "$docs_root/lessons"
 ```
 
 `mkdir -p` 本身是幂等的，已有目录不会报错。
 
-**新增 `context/` 目录**：AGE 强制 AI 上下文层，包含 4 个模板文件。
+**核心目录**：context、backlog、research、prd、design、exec-plans、lessons
+**可选目录**：ideas、handover、issues（以及按需激活的 input、discussions、audits、bugs、logs、testing、skills、retrospectives）
 
 ### 3. 写入 docs/ 模板
 
@@ -230,14 +222,17 @@ mkdir -p "$docs_root/context" "$docs_root/ideas" "$docs_root/research" "$docs_ro
 | 模板 | 目标路径 |
 |------|---------|
 | `assets/templates/docs-CLAUDE.md` | `$docs_root/CLAUDE.md` |
+| `assets/templates/docs-index.md` | `$docs_root/index.md` |
 | `assets/templates/context/project-context.md` | `$docs_root/context/project-context.md` |
 | `assets/templates/context/ai-autonomy-policy.md` | `$docs_root/context/ai-autonomy-policy.md` |
 | `assets/templates/context/codebase-map.md` | `$docs_root/context/codebase-map.md` |
 | `assets/templates/context/source-of-truth-and-precedence.md` | `$docs_root/context/source-of-truth-and-precedence.md` |
+| `assets/templates/docs-backlog/README.md` | `$docs_root/backlog/README.md` |
+| `assets/templates/prd-README.md` | `$docs_root/prd/README.md` |
+| `assets/templates/docs-design/README.md` | `$docs_root/design/README.md` |
+| `assets/templates/exec-plans-README.md` | `$docs_root/exec-plans/README.md` |
 | `assets/templates/ideas-README.md` | `$docs_root/ideas/README.md` |
 | `assets/templates/research-README.md` | `$docs_root/research/README.md` |
-| `assets/templates/prd-README.md` | `$docs_root/prd/README.md` |
-| `assets/templates/exec-plans-README.md` | `$docs_root/exec-plans/README.md` |
 | `assets/templates/handover-README.md` | `$docs_root/handover/README.md` |
 | `assets/templates/issues-README.md` | `$docs_root/issues/README.md` |
 | `assets/templates/lessons-README.md` | `$docs_root/lessons/README.md` |

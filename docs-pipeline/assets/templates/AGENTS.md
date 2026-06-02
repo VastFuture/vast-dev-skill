@@ -2,8 +2,8 @@
 
 > 版本: 4.0
 > 最后更新: 2026-06-02
-> 说明: Codex CLI 全局指令，为 AI 编码代理提供统一行为约束
-> 基于 AGE (Attractor-Guided Engineering) 增强：Task Routing + Planning Triggers + Verification Baseline
+> 说明: Codex CLI 全局指令，为 AI 编码代理提供统一行为约束，基于 AGE (Attractor-Guided Engineering) 增强
+> 来源: https://github.com/entropy-cloud/attractor-guided-engineering-template
 
 ---
 
@@ -237,6 +237,114 @@
 
 ---
 
+## 工程规则（AGE 增强）
+
+> 基于 [AGE (Attractor-Guided Engineering)](https://github.com/entropy-cloud/attractor-guided-engineering-template)。
+
+### 项目意图
+
+`<project-name>` 使用轻量级吸引子引导工程 (AGE) 工作流进行 AI 辅助应用开发。
+
+**仓库是真相源。聊天只是临时工作面。**
+
+### 先读这里
+
+编写非平凡代码前，必须先读取：
+
+- `docs/context/project-context.md` — 项目上下文
+- `docs/context/ai-autonomy-policy.md` — AI 自主级别策略
+- `docs/context/codebase-map.md` — 代码库地图
+- 项目上下文中列出的活跃需求和活跃 owner doc
+
+需要时额外读取：
+
+- `docs/context/source-of-truth-and-precedence.md` — 所有权或冲突问题
+- `docs/index.md` — 需要超出活跃文件的路由时
+
+### 任务路由
+
+编写非平凡代码前，**必须先对任务分类**：
+
+1. 确定任务类型：需求澄清 / 设计变更 / 架构变更 / 纯实现 / Bug 调查 / 验证审计
+2. 用 `docs/index.md` 读取该任务类型的 owner docs 再行动
+3. 对非平凡工作，在计划中记录选定的路由
+
+**不要从功能需求直接跳到代码**，除非路由从活跃需求和 owner docs 中已经显而易见。
+
+### 计划触发器
+
+当任务满足以下**任一**条件时，必须先写执行计划再开工：
+
+| 触发条件 | 说明 |
+|---------|------|
+| 变更 API、数据库/模型、认证、集成、部署或公共契约 | 高风险变更 |
+| 跨越多个功能表面的用户可见行为变更 | 跨表面变更 |
+| 触及多个模块并改变共享行为 | 多模块变更 |
+| 预计需要多个 AI 会话 | 长期任务 |
+| 修改超过 5 个文件或约 200+ 行变更 | 大规模变更 |
+| 需要分阶段执行或明确的闭包门控 | 需分阶段 |
+| 有未解决的产品或技术风险不能隐藏 | 有未解决风险 |
+
+**可跳过**：本地低风险编辑（文案改动、小样式修复、仅测试清理、有清晰测试的单文件修复）。
+
+所有创建的计划**必须**在实施前通过独立计划审计，在标记完成前通过独立闭包审计。
+
+### 验证基线
+
+**不要假设本项目的验证命令与模板相同。** 使用 `docs/context/project-context.md` 中列出的真实命令。**如果验证命令为空或仍是占位符，停止并填充，不要报告验证成功。**
+
+### 运营规则
+
+1. **文件进文件出**：重要指令、计划和结论必须落在文件中，不能只在聊天里。
+2. **聊天不是持久记忆**：不要把聊天摘要当作项目持久记忆。
+3. **不要从原始输入直接跳到代码**：范围不清晰时，先在 `docs/prd/` 或 `docs/discussions/` 中澄清。
+4. **非平凡实现前确认设计基线**：确认 `docs/design/` 和 `ARCHITECTURE.md` 反映当前支持的基线。如果过时，先更新再执行。
+5. **记录非显而易见的回归**：在 `docs/bugs/` 中记录。
+6. **技能是方法选择器**：不能替代需求、设计、架构或 owner docs。先搞清楚"要做什么"，再选"用什么方法做"。
+7. **重复错误模式必须升级**：散文笔记 → 可复用审计提示 → 检查清单 → 静态检查 → lint 规则 → CI 防护。
+8. **不要生成完整产品**：不要从单个功能列表生成完整产品。偏好小而完整的切片。
+9. **信息缺失时写入文件**：将缺失的假设写入需求、讨论或计划文件，而非默默发明。
+10. **使用 backlog 和自主策略**：用 `docs/backlog/` 和 `docs/context/ai-autonomy-policy.md` 决定 AI 是否可以自行选择和执行下一个任务。
+
+### 默认工作流
+
+1. 读取或更新 `docs/context/`
+2. 选择工作时查看 `docs/backlog/`
+3. 写或更新 `docs/prd/`
+4. 基线变更时更新 `docs/design/` 或 `ARCHITECTURE.md`
+5. 路由任务并选择候选可复用技能
+6. 计划触发器满足时写或更新 `docs/exec-plans/`
+7. 实施前审计计划
+8. 实现最小完整切片
+9. 运行验证
+10. 闭包审计
+11. 需要时记录 `docs/lessons/`
+
+### 技能使用规则
+
+使用可复用技能前，确认以下全部为真：
+
+- 任务类型和路由已从需求和 owner docs 中明确
+- 技能匹配工作方法，而非仅仅是相似的业务标签
+- 所需输入已可用
+- 预期输出已知且可存入正确的文档位置
+
+对非平凡计划，每个依赖可复用技能的阶段或项目应记录 `Skill: <名称>` 或 `Skill: none`。
+
+### 文档所有权
+
+| 目录 | 职责 |
+|------|------|
+| `docs/context/` | 强制 AI 上下文、真相优先级、项目约定 |
+| `docs/backlog/` | 工作队列、AI 自主级别标签 |
+| `docs/research/` | 调研文档（技术方案、可行性分析） |
+| `docs/prd/` | 实现就绪的需求综合 |
+| `docs/design/` | 稳定的应用层业务和功能设计 |
+| `docs/exec-plans/` | 非平凡工作的执行和闭包标准 |
+| `docs/lessons/` | 持久可复用的工程教训 |
+
+---
+
 ## 🔄 工作流程
 
 ### 任务追踪
@@ -302,48 +410,6 @@
 - 简要结论（做了什么、当前状态）
 - 关键文件及行号引用（`file:line`）
 - 显式列出风险和自然的后续步骤
-
----
-
-## 🔀 Task Routing / 任务路由
-
-Before writing non-trivial code, agents **MUST classify the task first**:
-
-```
-1. Determine the task type:
-   - requirement clarification     (需求澄清)
-   - app-layer design change      (设计变更)
-   - architecture change         (架构变更)
-   - implementation-only change  (纯实现)
-   - bug investigation           (Bug 调查)
-   - verification or audit work  (验证/审计)
-
-2. Use docs/index.md to read the owner docs for that task type before acting.
-
-3. Check docs/skills/README.md for candidate reusable skills before drafting or revising a plan.
-
-4. For non-trivial work, record the chosen route and planned skill usage in the plan before implementation.
-```
-
-**Do not jump from a feature request directly to code** unless the route is already obvious from the active requirement and owner docs.
-
----
-
-## 📋 Planning Rule / 规划规则
-
-Create a plan when the task has **any** of these traits:
-
-| 触发条件 | 说明 |
-|---------|------|
-| Changes API, database/model, auth, integration, deployment, or public contract | 变更公共契约 |
-| Changes user-visible behavior across more than one feature surface | 跨表面用户行为变更 |
-| Touches multiple modules and changes shared behavior | 多模块共享变更 |
-| Expected to take more than one AI session | 需多会话 |
-| Modifies more than 5 total files or ~200+ changed lines | 大规模变更 |
-| Needs staged execution or explicit closure gates | 需分阶段 |
-| Has unresolved product or technical risk that must not be hidden | 有未解决风险 |
-
-**Skip a formal plan only for**: local low-risk edits (copy changes, small styling fixes, test-only cleanups, single-file behavior fixes with clear existing tests).
 
 ---
 
@@ -439,20 +505,20 @@ Create a plan when the task has **any** of these traits:
 
   ```markdown
   # Plan: <任务简要标题>
-  
+
   🎯 任务概述
   <用 2–3 句话说明任务背景和目标。>
-  
+
   📋 执行计划
   1. <步骤 1：一句话描述要做什么、为什么>
   2. <步骤 2>
   3. <步骤 3>
   ...（一般 4–10 步，根据 sequential-thinking 结果展开）
-  
+
   ⚠️ 风险与注意事项
   - <风险或注意点 1>
   - <风险或注意点 2>
-  
+
   📎 参考
   - `<文件路径:行号>`（例如 `src/main/java/App.java:42`）
   - 其他有用的链接或说明
@@ -537,24 +603,15 @@ Create a plan when the task has **any** of these traits:
 
 ---
 
-## 🔍 Verification Baseline / 验证基线
+## ✅ 实施检查清单
 
-**Do not assume this project's verification commands are the same as the template.**
+**任务完成前自检，任何项目失败需重做**：
 
-Use the real commands listed in `docs/context/project-context.md`.
-
-**If verification commands are blank or still placeholders, STOP and do not report verification success.**
-
-```
-❌ 错误示例：
-  验证：运行测试 ✓
-  结果：所有测试通过 ✓
-  （但测试命令实际是占位符，从未真正运行）
-
-✓ 正确示例：
-  验证：运行测试
-  结果：测试命令为空占位符，停止验证，填充 docs/context/project-context.md 中的真实命令
-```
+- [ ] 接触工具前已记录接收与现实检查
+- [ ] 首次上下文收集在 5-8 次工具调用内（或已记录例外）
+- [ ] 已记录 ≥2 步计划，使用 TodoWrite 追踪进度
+- [ ] 验证包括测试/检查及 `<self_reflection>` 自评
+- [ ] 最终交接包含文件引用（`file:line`）、风险和后续步骤
 
 ---
 

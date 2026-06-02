@@ -223,30 +223,91 @@
    ```
 
 
-## 项目特定规则
+## 工程规则
 
-See [karpathy-guidelines.md](./karpathy-guidelines.md) for coding guidelines.
+> 基于 [AGE (Attractor-Guided Engineering)](https://github.com/entropy-cloud/attractor-guided-engineering-template)。
+> 编码指南见 [karpathy-guidelines.md](./karpathy-guidelines.md)。
+> <!-- TODO(docs-pipeline): 在此追加项目特有的代码风格、API 约定、命名规则等。无则保留上面那行即可 -->
 
-<!-- TODO(docs-pipeline): 在此追加项目特有的代码风格、API 约定、命名规则等。无则保留上面那行即可 -->
+### 开发规范
 
-## 开发规则
-
-**提交前必须详尽测试：**
-- 每次提交代码前，必须在开发环境中充分测试所有改动的功能，确认无回归
+- 每次提交代码前，必须在开发环境中充分测试所有改动，确认无回归
 - 涉及前端 UI 的改动需要实际启动应用并验证渲染
 - 涉及构建/打包的改动需要完整执行一次打包流程验证产物可用
 - 涉及多平台的改动需要考虑各平台的差异性
+- UI 改动必须用 CDP 验证：启动开发服务器 → CDP 打开页面 → 截图确认 → 检查 console 无报错
+- 新增功能前必须充分调研技术方案、API 兼容性、社区最佳实践；不确定的技术点先做 POC 验证
 
-**UI 改动必须用 CDP 验证（chrome-devtools MCP）：**
-- 修改组件、样式、布局后，必须通过 chrome-devtools MCP 实际验证效果
-- 验证流程：启动开发服务器 → 用 CDP 打开对应页面 → 截图确认渲染正确 → 检查 console 无报错
-- 涉及交互的改动（按钮、表单、导航）需通过 CDP 模拟点击/输入并截图验证
-- 修改响应式布局时，用 CDP 的 device emulation 分别验证桌面和移动端视口
+### 任务路由
 
-**新增功能前必须详尽调研：**
-- 新增功能前必须充分调研相关技术方案、API 兼容性、社区最佳实践
-- 涉及第三方库需确认与现有依赖的兼容性
-- 对不确定的技术点先做 POC 验证，不要直接在主代码中试错
+在编写非平凡代码之前，**必须先对任务分类**：
+
+1. 确定任务类型：需求澄清 / 设计变更 / 架构变更 / 纯实现 / Bug 调查 / 验证审计
+2. 用 `docs/index.md` 读取该任务类型的 owner docs 再行动
+3. 对非平凡工作，在计划中记录选定的路由
+
+**不要从功能需求直接跳到代码**，除非路由从活跃需求和 owner docs 中已经显而易见。
+
+### 计划触发器
+
+当任务满足以下**任一**条件时，必须先写执行计划再开工：
+
+| 触发条件 | 说明 |
+|---------|------|
+| 涉及数据库 schema 变更 | 高风险变更 |
+| 跨 3 个以上模块的功能 | 多模块共享变更 |
+| 需要分阶段交付的中大型功能 | 需分阶段 |
+| 重构或迁移类任务 | 高复杂性 |
+| 修改超过 5 个文件或 ~200+ 行变更 | 大规模变更 |
+| 预计需要多个 AI 会话 | 长期任务 |
+| 有未解决的产品或技术风险 | 有风险 |
+
+**可跳过**：本地低风险编辑（文案改动、小样式修复、仅测试清理、有清晰测试的单文件修复）。
+
+计划放 `docs/exec-plans/active/`，完成后移至 `completed/`，模板见 `docs/exec-plans/README.md`。
+
+### 验证基线
+
+**不要假设本项目的验证命令与模板相同。** 使用 `docs/context/project-context.md` 中列出的真实命令。**如果验证命令为空或仍是占位符，停止并填充，不要报告验证成功。**
+
+### 运营规则
+
+1. **文件进文件出**：重要指令、计划和结论必须落在文件中，不能只在聊天里。
+2. **聊天不是持久记忆**：不要把聊天摘要当作项目持久记忆。
+3. **不要从原始输入直接跳到代码**：范围不清晰时，先在 `docs/prd/` 或 `docs/discussions/` 中澄清。
+4. **非平凡实现前确认设计基线**：确认 `docs/design/` 和 `ARCHITECTURE.md` 反映当前支持的基线。如果过时，先更新再执行。
+5. **记录非显而易见的回归**：在 `docs/bugs/` 中记录。
+6. **技能是方法选择器**：不能替代需求、设计、架构或 owner docs。先搞清楚"要做什么"，再选"用什么方法做"。
+7. **重复错误模式必须升级**：散文笔记 → 可复用审计提示 → 检查清单 → 静态检查 → lint 规则 → CI 防护。
+8. **不要生成完整产品**：不要从单个功能列表生成完整产品。偏好小而完整的切片。
+9. **信息缺失时写入文件**：将缺失的假设写入需求、讨论或计划文件，而非默默发明。
+10. **使用 backlog 和自主策略**：用 `docs/backlog/` 和 `docs/context/ai-autonomy-policy.md` 决定 AI 是否可以自行选择和执行下一个任务。
+
+### 默认工作流
+
+1. 读取或更新 `docs/context/`
+2. 选择工作时查看 `docs/backlog/`
+3. 写或更新 `docs/prd/`
+4. 基线变更时更新 `docs/design/` 或 `ARCHITECTURE.md`
+5. 路由任务并选择候选可复用技能
+6. 计划触发器满足时写或更新 `docs/exec-plans/`
+7. 实施前审计计划
+8. 实现最小完整切片
+9. 运行验证
+10. 闭包审计
+11. 需要时记录 `docs/lessons/`
+
+### 文档所有权
+
+| 目录 | 职责 |
+|------|------|
+| `docs/context/` | 强制 AI 上下文、真相优先级、项目约定 |
+| `docs/backlog/` | 工作队列、AI 自主级别标签 |
+| `docs/research/` | 调研文档（技术方案、可行性分析） |
+| `docs/prd/` | 实现就绪的需求综合 |
+| `docs/design/` | 稳定的应用层业务和功能设计 |
+| `docs/exec-plans/` | 非平凡工作的执行和闭包标准 |
+| `docs/lessons/` | 持久可复用的工程教训 |
 
 ## 自检命令
 
@@ -260,31 +321,7 @@ See [karpathy-guidelines.md](./karpathy-guidelines.md) for coding guidelines.
 
 修改代码后，commit 前至少确保**快速检查**通过；UI 改动时额外运行**冒烟测试**。
 
-## 执行计划
-
-**中大型功能（跨 3+ 模块、涉及 schema 变更、需分阶段交付）必须先写执行计划再开工。**
-- 活跃计划放 `docs/exec-plans/active/`，完成后移至 `completed/`
-- 纯调研/可行性分析放 `docs/research/`
-- 发现技术债务时记录到 `docs/exec-plans/tech-debt-tracker.md`
-- 模板和规范见 `docs/exec-plans/README.md`
-
-## 文档
-
-**产物链路**：`research/` → `prd/` → `exec-plans/active/` → `exec-plans/completed/`；`lessons/` 横切（踩坑当下记）。
-
-- [ARCHITECTURE.md](./ARCHITECTURE.md) — 项目架构、目录结构、数据流、新功能触及点
-- `docs/research/` — 调研文档（技术方案、可行性分析）
-- `docs/prd/` — 产品需求（做什么、为什么）
-- `docs/exec-plans/` — 执行计划（怎么做、做到哪；含技术债务追踪）
-- `docs/handover/` — 已落地的架构 / 数据流 / 设计决策
-- `docs/lessons/` — 踩坑教训（XX 不能这么做）
-
-**铁律：检索前先读对应目录的 README.md；增删文件后更新索引；产物只能在一个目录里。**
-完整规则见 [docs/CLAUDE.md](./docs/CLAUDE.md)。
-
----
-
-## 经验教训 (Lessons Learned)
+## 经验教训
 
 <!-- TODO(docs-pipeline): 在此积累项目自身的踩坑教训；详细记录见 docs/lessons/ -->
 
