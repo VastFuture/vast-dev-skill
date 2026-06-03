@@ -405,9 +405,17 @@ CLAUDE.md 的写入由 step 4 完成。本步只做一件事：如果 step 4 走
 
 **模式 B 特殊处理：** 追加的"## 文档"段落中的路径引用需指向文档仓库路径
 
-### 7. Pensieve 集成（可选）
+### 7. Pensieve 集成（可选插件）
 
-Pensieve 集成按以下分支处理：
+> Pensieve 是可选的版本控制增强工具，**不在默认安装范围内**。
+
+**默认行为**：跳过 Pensieve 集成，不检测、不询问、不提示。
+
+**激活条件**（满足任一）：
+1. 环境变量 `ENABLE_PENSIEVE=true`
+2. 已存在 `.pensieve/` 目录（说明用户已手动安装）
+
+**集成流程**（仅在激活时执行）：
 
 **分支 A — `.pensieve/` 已存在**：
 
@@ -416,11 +424,13 @@ Pensieve 集成按以下分支处理：
    - 不存在 → 用 `Edit` 把 `assets/templates/pensieve-gitignore-snippet.md` 追加到文件末尾
    - 已存在 → 跳过
 
-**分支 B — `.pensieve/` 不存在**：
+**分支 B — `.pensieve/` 不存在 且 `ENABLE_PENSIEVE=true`**：
 
 1. 用 `AskUserQuestion` 询问用户是否要安装 Pensieve
 2. 用户确认 → 按 [references/pensieve-integration.md](./references/pensieve-integration.md) 的"安装"章节执行（读取 GitHub 仓库最新 README 获取安装步骤，不要硬编码），然后走分支 A 的完整流程
 3. 用户拒绝 → 跳过，报告"已跳过 Pensieve 集成"
+
+**不激活时**：完全跳过此步骤，不在报告中提及。
 
 ### 8. 生成 ARCHITECTURE.md（探索型模板）
 
@@ -456,9 +466,119 @@ test -f ARCHITECTURE.md && echo "EXISTS" || echo "MISSING"
 >
 > 探索完成后，用 `Write` 工具写入 `<项目根绝对路径>/ARCHITECTURE.md`，然后简短报告"已生成"。
 
-#### 8.3 失败降级
+#### 8.3 智能降级
 
-如果 Explore 子代理失败（返回错误、超时、或未能写入文件），用 `Read` 读取 `assets/templates/ARCHITECTURE.md.template`，用 `Write` 落地为 `ARCHITECTURE.md`。在报告中标注"探索失败，已落地骨架，需手动填充"。
+如果 Explore 子代理失败（返回错误、超时、或未能写入文件），按以下顺序尝试降级：
+
+**降级策略 1：基于 package.json 生成（Node.js 项目）**
+
+```bash
+if [ -f "package.json" ]; then
+  # 读取 package.json
+  NAME=$(jq -r '.name // "未命名项目"' package.json)
+  DESC=$(jq -r '.description // "无描述"' package.json)
+  SCRIPTS=$(jq -r '.scripts | keys[]' package.json 2>/dev/null || echo "无")
+  
+  # 生成基本 ARCHITECTURE.md
+  cat > ARCHITECTURE.md << EOF
+# ARCHITECTURE.md
+
+> 项目架构文档 - 参见 [CLAUDE.md](./CLAUDE.md) 的行为规范。
+
+## 项目概述
+
+**项目名称**：$NAME
+
+**描述**：$DESC
+
+**技术栈**：Node.js / TypeScript（基于 package.json 检测）
+
+## 常用命令
+
+\`\`\`bash
+# 可用的 npm scripts:
+$SCRIPTS
+\`\`\`
+
+## 架构
+
+**注意**：此文档由自动检测生成，仅包含基本信息。请根据实际项目结构补充：
+- 源码目录结构（src/）
+- 数据模型（如有）
+- 开发注意事项
+
+可运行 \`tree src -L 2\` 查看实际目录结构。
+EOF
+  
+  echo "⚠️ Explore 失败，已基于 package.json 生成基本 ARCHITECTURE.md，需补充完整"
+  exit 0
+fi
+```
+
+**降级策略 2：其他项目类型的简化模板**
+
+```bash
+# Python 项目
+if [ -f "setup.py" ] || [ -f "pyproject.toml" ]; then
+  PROJECT_TYPE="Python"
+  START_CMD="python main.py"
+  
+# Go 项目
+elif [ -f "go.mod" ]; then
+  PROJECT_TYPE="Go"
+  START_CMD="go run ."
+  
+# Rust 项目
+elif [ -f "Cargo.toml" ]; then
+  PROJECT_TYPE="Rust"
+  START_CMD="cargo run"
+  
+# 无法识别
+else
+  PROJECT_TYPE="未知"
+  START_CMD="<启动命令>"
+fi
+
+# 生成通用骨架
+cat > ARCHITECTURE.md << 'EOF'
+# ARCHITECTURE.md
+
+> 项目架构文档 - 参见 [CLAUDE.md](./CLAUDE.md) 的行为规范。
+
+## 项目概述
+
+**技术栈**：$PROJECT_TYPE
+
+## 常用命令
+
+```bash
+# 启动
+$START_CMD
+```
+
+## 架构
+
+**注意**：此文档为模板骨架，需要手动填充：
+1. 项目概述（一句话定位 + 技术栈细节）
+2. 常用命令（构建、测试、启动命令）
+3. 核心源码目录树（二级深度）
+4. 数据模型（如有）
+5. 开发注意事项
+EOF
+
+echo "⚠️ Explore 失败且无法自动检测项目类型，已生成模板骨架，需手动填充"
+```
+
+**降级策略 3：完全失败（最后手段）**
+
+如果以上策略都失败，在报告中提示：
+
+```
+⚠️ 需人工处理：
+  - ARCHITECTURE.md 生成失败，请手动创建或运行 tree src -L 2 查看目录结构
+```
+
+不生成任何 ARCHITECTURE.md 文件。
 
 ### 9. 输出报告
 
@@ -483,6 +603,9 @@ test -f ARCHITECTURE.md && echo "EXISTS" || echo "MISSING"
 
 ⚠️ 需人工处理：
   - <说明>
+
+🔌 可选插件：
+  - Pensieve: 未激活（设置 ENABLE_PENSIEVE=true 启用）
 
 ---
 
@@ -537,13 +660,10 @@ test -f ARCHITECTURE.md && echo "EXISTS" || echo "MISSING"
 
 ## Gotchas
 
-- **Explore 子代理超时或返回空内容**：不要卡住，直接降级到 `ARCHITECTURE.md.template` 骨架，报告"探索失败，需手动填充"
+- **ARCHITECTURE.md 生成降级策略**：Explore 失败后，先尝试基于项目配置文件（package.json/setup.py/go.mod/Cargo.toml）生成基本结构，再尝试通用骨架，最后才完全跳过
 - **项目根 CLAUDE.md 已有大量自定义内容**：只追加"## 文档"段落到末尾，绝不修改或删除已有内容。用 `grep -q "^## 文档"` 检测，存在就跳过
 - **重复调用后误报"已建"**：幂等检测必须用 `Read` 确认文件实际存在，不能靠 `mkdir -p` 的返回值推断
-- **Pensieve 不存在时强制创建**：`.pensieve/` 不存在就跳过 Step 7，不要 `mkdir .pensieve/`
-- **`.pensieve/state.md` 漏加 .gitignore**：state.md 是运行时状态，每次操作都变，必须排除。`.state/` 由 Pensieve 自带 `.gitignore` 排除，但 state.md 需要项目根 `.gitignore` 兜底
-- **用户拒绝安装 Pensieve 却继续执行**：分支 B 中用户拒绝后必须跳过，不要自动创建 `.pensieve/` 或暗示 Pensieve 是必需的
-- **sync-instructions 路由不覆盖 skill 调用**：`sync-instructions.sh` 只插入 `commit`/`git commit` 触发词，不覆盖 skill 调用场景。必须在 Step 7 中执行替换为"any commit-related skill invocation"通用模式，否则 Pensieve 在 skill 调用时不触发
+- **Pensieve 不是必需的**：`.pensieve/` 不存在时完全跳过 Step 7，不询问、不提示。只有当 `ENABLE_PENSIEVE=true` 或 `.pensieve/` 已存在时才激活
 - **模板里的 TODO 占位被自动填充**：`<!-- TODO(docs-pipeline): ... -->` 是留给用户的，不要替换
 - **模式 B 路径引用错误**：独立文档仓库模式下，项目根 CLAUDE.md/AGENTS.md 中的文档引用必须是正确的相对路径。用 `realpath --relative-to=project_root docs_root` 计算
 - **docs/ 目录既是独立 git 仓库又是项目子目录**：检测优先级 `DOCS_ROOT` > `docs/.git` 存在 > 默认 inline
