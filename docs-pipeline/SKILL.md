@@ -242,12 +242,12 @@ fi
 
 **目录对照表**：
 
-| 模式 | context | backlog | prd | exec-plans | lessons | research | design | issues | handover | ideas |
-|------|---------|---------|-----|------------|---------|----------|--------|--------|----------|-------|
-| minimal | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ |
-| standard | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 模式 | context | backlog | prd | exec-plans | lessons | research | design | issues | handover | ideas | agent-guides |
+|------|---------|---------|-----|------------|---------|----------|--------|--------|----------|-------|--------------|
+| minimal | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ |
+| standard | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 
-**核心目录**：context、backlog、research、prd、design、exec-plans、lessons
+**核心目录**：context、backlog、research、prd、design、exec-plans、lessons、agent-guides
 **可选目录**：ideas、handover、issues（以及按需激活的 input、discussions、audits、bugs、logs、testing、skills、retrospectives）
 
 ### 3. 写入 docs/ 模板
