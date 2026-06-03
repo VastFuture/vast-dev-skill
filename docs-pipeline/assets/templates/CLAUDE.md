@@ -7,8 +7,8 @@
 
 ### 我是谁
 
-<!-- TODO(docs-pipeline): 把 INFP 改成你的 MBTI 类型；陷阱清单见根目录 MBTI_DEV_TRAPS.md -->
-我是 INFP 人格，常见陷阱见 [MBTI_DEV_TRAPS.md](./MBTI_DEV_TRAPS.md)。
+<!-- TODO(docs-pipeline): 把 INFP 改成你的 MBTI 类型；陷阱清单见 docs/agent-guides/MBTI_DEV_TRAPS.md -->
+我是 INFP 人格，常见陷阱见 [MBTI_DEV_TRAPS.md](./docs/agent-guides/MBTI_DEV_TRAPS.md)。
 
 我没有技术背景，需要你使用简单的语言，把我当做 12 岁的初学者来进行表述。你需要针对我的人格预判我的想法，在重大问题上辅助我步入正轨。
 
@@ -66,7 +66,7 @@
 | 简单查询 | 直接回答 | "这个变量在哪定义的" |
 | 混合任务 | 先 B 后 A | 先分析问题 → 再执行修复 |
 
-**详见 @output-modes.md**（含模式 A/B 详细结构、示例对比、状态标记）
+**详见 @docs/agent-guides/output-modes.md**（含模式 A/B 详细结构、示例对比、状态标记）
 
 ### 内容组织规范
 
@@ -76,7 +76,7 @@
 - **段落优先**：复杂内容用段落描述，段落之间空一行
 - **层次控制**：避免超过 2 层的嵌套列表
 
-**详见 @content-organization.md**（含详细规则、正反示例）
+**详见 @docs/agent-guides/content-organization.md**（含详细规则、正反示例）
 
 ### 需求确认流程
 
@@ -91,7 +91,7 @@
 
 #### 2. 挑选若干思考维度来分析问题
 
-**详见 @requirement-confirmation.md**（含 5 层思考维度详细说明）
+**详见 @docs/agent-guides/requirement-confirmation.md**（含 5 层思考维度详细说明）
 
 **核心思考框架**：
 - 🤔思考 1：数据结构分析
@@ -137,7 +137,7 @@
 ## 工程规则
 
 > 基于 [AGE (Attractor-Guided Engineering)](https://github.com/entropy-cloud/attractor-guided-engineering-template)。
-> 编码指南见 [karpathy-guidelines.md](./karpathy-guidelines.md)。
+> 编码指南见 [karpathy-guidelines.md](./docs/agent-guides/karpathy-guidelines.md)。
 > <!-- TODO(docs-pipeline): 在此追加项目特有的代码风格、API 约定、命名规则等。无则保留上面那行即可 -->
 
 ### 开发规范

@@ -232,11 +232,11 @@ mkdir -p "$docs_root/context" "$docs_root/backlog" "$docs_root/prd" "$docs_root/
 ```bash
 # Minimal 模式（7 个必需目录）
 if [ "$MODE" = "minimal" ]; then
-  mkdir -p "$docs_root/context" "$docs_root/backlog" "$docs_root/prd" "$docs_root/exec-plans/active" "$docs_root/exec-plans/completed" "$docs_root/lessons"
+  mkdir -p "$docs_root/context" "$docs_root/backlog" "$docs_root/prd" "$docs_root/exec-plans/active" "$docs_root/exec-plans/completed" "$docs_root/lessons" "$docs_root/agent-guides"
   
 # Standard 模式（12 个核心目录，默认）
 elif [ "$MODE" = "standard" ]; then
-  mkdir -p "$docs_root/context" "$docs_root/backlog" "$docs_root/prd" "$docs_root/design" "$docs_root/exec-plans/active" "$docs_root/exec-plans/completed" "$docs_root/research" "$docs_root/issues" "$docs_root/handover" "$docs_root/ideas" "$docs_root/lessons"
+  mkdir -p "$docs_root/context" "$docs_root/backlog" "$docs_root/prd" "$docs_root/design" "$docs_root/exec-plans/active" "$docs_root/exec-plans/completed" "$docs_root/research" "$docs_root/issues" "$docs_root/handover" "$docs_root/ideas" "$docs_root/lessons" "$docs_root/agent-guides"
 fi
 ```
 
@@ -281,6 +281,13 @@ fi
 | `assets/templates/issues-README.md` | `$docs_root/issues/README.md` |
 | `assets/templates/issues-TEMPLATE.md` | `$docs_root/issues/TEMPLATE.md` |
 | `assets/templates/lessons-README.md` | `$docs_root/lessons/README.md` |
+| `assets/templates/docs-agent-guides/MBTI_DEV_TRAPS.md` | `$docs_root/agent-guides/MBTI_DEV_TRAPS.md` |
+| `assets/templates/docs-agent-guides/karpathy-guidelines.md` | `$docs_root/agent-guides/karpathy-guidelines.md` |
+| `assets/templates/docs-agent-guides/output-modes.md` | `$docs_root/agent-guides/output-modes.md` |
+| `assets/templates/docs-agent-guides/engineering-rules.md` | `$docs_root/agent-guides/engineering-rules.md` |
+| `assets/templates/docs-agent-guides/plan-mode.md` | `$docs_root/agent-guides/plan-mode.md` |
+| `assets/templates/docs-agent-guides/requirement-confirmation.md` | `$docs_root/agent-guides/requirement-confirmation.md` |
+| `assets/templates/docs-agent-guides/content-organization.md` | `$docs_root/agent-guides/content-organization.md` |
 
 **根据模式选择模板**：
 
@@ -288,6 +295,7 @@ fi
 - docs-CLAUDE.md, docs-index.md
 - context/ 下 4 个文件
 - backlog-README.md, prd-README.md, exec-plans-README.md, lessons-README.md
+- agent-guides/ 下 7 个辅助文档
 
 Standard 模式额外复制：
 - prd-TEMPLATE.md, exec-plans-TEMPLATE.md
@@ -344,18 +352,14 @@ fi
 
 | 模板 | 目标路径 | 用途 |
 |------|---------|------|
-| `assets/templates/CLAUDE.md` | `CLAUDE.md` | 项目根 Claude 行为规范（Linus 角色 + 沟通规范 + 通用开发规则；含 TODO 占位让用户填项目特有部分） |
+| `assets/templates/CLAUDE.md` | `CLAUDE.md` | 项目根 Claude 行为规范（Linus 角色 + 沟通规范 + 通用开发规则；含 TODO 占位让用户填项目特有部分；引用 docs/agent-guides/ 下的辅助文档） |
 | `assets/templates/AGENTS.md` | `AGENTS.md` | Codex CLI 全局指令（含 AGE Task Routing + Planning Triggers + Verification Baseline） |
-| `assets/templates/MBTI_DEV_TRAPS.md` | `MBTI_DEV_TRAPS.md` | 16 种 MBTI 人格的开发陷阱清单 |
-| `assets/templates/karpathy-guidelines.md` | `karpathy-guidelines.md` | LLM 编码行为指南 |
-| `assets/templates/output-modes.md` | `output-modes.md` | 混合输出模式详细说明（模式 A/B 结构、示例、状态标记） |
-| `assets/templates/engineering-rules.md` | `engineering-rules.md` | AGE 工程规则详细说明（任务路由、计划触发器、运营规则） |
-| `assets/templates/plan-mode.md` | `plan-mode.md` | Plan 模式详细说明（复杂度分级、Plan 文件规范） |
-| `assets/templates/requirement-confirmation.md` | `requirement-confirmation.md` | 需求确认流程详细说明（5 层思考维度、决策输出） |
-| `assets/templates/content-organization.md` | `content-organization.md` | 内容组织规范详细说明（列表限制、段落优先） |
 | `assets/templates/mcp.json` | `.mcp.json` | 7 个常用 MCP 服务（playwright / thinking / chrome-devtools / fetch / time / context7 / serena），注意源文件名是 `mcp.json`，目标文件名是 `.mcp.json` |
 
-注意：这十个文件**不属于** `docs/` 链路，是项目根级的 AI 代理配置文档。
+注意：
+- 项目根只保留 3 个核心文件（CLAUDE.md、AGENTS.md、.mcp.json）
+- ARCHITECTURE.md 在 Step 8 生成
+- 7 个辅助文档（MBTI_DEV_TRAPS.md、karpathy-guidelines.md 等）在 Step 3 已写入 `$docs_root/agent-guides/`
 
 **模式 B 特殊处理：**
 - 文档引用路径 = `docs_root 相对于 project_root 的相对路径`
@@ -423,6 +427,11 @@ CLAUDE.md 的写入由 step 4 完成。本步只做一件事：如果 step 4 走
 ⚠️ 需人工处理：
   - <说明>
 
+🔄 迁移提示（如检测到旧位置文件）：
+  - 检测到项目根目录的辅助文档（MBTI_DEV_TRAPS.md、karpathy-guidelines.md 等）
+  - 建议移动到 docs/agent-guides/ 并更新 CLAUDE.md 引用
+  - 旧文件列表：<列出检测到的文件>
+
 🔌 可选插件：
   - Pensieve: 未激活（设置 ENABLE_PENSIEVE=true 启用）
 
@@ -435,6 +444,23 @@ CLAUDE.md 的写入由 step 4 完成。本步只做一件事：如果 step 4 走
 4. 🧪 验证初始化：运行项目测试命令
 
 💡 快速入门指南：docs/CLAUDE.md
+```
+
+**迁移检测逻辑**（在 Step 9 执行）：
+
+```bash
+# 检测项目根目录是否有旧位置的辅助文档
+OLD_FILES=""
+for f in MBTI_DEV_TRAPS.md karpathy-guidelines.md output-modes.md engineering-rules.md plan-mode.md requirement-confirmation.md content-organization.md; do
+  if [ -f "$f" ]; then
+    OLD_FILES="$OLD_FILES\n  - $f"
+  fi
+done
+
+if [ -n "$OLD_FILES" ]; then
+  echo "🔄 迁移提示：检测到项目根目录的辅助文档，建议移动到 docs/agent-guides/ 并更新 CLAUDE.md 引用"
+  echo "  旧文件列表：$OLD_FILES"
+fi
 ```
 
 ## 使用场景
