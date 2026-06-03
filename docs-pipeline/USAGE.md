@@ -65,6 +65,28 @@
 
 ---
 
+## 场景 5：会话结束后同步文档
+
+**重要**：开发过程中会产生大量文档修改，但很容易漏掉关键更新或让 CLAUDE.md 膨胀。
+
+**建议流程**：
+1. 完成一个开发阶段（新功能、重构、修复）
+2. 运行 `/neat-freak`（需要安装 [vast-khazix-neat-freak](../vast-khazix-neat-freak)）
+3. neat-freak 会自动：
+   - 审查 3 层知识：agent memory + CLAUDE.md + docs/
+   - 同步本次会话的文档变更
+   - 检查并防止 CLAUDE.md 膨胀（软上限 ~300 行）
+   - 清理过期内容和重复记录
+
+**触发时机**：
+- 阶段性收尾（"这个阶段做完了"）
+- 准备交接（"新人能直接上手"）
+- 文档不同步（"整理一下文档"）
+
+详见 [neat-freak SKILL.md](../vast-khazix-neat-freak/SKILL.md) 了解完整工作流。
+
+---
+
 ## Gotchas（常见陷阱）
 
 - **ARCHITECTURE.md 生成降级策略**：Explore 失败后，先尝试基于项目配置文件（package.json/setup.py/go.mod/Cargo.toml）生成基本结构，再尝试通用骨架，最后才完全跳过
