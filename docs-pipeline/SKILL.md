@@ -16,17 +16,81 @@ allowed-tools: Bash Read Write Edit Glob Agent
 ## ⚡ 快速入门（30 秒）
 
 ```bash
-# 1. 初始化（自动检测项目类型）
+# 标准模式（推荐，12 个核心目录）
 /docs-pipeline
 
-# 2. 开始使用
-打开 docs/index.md 查看文档路由
+# 最小化模式（7 个必需目录，适合小项目）
+DOCS_PIPELINE_MODE=minimal /docs-pipeline
 
-# 3. 第一个任务
-在 docs/backlog/README.md 添加你的第一个任务
+# 完整模式（所有目录，适合大型项目）
+DOCS_PIPELINE_MODE=full /docs-pipeline
 ```
 
-就这么简单！详细配置见下文 ⬇️
+**初始化后**：
+1. 📖 打开 `docs/index.md` 查看文档路由
+2. ✅ 在 `docs/backlog/README.md` 添加第一个任务
+3. 🧪 运行项目测试验证
+
+详细说明见下文"安装模式"章节 ⬇️
+
+---
+
+## 安装模式
+
+docs-pipeline 提供 3 种安装模式，适应不同项目规模和团队经验。
+
+### 模式选择
+
+| 模式 | 适用场景 | 目录数 | 学习曲线 |
+|------|---------|--------|---------|
+| **minimal**（最小化） | 个人项目、快速原型、初学者 | 7 个必需目录 | 最低 |
+| **standard**（标准，默认） | 大多数团队项目 | 12 个核心目录 + 模板 | 中等 |
+| **full**（完整） | 大型项目、严格流程 | 所有目录 + AGE 增强 | 较高 |
+
+### 指定模式
+
+```bash
+# 方式 1：环境变量
+DOCS_PIPELINE_MODE=minimal /docs-pipeline
+
+# 方式 2：默认（不指定则使用 standard）
+/docs-pipeline
+```
+
+### 模式对比
+
+#### Minimal（最小化）
+
+**目录**：context, backlog, prd, exec-plans, lessons（7 个必需目录）
+
+**特点**：
+- 最快上手（< 5 分钟理解全部结构）
+- 核心工作流完整（需求 → 计划 → 执行 → 教训）
+- 适合个人或 2-3 人小团队
+
+**缺失功能**：无 research、design、issues、handover 等扩展目录
+
+#### Standard（标准，默认）
+
+**目录**：minimal 的 7 个 + research, design, issues, handover, ideas（12 个核心目录）
+
+**特点**：
+- 平衡完整性与复杂度
+- 支持调研、设计、Bug 追踪、项目交接
+- 适合大多数团队项目
+
+**包含模板**：PRD、执行计划、交接文档、问题记录
+
+#### Full（完整）
+
+**目录**：standard 的 12 个 + input, discussions, audits, bugs, logs, testing, skills, retrospectives（所有目录）
+
+**特点**：
+- 最完整的 AGE 工作流
+- 支持审计、讨论、复盘等高级流程
+- 适合大型项目或有严格流程要求的团队
+
+**额外功能**：完整的 AGE 增强（任务路由、计划触发器、验证基线）
 
 ---
 
@@ -147,6 +211,17 @@ test -d docs/.git && echo "INDEPENDENT_REPO" || echo "INLINE"
 - 模式 A：`project_root = ./`
 - 模式 B：`project_root = ./`（项目代码根），文档引用路径 = `docs_root 相对于 project_root 的路径`
 
+**Step 0.5：检测安装模式**
+
+检查环境变量 `DOCS_PIPELINE_MODE`：
+- `minimal` → 最小化模式（7 个必需目录）
+- `standard` → 标准模式（12 个核心目录，默认）
+- `full` → 完整模式（所有目录）
+- 未设置 → 默认 `standard`
+
+```bash
+MODE="${DOCS_PIPELINE_MODE:-standard}"
+```
 
 ### 1. 检测目标项目状态
 
@@ -163,6 +238,31 @@ mkdir -p "$docs_root/context" "$docs_root/backlog" "$docs_root/prd" "$docs_root/
 ```
 
 `mkdir -p` 本身是幂等的，已有目录不会报错。
+
+**根据模式创建目录**：
+
+```bash
+# Minimal 模式（7 个必需目录）
+if [ "$MODE" = "minimal" ]; then
+  mkdir -p "$docs_root/context" "$docs_root/backlog" "$docs_root/prd" "$docs_root/exec-plans/active" "$docs_root/exec-plans/completed" "$docs_root/lessons"
+  
+# Standard 模式（12 个核心目录，默认）
+elif [ "$MODE" = "standard" ]; then
+  mkdir -p "$docs_root/context" "$docs_root/backlog" "$docs_root/prd" "$docs_root/design" "$docs_root/exec-plans/active" "$docs_root/exec-plans/completed" "$docs_root/research" "$docs_root/issues" "$docs_root/handover" "$docs_root/ideas" "$docs_root/lessons"
+  
+# Full 模式（所有目录）
+elif [ "$MODE" = "full" ]; then
+  mkdir -p "$docs_root/context" "$docs_root/backlog" "$docs_root/prd" "$docs_root/design" "$docs_root/exec-plans/active" "$docs_root/exec-plans/completed" "$docs_root/research" "$docs_root/issues" "$docs_root/handover" "$docs_root/ideas" "$docs_root/lessons" "$docs_root/input" "$docs_root/discussions" "$docs_root/audits" "$docs_root/bugs" "$docs_root/logs" "$docs_root/testing" "$docs_root/skills" "$docs_root/retrospectives"
+fi
+```
+
+**目录对照表**：
+
+| 模式 | context | backlog | prd | exec-plans | lessons | research | design | issues | handover | ideas | input | discussions | audits | bugs | logs | testing | skills | retrospectives |
+|------|---------|---------|-----|------------|---------|----------|--------|--------|----------|-------|-------|-------------|--------|------|------|---------|--------|----------------|
+| minimal | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| standard | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| full | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 
 **核心目录**：context、backlog、research、prd、design、exec-plans、lessons
 **可选目录**：ideas、handover、issues（以及按需激活的 input、discussions、audits、bugs、logs、testing、skills、retrospectives）
@@ -198,6 +298,21 @@ mkdir -p "$docs_root/context" "$docs_root/backlog" "$docs_root/prd" "$docs_root/
 | `assets/templates/issues-README.md` | `$docs_root/issues/README.md` |
 | `assets/templates/issues-TEMPLATE.md` | `$docs_root/issues/TEMPLATE.md` |
 | `assets/templates/lessons-README.md` | `$docs_root/lessons/README.md` |
+
+**根据模式选择模板**：
+
+所有模式都复制：
+- docs-CLAUDE.md, docs-index.md
+- context/ 下 4 个文件
+- backlog-README.md, prd-README.md, exec-plans-README.md, lessons-README.md
+
+Standard/Full 模式额外复制：
+- prd-TEMPLATE.md, exec-plans-TEMPLATE.md
+- research-README.md, design-README.md, issues-README.md, issues-TEMPLATE.md
+- handover-README.md, handover-TEMPLATE.md, ideas-README.md
+
+Full 模式额外复制：
+- input-README.md, discussions-README.md, architecture-README.md
 
 #### 自动填充验证命令
 
@@ -353,6 +468,7 @@ test -f ARCHITECTURE.md && echo "EXISTS" || echo "MISSING"
 📋 docs-pipeline 执行报告
 
 📌 模式：模式 A（文档跟随项目）/ 模式 B（独立文档仓库：$DOCS_ROOT）
+📌 模式：minimal / standard / full
 
 ✅ 已建（新增）：
   - <path>
