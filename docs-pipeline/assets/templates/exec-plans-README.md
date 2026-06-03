@@ -66,6 +66,44 @@
 
 ---
 
+## 完成前自检清单
+
+> 灵感来源：[neat-freak 自检清单](https://github.com/VastFuture/khazix-skills/tree/main/neat-freak)
+> 用途：执行完成后、标记完成前，逐项检查确保质量和完整性
+
+### 尺寸 / 反膨胀
+
+- [ ] CLAUDE.md / AGENTS.md 净涨幅 ≤ 30 行（超了就是塞了历史叙事，回去删 / 迁 docs）
+- [ ] 没新增 "X 起 Y 上线，详见 docs/Z.md" 这种 blockquote 历史叙事条目
+- [ ] 没在 CLAUDE.md 里抄 docs/ 已有的详细机制说明
+
+**判断标准**：下次 AI 写代码时如果没看到这条，会不会犯错？
+- ✅ 该进 CLAUDE.md：硬边界规则、禁止事项、踩坑警示
+- ❌ 不该进：历史叙事、详细机制、单次事故复盘
+
+### 完整性 / 反漏改（四处都补）
+
+- [ ] 第一步列出的每个文件，都判断了"不用改"或"已改"
+- [ ] 新增 API 路由：**在 docs/prd/、docs/design/、docs/handover/ 都出现了**
+- [ ] 新增环境变量：**在 docs/context/project-context、docs/handover/ 都出现了**
+- [ ] 新增数据库表：**在 docs/design/architecture 和 CLAUDE.md（如需）都出现了**
+- [ ] 跨项目影响：下游项目的 docs 也跟着改了
+- [ ] CLAUDE.md / AGENTS.md 里提到的路径 / 命令 / 工具 / 环境变量在代码中真实存在
+- [ ] README 的安装 / 运行步骤跟代码一致
+
+### 一致性检查
+
+- [ ] 没有相对时间遗留（`grep -E "今天|昨天|刚刚|最近|上周|today|yesterday|recently"` 清零）
+- [ ] 同一条事实没在多个位置重复
+- [ ] 指针表已包含所有详细机制的文档引用
+- [ ] 记忆之间没有互相矛盾（如有 Agent 记忆系统）
+
+**完整性参考**：详见 [sync-matrix.md](../sync-matrix.md)（变更影响矩阵）
+
+**防膨胀参考**：详见 [context/anti-bloat-rules.md](../context/anti-bloat-rules.md)
+
+---
+
 ## Anti-Slacking Rule / 反拖延规则
 
 每个范围内项目在闭包前必须处于以下状态之一：`landed`、`adjudicated as residual-risk-only`、`moved to explicit successor ownership`、`removed from scope with recorded reason`。
