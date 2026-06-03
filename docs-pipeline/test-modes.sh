@@ -42,8 +42,6 @@ test_mode() {
         mkdir -p "$DOCS_ROOT/context" "$DOCS_ROOT/backlog" "$DOCS_ROOT/prd" "$DOCS_ROOT/exec-plans/active" "$DOCS_ROOT/exec-plans/completed" "$DOCS_ROOT/lessons"
     elif [ "$MODE" = "standard" ]; then
         mkdir -p "$DOCS_ROOT/context" "$DOCS_ROOT/backlog" "$DOCS_ROOT/prd" "$DOCS_ROOT/design" "$DOCS_ROOT/exec-plans/active" "$DOCS_ROOT/exec-plans/completed" "$DOCS_ROOT/research" "$DOCS_ROOT/issues" "$DOCS_ROOT/handover" "$DOCS_ROOT/ideas" "$DOCS_ROOT/lessons"
-    elif [ "$MODE" = "full" ]; then
-        mkdir -p "$DOCS_ROOT/context" "$DOCS_ROOT/backlog" "$DOCS_ROOT/prd" "$DOCS_ROOT/design" "$DOCS_ROOT/exec-plans/active" "$DOCS_ROOT/exec-plans/completed" "$DOCS_ROOT/research" "$DOCS_ROOT/issues" "$DOCS_ROOT/handover" "$DOCS_ROOT/ideas" "$DOCS_ROOT/lessons" "$DOCS_ROOT/input" "$DOCS_ROOT/discussions" "$DOCS_ROOT/audits" "$DOCS_ROOT/bugs" "$DOCS_ROOT/logs" "$DOCS_ROOT/testing" "$DOCS_ROOT/skills" "$DOCS_ROOT/retrospectives"
     fi
 
     # 统计创建的目录数
@@ -64,14 +62,12 @@ test_mode() {
     echo ""
 }
 
-# 测试三种模式
+# 测试两种模式
 test_mode "minimal" 7
 test_mode "standard" 12
-test_mode "full" 20
 
 echo "✅ 所有模式测试通过!"
 echo ""
 echo "目录数量对照:"
 echo "  - minimal:  7 个必需目录"
 echo "  - standard: 12 个核心目录"
-echo "  - full:     20 个所有目录"

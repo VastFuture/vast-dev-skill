@@ -16,14 +16,11 @@ allowed-tools: Bash Read Write Edit Glob Agent
 ## ⚡ 快速入门（30 秒）
 
 ```bash
-# 标准模式（推荐，12 个核心目录）
+# 标准模式（默认，12 个核心目录）
 /docs-pipeline
 
 # 最小化模式（7 个必需目录，适合小项目）
 DOCS_PIPELINE_MODE=minimal /docs-pipeline
-
-# 完整模式（所有目录，适合大型项目）
-DOCS_PIPELINE_MODE=full /docs-pipeline
 ```
 
 **初始化后**：
@@ -37,7 +34,7 @@ DOCS_PIPELINE_MODE=full /docs-pipeline
 
 ## 安装模式
 
-docs-pipeline 提供 3 种安装模式，适应不同项目规模和团队经验。
+docs-pipeline 提供 2 种安装模式，适应不同项目规模。
 
 ### 模式选择
 
@@ -45,7 +42,6 @@ docs-pipeline 提供 3 种安装模式，适应不同项目规模和团队经验
 |------|---------|--------|---------|
 | **minimal**（最小化） | 个人项目、快速原型、初学者 | 7 个必需目录 | 最低 |
 | **standard**（标准，默认） | 大多数团队项目 | 12 个核心目录 + 模板 | 中等 |
-| **full**（完整） | 大型项目、严格流程 | 所有目录 + AGE 增强 | 较高 |
 
 ### 指定模式
 
@@ -80,17 +76,6 @@ DOCS_PIPELINE_MODE=minimal /docs-pipeline
 - 适合大多数团队项目
 
 **包含模板**：PRD、执行计划、交接文档、问题记录
-
-#### Full（完整）
-
-**目录**：standard 的 12 个 + input, discussions, audits, bugs, logs, testing, skills, retrospectives（所有目录）
-
-**特点**：
-- 最完整的 AGE 工作流
-- 支持审计、讨论、复盘等高级流程
-- 适合大型项目或有严格流程要求的团队
-
-**额外功能**：完整的 AGE 增强（任务路由、计划触发器、验证基线）
 
 ---
 
@@ -145,7 +130,9 @@ DOCS_PIPELINE_MODE=minimal /docs-pipeline
 - 【推荐】：大多数项目推荐使用
 - 【可选】：按需激活，见下文"可选目录"章节
 
-### 可选目录（按需激活，不在默认初始化范围内）
+### 可选目录（按需手动创建）
+
+如果项目需要更细粒度的分类，可以手动创建以下目录：
 
 ```
 docs/
@@ -158,6 +145,8 @@ docs/
 ├── skills/           # 可复用提示词模板
 └── retrospectives/   # 交付后复盘
 ```
+
+**注意**：这些目录不会自动创建，需要时运行 `mkdir -p docs/<目录名>` 即可。
 
 ### 模式 B：独立文档仓库
 
@@ -216,7 +205,6 @@ test -d docs/.git && echo "INDEPENDENT_REPO" || echo "INLINE"
 检查环境变量 `DOCS_PIPELINE_MODE`：
 - `minimal` → 最小化模式（7 个必需目录）
 - `standard` → 标准模式（12 个核心目录，默认）
-- `full` → 完整模式（所有目录）
 - 未设置 → 默认 `standard`
 
 ```bash
@@ -249,20 +237,15 @@ if [ "$MODE" = "minimal" ]; then
 # Standard 模式（12 个核心目录，默认）
 elif [ "$MODE" = "standard" ]; then
   mkdir -p "$docs_root/context" "$docs_root/backlog" "$docs_root/prd" "$docs_root/design" "$docs_root/exec-plans/active" "$docs_root/exec-plans/completed" "$docs_root/research" "$docs_root/issues" "$docs_root/handover" "$docs_root/ideas" "$docs_root/lessons"
-  
-# Full 模式（所有目录）
-elif [ "$MODE" = "full" ]; then
-  mkdir -p "$docs_root/context" "$docs_root/backlog" "$docs_root/prd" "$docs_root/design" "$docs_root/exec-plans/active" "$docs_root/exec-plans/completed" "$docs_root/research" "$docs_root/issues" "$docs_root/handover" "$docs_root/ideas" "$docs_root/lessons" "$docs_root/input" "$docs_root/discussions" "$docs_root/audits" "$docs_root/bugs" "$docs_root/logs" "$docs_root/testing" "$docs_root/skills" "$docs_root/retrospectives"
 fi
 ```
 
 **目录对照表**：
 
-| 模式 | context | backlog | prd | exec-plans | lessons | research | design | issues | handover | ideas | input | discussions | audits | bugs | logs | testing | skills | retrospectives |
-|------|---------|---------|-----|------------|---------|----------|--------|--------|----------|-------|-------|-------------|--------|------|------|---------|--------|----------------|
-| minimal | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
-| standard | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
-| full | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 模式 | context | backlog | prd | exec-plans | lessons | research | design | issues | handover | ideas |
+|------|---------|---------|-----|------------|---------|----------|--------|--------|----------|-------|
+| minimal | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| standard | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 
 **核心目录**：context、backlog、research、prd、design、exec-plans、lessons
 **可选目录**：ideas、handover、issues（以及按需激活的 input、discussions、audits、bugs、logs、testing、skills、retrospectives）
@@ -306,13 +289,10 @@ fi
 - context/ 下 4 个文件
 - backlog-README.md, prd-README.md, exec-plans-README.md, lessons-README.md
 
-Standard/Full 模式额外复制：
+Standard 模式额外复制：
 - prd-TEMPLATE.md, exec-plans-TEMPLATE.md
 - research-README.md, design-README.md, issues-README.md, issues-TEMPLATE.md
 - handover-README.md, handover-TEMPLATE.md, ideas-README.md
-
-Full 模式额外复制：
-- input-README.md, discussions-README.md, architecture-README.md
 
 #### 自动填充验证命令
 
@@ -588,7 +568,7 @@ echo "⚠️ Explore 失败且无法自动检测项目类型，已生成模板�
 📋 docs-pipeline 执行报告
 
 📌 模式：模式 A（文档跟随项目）/ 模式 B（独立文档仓库：$DOCS_ROOT）
-📌 模式：minimal / standard / full
+📌 安装模式：minimal / standard
 
 ✅ 已建（新增）：
   - <path>
