@@ -27,6 +27,7 @@
 | **vast-pm-product-describer** | 运用“六维法”描述产品，生成高质量原型开发指令。 | `vast-pm-product-describer` |
 | **vast-pm-roadmap-planner** | 从目标、产能、依赖出发，设计可执行的版本路线图。 | `vast-pm-roadmap-planner` |
 | **vast-pm-prd-design-expert** | 根据用户故事创建产品需求规格说明书。 | `vast-pm-prd-design-expert` |
+| **vast-lenny-pm-skills** | 集成自 [wuwu119/lenny-pm-skills](https://github.com/wuwu119/lenny-pm-skills) 的 86 个产品管理技能（中文版），覆盖 PM/领导力/AI 技术/增长/营销/职业/销售/工程/设计十大领域。 | `vast-lenny-pm-skills` |
 
 ### 🎨 视觉与可视化 (Visualization)
 | 技能名称 | 说明 | 对应目录 |
@@ -36,6 +37,9 @@
 | **vast-draw-thinking-logic** | 将复杂信息转换为清晰的视觉思维模型。 | `vast-draw-thinking-logic` |
 | **vast-draw-visual-card-designer** | 将长内容转换为逻辑模型或极简图形风格的竖屏卡片。 | `vast-draw-visual-card-designer` |
 | **vast-social-xhs-card** | 生成小红书/Instagram 风格的视觉知识卡片。 | `vast-social-xhs-card` |
+| **vast-c4-architecture** | 集成自 [softaworks/agent-toolkit](https://github.com/softaworks/agent-toolkit) 的 C4 架构图生成技能（Mermaid C4: Context / Container / Component / Deployment / Dynamic）。 | `vast-c4-architecture` |
+| **vast-draw-io** | 集成自 [softaworks/agent-toolkit](https://github.com/softaworks/agent-toolkit) 的 draw.io 图表生成技能（含 200+ AWS 官方图标、PNG 转换脚本）。 | `vast-draw-io` |
+| **vast-excalidraw** | 集成自 [softaworks/agent-toolkit](https://github.com/softaworks/agent-toolkit) 的 Excalidraw 图表技能，通过 subagent 委托处理大 JSON 避免 context 爆炸。 | `vast-excalidraw` |
 
 ### 📖 内容处理与工具 (Content & Tools)
 | 技能名称 | 说明 | 对应目录 |
@@ -45,6 +49,7 @@
 | **vast-md-translator/summarizer** | Markdown 文件的专业翻译与结构化总结。 | `vast-md-translator/summarizer` |
 | **vast-social-xhs-content-script** | 生成小红书爆款文案和口播脚本。 | `vast-social-xhs-content-script` |
 | **vast-skill-recommender** | 维护并展示本项目及其他推荐技能列表。 | `vast-skill-recommender` |
+| **vast-marp-slide** | 集成自 [softaworks/agent-toolkit](https://github.com/softaworks/agent-toolkit) 的 Marp 幻灯片技能，Markdown → HTML 演示文稿（7 主题 + 7 模板）。 | `vast-marp-slide` |
 
 ### 🛡️ 专家评审与代码质量 (Review & Quality)
 | 技能名称 | 说明 | 对应目录 |
@@ -91,6 +96,8 @@ cp -r ~/vast-dev-skill/vast-dev-kickoff ~/.claude/skills/
 - [garrytan/gstack](https://github.com/garrytan/gstack) — office-hours 强制问题
 - [obra/superpowers](https://github.com/obra/superpowers) — 核心开发技能灵感
 - [r.jina.ai](https://r.jina.ai) — Markdown 转换服务
+- [wuwu119/lenny-pm-skills](https://github.com/wuwu119/lenny-pm-skills) — 86 个产品管理技能中文版（基于 [Lenny's Newsletter](https://www.lennysnewsletter.com/) 洞察，[Refound AI](https://refoundai.com/lenny-skills/) 授权翻译）
+- [softaworks/agent-toolkit](https://github.com/softaworks/agent-toolkit) — c4-architecture / draw-io 架构图技能（作者 [@leonardocouy](https://github.com/leonardocouy)，MIT License）
 
 ## ⚖️ License
 
