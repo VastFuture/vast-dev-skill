@@ -5,7 +5,11 @@
       "name": "sanyuan-skills",
       "description": "面向 Claude Code 和 AI Agent 终端的技能集合，包含 Code Review、Sigma、Bloom 学习法、Wiki Ingest、Book Study 等5个生产级技能",
       "url": "https://github.com/sanyuan0704/sanyuan-skills",
-      "tags": ["ai", "claude-code", "skills"],
+      "tags": [
+        "ai",
+        "claude-code",
+        "skills"
+      ],
       "addedAt": "2024-01-15",
       "updatedAt": "2024-01-15",
       "builtin": true
@@ -15,7 +19,13 @@
       "name": "notebooklm-skill",
       "description": "让 Claude Code 直接与 Google NotebookLM 交互，查询已上传文档并获取基于来源、带引用的回答。支持浏览器自动化、笔记本库管理和持久认证",
       "url": "https://github.com/PleasePrompto/notebooklm-skill",
-      "tags": ["ai", "claude-code", "notebooklm", "google", "rag"],
+      "tags": [
+        "ai",
+        "claude-code",
+        "notebooklm",
+        "google",
+        "rag"
+      ],
       "addedAt": "2025-05-09",
       "updatedAt": "2025-05-09",
       "builtin": true
@@ -25,7 +35,13 @@
       "name": "qiaomu-anything-to-notebooklm",
       "description": "多源内容处理器，支持微信公众号、网页、YouTube、PDF、Markdown 等格式导入 NotebookLM，可生成 Podcast、PPT、思维导图、测验等多种输出",
       "url": "https://github.com/joeseesun/qiaomu-anything-to-notebooklm",
-      "tags": ["ai", "claude-code", "notebooklm", "automation", "content-processing"],
+      "tags": [
+        "ai",
+        "claude-code",
+        "notebooklm",
+        "automation",
+        "content-processing"
+      ],
       "addedAt": "2025-05-09",
       "updatedAt": "2025-05-09",
       "builtin": true
@@ -35,7 +51,13 @@
       "name": "qiaomu-opencli-skills",
       "description": "通过 opencli CLI 与主流社交和内容平台交互，支持 Bilibili、知乎、Twitter/X、YouTube、微博、小红书、V2EX、Reddit、HackerNews、雪球、BOSS直聘等",
       "url": "https://github.com/joeseesun/qiaomu-opencli-skills",
-      "tags": ["ai", "claude-code", "opencli", "social-media", "content-platform"],
+      "tags": [
+        "ai",
+        "claude-code",
+        "opencli",
+        "social-media",
+        "content-platform"
+      ],
       "addedAt": "2026-05-11",
       "updatedAt": "2026-05-11",
       "builtin": true
@@ -45,7 +67,11 @@
       "name": "autoskills",
       "description": "One command. Your entire AI skill stack. Installed.",
       "url": "https://github.com/midudev/autoskills",
-      "tags": ["ai", "claude-code", "skills"],
+      "tags": [
+        "ai",
+        "claude-code",
+        "skills"
+      ],
       "addedAt": "2026-05-11",
       "updatedAt": "2026-05-11",
       "builtin": true
@@ -55,9 +81,36 @@
       "name": "magebyte-power",
       "description": "7-phase feature development workflow with 4-round cross-verification for Claude Code — catches concurrency, idempotency and cross-service bugs before production",
       "url": "https://github.com/MageByte-Zero/magebyte-power",
-      "tags": ["ai-workflow", "anthropic", "backend", "claude", "claude-code", "code-review", "developer-tools", "prompt-engineering", "software-engineering", "superpowers"],
+      "tags": [
+        "ai-workflow",
+        "anthropic",
+        "backend",
+        "claude",
+        "claude-code",
+        "code-review",
+        "developer-tools",
+        "prompt-engineering",
+        "software-engineering",
+        "superpowers"
+      ],
       "addedAt": "2026-05-11",
       "updatedAt": "2026-05-11",
+      "builtin": true
+    },
+    {
+      "id": "builtin-skills",
+      "name": "skills",
+      "description": "面向真实工程师的 Claude Code 技能集合，直接来自 Matt Pocock 的 .claude 目录（to-issues / to-prd / diagnose / tdd / zoom-out 等生产级技能）",
+      "url": "https://github.com/mattpocock/skills",
+      "tags": [
+        "ai",
+        "claude-code",
+        "engineering",
+        "skills",
+        "mattpocock"
+      ],
+      "addedAt": "2026-06-03",
+      "updatedAt": "2026-06-03",
       "builtin": true
     }
   ]
