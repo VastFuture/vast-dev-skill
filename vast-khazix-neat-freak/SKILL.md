@@ -196,7 +196,60 @@ API 速查表、环境变量表、术语表是高频查询的结构化信息，*
 
 **发现之前的同步漏了东西**：修掉。不要说"那不是这次对话的事"——你就是这个项目的持续编辑，过去的漏洞也归你管。
 
+## docs-pipeline 适配指南
+
+如果项目使用了 **[docs-pipeline](../docs-pipeline)** 搭建 AI 协作链路，文档结构会是 `prd/`、`design/`、`exec-plans/` 等，而不是传统的 `integration-guide.md`、`runbook.md`。此时需要区分两种项目类型：
+
+### 项目类型 1：AI 协作项目（内部工具）
+
+**特征**：不对外发布，主要服务 AI 协作开发流程
+
+**docs/ 结构**（由 docs-pipeline 创建）：
+- `prd/` — 需求文档
+- `design/` — 架构设计
+- `exec-plans/` — 执行计划
+- `handover/` — 交接清单
+- `context/` — AI 上下文（验证命令、环境变量）
+
+**同步映射**（neat-freak "四处都补" → docs-pipeline 目录）：
+- ~~integration-guide~~ → **不需要**（内部工具无需对外文档）
+- ~~architecture~~ → `docs/design/` + 根目录 `ARCHITECTURE.md`
+- ~~runbook~~ → `docs/context/project-context.md`（验证命令、环境变量）
+- ~~handoff/CHANGELOG~~ → `docs/handover/` + `docs/lessons/`
+
+**关键检查**：
+- [ ] 新增 API/路由：在 `docs/design/` 和 `ARCHITECTURE.md` 都出现了
+- [ ] 新增环境变量：在 `docs/context/project-context.md` 和 CLAUDE.md 都出现了
+- [ ] 新增功能：按"标准四步"同步（prd → design → exec-plans → handover）
+
+### 项目类型 2：对外发布项目（SDK、API、开源库）
+
+**特征**：需要对外文档，用户是下游开发者或最终用户
+
+**docs/ 结构**（两层）：
+- **外层**（对外文档，需手动创建）：
+  - `docs/README.md` — Quick Start
+  - `docs/API.md` — API 文档（integration-guide）
+  - `docs/RUNBOOK.md` — 运维手册
+  - 根目录 `ARCHITECTURE.md` — 工作原理
+- **内层**（AI 协作链路，docs-pipeline 创建）：
+  - `docs/prd/`、`docs/design/`、`docs/exec-plans/`
+
+**同步映射**（两层都要改）：
+- integration-guide → `docs/API.md`（外层）+ `docs/prd/`（内层需求）
+- architecture → 根目录 `ARCHITECTURE.md` + `docs/design/`（内层设计）
+- runbook → `docs/RUNBOOK.md`（外层）+ `docs/context/project-context.md`（内层）
+- handoff/CHANGELOG → `docs/handover/`（内层）
+
+**关键检查**（额外的，因为有两层）：
+- [ ] 对外文档（README/API/RUNBOOK）和内部文档（prd/design）都同步了
+- [ ] 对外示例代码（curl、SDK 调用）在 `docs/API.md` 中更新了
+- [ ] 内部设计决策在 `docs/design/` 中记录了
+
+**判断标准**：如果项目有 README.md 且包含"Installation"/"Quick Start"章节，通常需要对外文档层。
+
 ## 参考资料
 
 - **[references/sync-matrix.md](references/sync-matrix.md)** — 完整的"变更类型 → 要改哪些文件"映射表
 - **[references/agent-paths.md](references/agent-paths.md)** — Claude Code / Codex / OpenCode 各自的记忆与配置路径速查
+- **[../docs-pipeline/USAGE.md](../docs-pipeline/USAGE.md)** — docs-pipeline 使用指南（标准四步、防膨胀规则）

@@ -4,6 +4,59 @@
 
 ---
 
+## 渐进披露 - 两层文档系统
+
+docs-pipeline 默认创建的 docs/ 结构服务于 **AI 协作链路**（prd、design、exec-plans），但当项目需要对外发布（SDK、API、开源库）时，需要增加**对外文档层**。
+
+### 内层（必需，所有项目）：AI 协作链路
+
+由 docs-pipeline 自动创建：
+- `docs/prd/` — 需求文档
+- `docs/design/` — 架构设计
+- `docs/exec-plans/` — 执行计划
+- `docs/handover/` — 交接清单
+- `docs/context/` — AI 上下文（验证命令、环境变量）
+- `docs/backlog/`、`docs/issues/`、`docs/lessons/`
+
+**受众**：AI 和项目团队内部
+
+### 外层（可选，对外项目）：用户文档
+
+需要手动创建：
+- `docs/README.md` — Quick Start（安装、第一个示例）
+- `docs/API.md` — API 文档（curl 示例、SDK 调用、错误码）
+- `docs/RUNBOOK.md` — 运维手册（部署、监控、故障排查）
+- 根目录 `ARCHITECTURE.md` — 工作原理（由 docs-pipeline 生成）
+
+**受众**：下游开发者、最终用户、运维人员
+
+### 判断标准
+
+**需要对外文档层**的项目特征：
+- 有 README.md 且包含"Installation"/"Quick Start"章节
+- 对外提供 API、SDK 或开源库
+- 下游开发者需要集成你的服务
+
+**不需要对外文档层**的项目特征：
+- 内部工具、脚本、后台服务
+- 只有团队成员使用
+- 不对外发布
+
+### 同步策略
+
+当使用 [neat-freak](../vast-khazix-neat-freak) 同步文档时，对外项目需要同步**两层**：
+
+| 变更类型 | 内层（AI 协作） | 外层（对外文档） |
+|---------|----------------|----------------|
+| 新增 API | `docs/design/` | `docs/API.md`（怎么用） |
+| 新增功能 | `docs/prd/` → `docs/handover/` | `docs/README.md`（更新示例） |
+| 环境变量 | `docs/context/project-context.md` | `docs/RUNBOOK.md` |
+| 架构变更 | `docs/design/` | 根目录 `ARCHITECTURE.md` |
+
+详见 [neat-freak 的 docs-pipeline 适配指南](../vast-khazix-neat-freak/SKILL.md#docs-pipeline-适配指南)。
+
+---
+
 ## Pensieve 集成（可选插件）
 
 > Pensieve 是可选的版本控制增强工具，**不在默认安装范围内**。
