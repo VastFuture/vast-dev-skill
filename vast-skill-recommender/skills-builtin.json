@@ -112,6 +112,24 @@
       "addedAt": "2026-06-03",
       "updatedAt": "2026-06-03",
       "builtin": true
+    },
+    {
+      "id": "builtin-claude-hud",
+      "name": "claude-hud",
+      "description": "Claude Code 状态栏插件，实时显示上下文用量、活跃工具、运行中的 agent 和 todo 进度",
+      "url": "https://github.com/jarrodwatts/claude-hud",
+      "tags": [
+        "anthropic",
+        "claude",
+        "claude-code",
+        "cli",
+        "plugin",
+        "statusline",
+        "typescript"
+      ],
+      "addedAt": "2026-06-04",
+      "updatedAt": "2026-06-04",
+      "builtin": true
     }
   ]
 }
