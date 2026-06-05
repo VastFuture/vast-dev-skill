@@ -140,6 +140,15 @@
 > 编码指南见 [karpathy-guidelines.md](./docs/agent-guides/karpathy-guidelines.md)。
 > <!-- TODO(docs-pipeline): 在此追加项目特有的代码风格、API 约定、命名规则等。无则保留上面那行即可 -->
 
+### 先读这里
+
+编写非平凡代码前，必须先读取：
+
+- `docs/context/project-context.md` — 项目上下文
+- `docs/context/ai-autonomy-policy.md` — AI 自主级别策略
+- `docs/context/codebase-map.md` — 代码库地图
+- 项目上下文中列出的活跃需求和活跃 owner doc
+
 ### 开发规范
 
 - 每次提交代码前，必须在开发环境中充分测试所有改动，确认无回归
@@ -165,15 +174,17 @@
 
 | 触发条件 | 说明 |
 |---------|------|
-| 涉及数据库 schema 变更 | 高风险变更 |
-| 跨 3 个以上模块的功能 | 多模块共享变更 |
-| 需要分阶段交付的中大型功能 | 需分阶段 |
-| 重构或迁移类任务 | 高复杂性 |
-| 修改超过 5 个文件或 ~200+ 行变更 | 大规模变更 |
+| 变更 API、数据库/模型、认证、集成、部署或公共契约 | 高风险变更 |
+| 跨越多个功能表面的用户可见行为变更 | 跨表面变更 |
+| 触及多个模块并改变共享行为 | 多模块变更 |
+| 需要分阶段执行或明确的闭包门控 | 需分阶段 |
+| 修改超过 5 个文件或约 200+ 行变更 | 大规模变更 |
 | 预计需要多个 AI 会话 | 长期任务 |
-| 有未解决的产品或技术风险 | 有风险 |
+| 有未解决的产品或技术风险不能隐藏 | 有未解决风险 |
 
 **可跳过**：本地低风险编辑（文案改动、小样式修复、仅测试清理、有清晰测试的单文件修复）。
+
+所有创建的计划**必须**在实施前通过独立计划审计，在标记完成前通过独立闭包审计。
 
 计划放 `docs/exec-plans/active/`，完成后移至 `completed/`，模板见 `docs/exec-plans/README.md`。
 
@@ -194,7 +205,7 @@
 9. **信息缺失时写入文件**：将缺失的假设写入需求、讨论或计划文件，而非默默发明。
 10. **使用 backlog 和自主策略**：用 `docs/backlog/` 和 `docs/context/ai-autonomy-policy.md` 决定 AI 是否可以自行选择和执行下一个任务。
 
-### 默认工作流（11步）
+### 默认工作流（12步）
 
 1. 读取或更新 `docs/context/`
 2. 选择工作时查看 `docs/backlog/`
@@ -206,7 +217,8 @@
 8. 实现最小完整切片
 9. 运行验证
 10. 闭包审计
-11. 需要时记录 `docs/lessons/`
+11. 文档同步检查（代码变更 → 提示更新 `docs/standards/` + `docs/designs/`）
+12. 需要时记录 `docs/lessons/`
 
 ### 文档所有权
 
@@ -219,6 +231,8 @@
 | `docs/design/` | 稳定的应用层业务和功能设计 |
 | `docs/exec-plans/` | 非平凡工作的执行和闭包标准 |
 | `docs/lessons/` | 持久可复用的工程教训 |
+| `docs/standards/` | 开发规范（分层、API、DB、安全、命名），相对稳定 |
+| `docs/designs/` | 系统设计现状（API、DB、业务规则、数据字典），高频更新 |
 
 ## 自检命令
 
@@ -231,6 +245,32 @@
 | 完整 E2E | `<跨页面 / 跨服务的端到端测试，~分钟级>` | 大改动或发布前 |
 
 修改代码后，commit 前至少确保**快速检查**通过；UI 改动时额外运行**冒烟测试**。
+
+## 📋 PR / Change Checklist
+
+**提交代码前必须检查，确保变更质量**：
+
+### 文档同步（强制）
+
+- [ ] `docs/designs/` 同步检查（已更新 / 不涉及）
+  - 新增/修改 API → 更新 `docs/designs/api.yaml`
+  - 新增/修改数据表 → 更新 `docs/designs/db.md`
+  - 新增/修改业务规则 → 更新 `docs/designs/others/businessrule.md`
+  - 新增/修改数据字典 → 更新 `docs/designs/others/data-dict.md`
+
+### 代码质量
+
+- [ ] 分层检查：adapter 不含业务逻辑；domain 不依赖 infrastructure；事务边界在 application
+- [ ] 错误处理：业务校验使用 `BusinessException`，避免裸 `RuntimeException`
+- [ ] DTO/映射：新增字段同步更新 Assembler/Converter，并保证向后兼容
+- [ ] 安全：不记录 token/敏感信息；对外接口做鉴权/越权检查
+- [ ] 验证：本地至少运行相关模块的测试
+
+### 测试覆盖
+
+- [ ] 新增 API 有集成测试
+- [ ] 至少覆盖 1 个 Happy Path + 关键失败分支
+- [ ] DB 相关用例可重复执行
 
 ## 经验教训
 
