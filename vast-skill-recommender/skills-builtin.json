@@ -130,6 +130,49 @@
       "addedAt": "2026-06-04",
       "updatedAt": "2026-06-04",
       "builtin": true
+    },
+    {
+      "id": "builtin-guizang-ppt-skill",
+      "name": "guizang-ppt-skill",
+      "description": "AI-agent 技能，生成精美的 HTML 演示文稿（editorial 杂志风与 Swiss 设计）、图片 prompt、社交封面，以及 WebGL/低功耗演示运行时",
+      "url": "https://github.com/op7418/guizang-ppt-skill",
+      "tags": [
+        "ai-agent",
+        "claude-code",
+        "codex",
+        "html-deck",
+        "image-generation",
+        "ppt",
+        "presentation",
+        "skill",
+        "skills",
+        "swiss-design",
+        "web-ppt"
+      ],
+      "addedAt": "2026-06-05",
+      "updatedAt": "2026-06-05",
+      "builtin": true
+    },
+    {
+      "id": "builtin-ppt-master",
+      "name": "ppt-master",
+      "description": "AI 从任意文档生成可编辑的 PowerPoint——原生形状与动画、演讲者备注可转语音旁白，并支持套用自有 .pptx 模板（非幻灯片截图）",
+      "url": "https://github.com/hugohe3/ppt-master",
+      "tags": [
+        "ai-agent",
+        "aippt",
+        "office",
+        "powerpoint",
+        "powerpoint-generation",
+        "ppt",
+        "pptx",
+        "presentation",
+        "slide",
+        "slides"
+      ],
+      "addedAt": "2026-06-05",
+      "updatedAt": "2026-06-05",
+      "builtin": true
     }
   ]
 }
