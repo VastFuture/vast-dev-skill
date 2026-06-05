@@ -4,6 +4,26 @@
 
 基于 [AGE (Attractor-Guided Engineering)](https://github.com/entropy-cloud/attractor-guided-engineering-template) 增强：Task Routing + Planning Triggers + Verification Baseline。
 
+## 参考项目
+
+- [ddd-harness-microservices](https://github.com/domain-driven-design/ddd-harness-microservices) - DDD 微服务架构脚手架，包含完整的文档驱动开发流程
+
+## 目录结构
+
+```
+docs-pipeline/
+├── SKILL.md           # 核心指令文件
+├── README.md          # 用户文档
+├── USAGE.md           # 使用场景
+├── ADVANCED.md        # 高级功能
+├── CHANGELOG.md       # 更新日志
+├── assets/templates/  # 模板文件
+├── references/        # 参考文档
+└── scripts/           # 测试脚本
+    ├── test-modes.sh
+    └── test-pipeline.sh
+```
+
 ## 使用
 
 在 Claude Code 里说：
@@ -47,6 +67,8 @@ backlog → prd → design → exec-plans/active → exec-plans/completed
 | `docs/design/` | 稳定的应用层设计基线 |
 | `docs/exec-plans/` | 执行计划（含 Plan/Closure 审计） |
 | `docs/lessons/` | 可复用的工程教训 |
+| `docs/standards/` | 开发规范（分层、API、DB、安全、命名），相对稳定 |
+| `docs/designs/` | 系统设计现状（API、DB、业务规则、数据字典），高频更新 |
 
 ## 行为契约
 

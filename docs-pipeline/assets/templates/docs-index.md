@@ -74,6 +74,8 @@
 | `docs/design/` | 稳定的应用层设计基线 |
 | `docs/exec-plans/` | 执行计划（含 Plan/Closure 审计） |
 | `docs/lessons/` | 可复用的工程教训 |
+| `docs/standards/` | 开发规范（分层、API、DB、安全、命名），相对稳定 |
+| `docs/designs/` | 系统设计现状（API、DB、业务规则、数据字典），高频更新 |
 
 ### 可选（按需激活）
 
@@ -98,6 +100,10 @@
 - design 承载必须保持不变的东西
 - exec-plans 承载非平凡切片如何闭包
 - lessons 承载出了什么问题以及如何避免
+- standards 承载开发规范（相对稳定，低频更新）
+- designs 承载系统现状（高频更新，每次变更后同步）
+
+**文档同步规则**：每次代码变更后，检查 `docs/designs/` 是否需要更新。详见 `docs/designs/README.md`。
 
 ## 命名规则
 

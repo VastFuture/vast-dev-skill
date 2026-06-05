@@ -7,7 +7,7 @@ set -e
 
 TEST_DIR="/tmp/docs-pipeline-test-$(date +%s)"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-TEMPLATES_DIR="$SCRIPT_DIR/assets/templates"
+TEMPLATES_DIR="$(dirname "$SCRIPT_DIR")/assets/templates"
 
 echo "🧪 docs-pipeline 实际运行测试"
 echo "=================================="
@@ -126,13 +126,13 @@ echo "🤖 Step 6: 创建根级 AI 代理模板..."
 # 复制根级模板
 cp "$TEMPLATES_DIR/CLAUDE.md" "$TEST_DIR/"
 cp "$TEMPLATES_DIR/AGENTS.md" "$TEST_DIR/"
-cp "$TEMPLATES_DIR/MBTI_DEV_TRAPS.md" "$TEST_DIR/"
-cp "$TEMPLATES_DIR/karpathy-guidelines.md" "$TEST_DIR/"
-cp "$TEMPLATES_DIR/output-modes.md" "$TEST_DIR/"
-cp "$TEMPLATES_DIR/engineering-rules.md" "$TEST_DIR/"
-cp "$TEMPLATES_DIR/plan-mode.md" "$TEST_DIR/"
-cp "$TEMPLATES_DIR/requirement-confirmation.md" "$TEST_DIR/"
-cp "$TEMPLATES_DIR/content-organization.md" "$TEST_DIR/"
+cp "$TEMPLATES_DIR/docs-agent-guides/MBTI_DEV_TRAPS.md" "$TEST_DIR/"
+cp "$TEMPLATES_DIR/docs-agent-guides/karpathy-guidelines.md" "$TEST_DIR/"
+cp "$TEMPLATES_DIR/docs-agent-guides/output-modes.md" "$TEST_DIR/"
+cp "$TEMPLATES_DIR/docs-agent-guides/engineering-rules.md" "$TEST_DIR/"
+cp "$TEMPLATES_DIR/docs-agent-guides/plan-mode.md" "$TEST_DIR/"
+cp "$TEMPLATES_DIR/docs-agent-guides/requirement-confirmation.md" "$TEST_DIR/"
+cp "$TEMPLATES_DIR/docs-agent-guides/content-organization.md" "$TEST_DIR/"
 cp "$TEMPLATES_DIR/mcp.json" "$TEST_DIR/.mcp.json"
 
 # 创建 .claude/commands/ideas.md

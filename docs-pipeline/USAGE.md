@@ -87,6 +87,49 @@
 
 ---
 
+## 场景 6：代码变更后文档同步
+
+**重要**：每次代码变更后，检查 `docs/designs/` 和 `docs/standards/` 是否需要更新。
+
+**同步检查规则**：
+
+| 变更类型 | 需要更新的文档 |
+|----------|---------------|
+| 新增/修改 API | `docs/designs/api.yaml` |
+| 新增/修改数据表 | `docs/designs/db.md` |
+| 新增/修改业务规则 | `docs/designs/others/businessrule.md` |
+| 新增/修改数据字典 | `docs/designs/others/data-dict.md` |
+| 修改分层架构 | `docs/standards/layers.md` |
+| 修改 API 规范 | `docs/standards/api.md` |
+| 修改数据库规范 | `docs/standards/db.md` |
+| 修改安全规范 | `docs/standards/security.md` |
+
+**同步流程**：
+
+1. 完成代码变更
+2. 检查变更涉及的文档类型
+3. 更新对应文档
+4. 在 PR 描述中确认文档已同步
+
+**PR Checklist**：
+
+```markdown
+## 文档同步检查
+
+- [ ] `docs/designs/` 同步检查（已更新 / 不涉及）
+  - 新增/修改 API → 更新 `docs/designs/api.yaml`
+  - 新增/修改数据表 → 更新 `docs/designs/db.md`
+  - 新增/修改业务规则 → 更新 `docs/designs/others/businessrule.md`
+  - 新增/修改数据字典 → 更新 `docs/designs/others/data-dict.md`
+```
+
+**为什么重要**：
+- `docs/designs/` 反映系统当前状态，必须与代码保持同步
+- 新人可以通过文档快速了解系统现状
+- 减少沟通成本，避免"代码已改但文档过时"的问题
+
+---
+
 ## 文档决策树
 
 当你不确定一个信息应该放在哪里时，参考以下决策树：
@@ -111,12 +154,18 @@
 开发完成
   ├─ 已完成功能 → handover/（交接清单、已知问题）
   ├─ 经验教训 → lessons/（可复用的工程教训）
+  ↓
+文档同步
+  ├─ 开发规范 → standards/（分层、API、DB、安全、命名，相对稳定）
+  ├─ 系统现状 → designs/（API、DB、业务规则、数据字典，高频更新）
 ```
 
 **关键区别**：
 - **ideas/** vs **backlog/**：ideas 是零结构的灵感池，backlog 是已明确的待办任务
 - **backlog/** vs **prd/**：backlog 标记"要做"，prd 详细说明"怎么做"
 - **issues/** vs **lessons/**：issues 记录单个 bug，lessons 提取可复用的教训
+- **standards/** vs **designs/**：standards 是开发规范（相对稳定），designs 是系统现状（高频更新）
+- **design/** vs **designs/**：design 是稳定的应用层设计基线，designs 是系统当前状态的快照
 
 ---
 

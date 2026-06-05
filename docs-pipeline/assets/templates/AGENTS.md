@@ -169,6 +169,8 @@
 | `docs/design/` | 稳定的应用层业务和功能设计 |
 | `docs/exec-plans/` | 非平凡工作的执行和闭包标准 |
 | `docs/lessons/` | 持久可复用的工程教训 |
+| `docs/standards/` | 开发规范（分层、API、DB、安全、命名），相对稳定 |
+| `docs/designs/` | 系统设计现状（API、DB、业务规则、数据字典），高频更新 |
 
 ---
 
@@ -256,6 +258,34 @@
 - [ ] 已记录 ≥2 步计划，使用 TodoWrite 追踪进度
 - [ ] 验证包括测试/检查及 `<self_reflection>` 自评
 - [ ] 最终交接包含文件引用（`file:line`）、风险和后续步骤
+
+---
+
+## 📋 PR / Change Checklist
+
+**提交代码前必须检查，确保变更质量**：
+
+### 文档同步（强制）
+
+- [ ] `docs/designs/` 同步检查（已更新 / 不涉及）
+  - 新增/修改 API → 更新 `docs/designs/api.yaml`
+  - 新增/修改数据表 → 更新 `docs/designs/db.md`
+  - 新增/修改业务规则 → 更新 `docs/designs/others/businessrule.md`
+  - 新增/修改数据字典 → 更新 `docs/designs/others/data-dict.md`
+
+### 代码质量
+
+- [ ] 分层检查：adapter 不含业务逻辑；domain 不依赖 infrastructure；事务边界在 application
+- [ ] 错误处理：业务校验使用 `BusinessException`，避免裸 `RuntimeException`
+- [ ] DTO/映射：新增字段同步更新 Assembler/Converter，并保证向后兼容
+- [ ] 安全：不记录 token/敏感信息；对外接口做鉴权/越权检查
+- [ ] 验证：本地至少运行相关模块的测试
+
+### 测试覆盖
+
+- [ ] 新增 API 有集成测试
+- [ ] 至少覆盖 1 个 Happy Path + 关键失败分支
+- [ ] DB 相关用例可重复执行
 
 ---
 

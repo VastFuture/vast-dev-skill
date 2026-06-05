@@ -1,9 +1,12 @@
 ---
 name: docs-pipeline
-description: Initialize or repair docs/ pipeline + root AI agent templates (CLAUDE.md, AGENTS.md, etc.) for any Claude Code project. Supports both inline docs/ and separate docs repo. Idempotent.基于 AGE (Attractor-Guided Engineering) 增强：Task Routing + Planning Triggers + Verification Baseline. 来源: https://github.com/entropy-cloud/attractor-guided-engineering-template. Use for: "初始化文档结构", "搭建 docs pipeline", "set up docs structure", "initialize docs pipeline", "fix docs structure".
+description: |
+  Initialize or repair docs/ pipeline + root AI agent templates for Claude Code projects.
+  Supports inline docs/ and separate docs repo modes. Idempotent.
+  Use for: "初始化文档结构", "搭建 docs pipeline", "set up docs structure".
 metadata:
   author: tracker-system
-  version: "4.3"
+  version: "4.4.0"
 allowed-tools: Bash Read Write Edit Glob Agent
 ---
 
@@ -233,21 +236,21 @@ mkdir -p "$docs_root/context" "$docs_root/backlog" "$docs_root/prd" "$docs_root/
 # Minimal 模式（7 个必需目录）
 if [ "$MODE" = "minimal" ]; then
   mkdir -p "$docs_root/context" "$docs_root/backlog" "$docs_root/prd" "$docs_root/exec-plans/active" "$docs_root/exec-plans/completed" "$docs_root/lessons" "$docs_root/agent-guides"
-  
-# Standard 模式（12 个核心目录，默认）
+
+# Standard 模式（14 个核心目录，默认）
 elif [ "$MODE" = "standard" ]; then
-  mkdir -p "$docs_root/context" "$docs_root/backlog" "$docs_root/prd" "$docs_root/design" "$docs_root/exec-plans/active" "$docs_root/exec-plans/completed" "$docs_root/research" "$docs_root/issues" "$docs_root/handover" "$docs_root/ideas" "$docs_root/lessons" "$docs_root/agent-guides"
+  mkdir -p "$docs_root/context" "$docs_root/backlog" "$docs_root/prd" "$docs_root/design" "$docs_root/exec-plans/active" "$docs_root/exec-plans/completed" "$docs_root/research" "$docs_root/issues" "$docs_root/handover" "$docs_root/ideas" "$docs_root/lessons" "$docs_root/agent-guides" "$docs_root/standards" "$docs_root/designs" "$docs_root/designs/others"
 fi
 ```
 
 **目录对照表**：
 
-| 模式 | context | backlog | prd | exec-plans | lessons | research | design | issues | handover | ideas | agent-guides |
-|------|---------|---------|-----|------------|---------|----------|--------|--------|----------|-------|--------------|
-| minimal | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ |
-| standard | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 模式 | context | backlog | prd | exec-plans | lessons | research | design | issues | handover | ideas | agent-guides | standards | designs |
+|------|---------|---------|-----|------------|---------|----------|--------|--------|----------|-------|--------------|-----------|---------|
+| minimal | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ | ❌ | ❌ |
+| standard | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 
-**核心目录**：context、backlog、research、prd、design、exec-plans、lessons、agent-guides
+**核心目录**：context、backlog、research、prd、design、exec-plans、lessons、agent-guides、standards、designs
 **可选目录**：ideas、handover、issues（以及按需激活的 input、discussions、audits、bugs、logs、testing、skills、retrospectives）
 
 ### 3. 写入 docs/ 模板
@@ -288,6 +291,18 @@ fi
 | `assets/templates/docs-agent-guides/plan-mode.md` | `$docs_root/agent-guides/plan-mode.md` |
 | `assets/templates/docs-agent-guides/requirement-confirmation.md` | `$docs_root/agent-guides/requirement-confirmation.md` |
 | `assets/templates/docs-agent-guides/content-organization.md` | `$docs_root/agent-guides/content-organization.md` |
+| `assets/templates/standards-README.md` | `$docs_root/standards/README.md` |
+| `assets/templates/standards-layers.md` | `$docs_root/standards/layers.md` |
+| `assets/templates/standards-api.md` | `$docs_root/standards/api.md` |
+| `assets/templates/standards-db.md` | `$docs_root/standards/db.md` |
+| `assets/templates/standards-security.md` | `$docs_root/standards/security.md` |
+| `assets/templates/standards-naming.md` | `$docs_root/standards/naming.md` |
+| `assets/templates/designs-README.md` | `$docs_root/designs/README.md` |
+| `assets/templates/designs-api.yaml` | `$docs_root/designs/api.yaml` |
+| `assets/templates/designs-db.md` | `$docs_root/designs/db.md` |
+| `assets/templates/designs-others-README.md` | `$docs_root/designs/others/README.md` |
+| `assets/templates/designs-others-businessrule.md` | `$docs_root/designs/others/businessrule.md` |
+| `assets/templates/designs-others-data-dict.md` | `$docs_root/designs/others/data-dict.md` |
 
 **根据模式选择模板**：
 
@@ -296,6 +311,13 @@ fi
 - context/ 下 4 个文件
 - backlog-README.md, prd-README.md, exec-plans-README.md, lessons-README.md
 - agent-guides/ 下 7 个辅助文档
+
+Standard 模式额外复制：
+- prd-TEMPLATE.md, exec-plans-TEMPLATE.md
+- research-README.md, design-README.md, issues-README.md, issues-TEMPLATE.md
+- handover-README.md, handover-TEMPLATE.md, ideas-README.md
+- standards/ 下 6 个文件（README.md, layers.md, api.md, db.md, security.md, naming.md）
+- designs/ 下 6 个文件（README.md, api.yaml, db.md, others/README.md, others/businessrule.md, others/data-dict.md）
 
 Standard 模式额外复制：
 - prd-TEMPLATE.md, exec-plans-TEMPLATE.md
@@ -435,6 +457,13 @@ CLAUDE.md 的写入由 step 4 完成。本步只做一件事：如果 step 4 走
 🔌 可选插件：
   - Pensieve: 未激活（设置 ENABLE_PENSIEVE=true 启用）
 
+🔄 文档同步状态（Standard 模式）：
+  - docs/designs/api.yaml: 无需更新 / 需要更新
+  - docs/designs/db.md: 无需更新 / 需要更新
+  - docs/designs/others/businessrule.md: 无需更新 / 需要更新
+  - docs/designs/others/data-dict.md: 无需更新 / 需要更新
+  - docs/standards/: 无需更新 / 需要更新
+
 ---
 
 ⏭️ 下一步（重要）：
@@ -442,6 +471,7 @@ CLAUDE.md 的写入由 step 4 完成。本步只做一件事：如果 step 4 走
 2. 📖 了解文档结构：打开 docs/index.md
 3. ✅ 添加第一个任务：编辑 docs/backlog/README.md
 4. 🧪 验证初始化：运行项目测试命令
+5. 🔄 同步文档：根据文档同步状态更新对应文档
 
 💡 快速入门指南：docs/CLAUDE.md
 ```
@@ -462,6 +492,108 @@ if [ -n "$OLD_FILES" ]; then
   echo "  旧文件列表：$OLD_FILES"
 fi
 ```
+
+### 10. 文档同步检查（Standard 模式）
+
+> 本步骤仅在 Standard 模式下执行，且仅在检测到代码变更时提示。
+
+**Step 10.1：检测代码变更**
+
+使用 Git 检测最近的代码变更：
+
+```bash
+# 检测最近的代码变更（最近 1 次提交）
+CHANGED_FILES=$(git diff --name-only HEAD~1 2>/dev/null || echo "NO_GIT")
+
+# 如果不是 git 仓库，跳过同步检查
+if [ "$CHANGED_FILES" = "NO_GIT" ]; then
+  echo "⏭️ 非 Git 仓库，跳过文档同步检查"
+  exit 0
+fi
+```
+
+**Step 10.2：分析变更类型**
+
+根据变更文件路径判断变更类型：
+
+```bash
+# 初始化变更类型
+CHANGED_TYPES=""
+
+# 检测 API 变更（Controller、DTO、Response）
+if echo "$CHANGED_FILES" | grep -qE "(Controller|Command|QueryDTO|Response|api\.yaml)"; then
+  CHANGED_TYPES="$CHANGED_TYPES\n  - API 变更"
+fi
+
+# 检测数据库变更（Mapper、PO、Entity、SQL）
+if echo "$CHANGED_FILES" | grep -qE "(Mapper|PO|entity|\.sql|db\.md)"; then
+  CHANGED_TYPES="$CHANGED_TYPES\n  - 数据库变更"
+fi
+
+# 检测业务规则变更（BusinessRule、Rule）
+if echo "$CHANGED_FILES" | grep -qE "(BusinessRule|Rule|businessrule\.md)"; then
+  CHANGED_TYPES="$CHANGED_TYPES\n  - 业务规则变更"
+fi
+
+# 检测数据字典变更（DataDict、Dictionary）
+if echo "$CHANGED_FILES" | grep -qE "(DataDict|Dictionary|data-dict\.md)"; then
+  CHANGED_TYPES="$CHANGED_TYPES\n  - 数据字典变更"
+fi
+
+# 检测规范变更（standards/ 目录）
+if echo "$CHANGED_FILES" | grep -qE "(standards/|layers\.md|api\.md|db\.md|security\.md|naming\.md)"; then
+  CHANGED_TYPES="$CHANGED_TYPES\n  - 规范变更"
+fi
+```
+
+**Step 10.3：提示同步更新**
+
+如果检测到变更类型，提示用户需要更新的文档：
+
+```bash
+if [ -n "$CHANGED_TYPES" ]; then
+  echo ""
+  echo "📋 文档同步检查"
+  echo ""
+  echo "🔍 检测到以下变更："
+  echo -e "$CHANGED_TYPES"
+  echo ""
+  echo "📝 建议检查以下文档是否需要更新："
+
+  # 根据变更类型提示对应文档
+  if echo "$CHANGED_TYPES" | grep -q "API 变更"; then
+    echo "  - docs/designs/api.yaml（API 现状）"
+  fi
+  if echo "$CHANGED_TYPES" | grep -q "数据库变更"; then
+    echo "  - docs/designs/db.md（数据库现状）"
+  fi
+  if echo "$CHANGED_TYPES" | grep -q "业务规则变更"; then
+    echo "  - docs/designs/others/businessrule.md（业务规则现状）"
+  fi
+  if echo "$CHANGED_TYPES" | grep -q "数据字典变更"; then
+    echo "  - docs/designs/others/data-dict.md（数据字典现状）"
+  fi
+  if echo "$CHANGED_TYPES" | grep -q "规范变更"; then
+    echo "  - docs/standards/（开发规范）"
+  fi
+
+  echo ""
+  echo "⏭️ 请在完成代码变更后，同步更新上述文档。"
+fi
+```
+
+**Step 10.4：生成同步报告**
+
+在执行报告中显示同步状态：
+
+```
+🔄 文档同步状态：
+  - docs/designs/api.yaml: 需要更新（检测到 API 变更）
+  - docs/designs/db.md: 无需更新
+  - docs/standards/layers.md: 无需更新
+```
+
+---
 
 ## 使用场景
 
