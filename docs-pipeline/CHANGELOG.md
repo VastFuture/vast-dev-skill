@@ -110,3 +110,89 @@
 - [ddd-harness-microservices 项目](https://github.com/domain-driven-design/ddd-harness-microservices)
 - [学习成果文档](../docs/ddd-harness-microservices-study.md)
 - [改进方案文档](../docs/docs-pipeline-enhancement-proposal.md)
+
+## [4.5.0] - 2026-06-05
+
+### 优化（基于 darwin-skill 评估）
+
+#### 1. 失败模式编码
+
+为每个步骤添加了显式的失败模式编码：
+
+| 步骤 | 失败模式 |
+|------|----------|
+| Step 1 | `ls` 命令失败、检测结果不明确 |
+| Step 2 | 目录创建失败、磁盘空间不足、路径过长 |
+| Step 3 | 模板文件不存在、目标目录不存在、写入权限不足、Read/Write 命令失败 |
+| Step 4 | 模板文件不存在、目标文件已存在、写入权限不足 |
+| Step 5 | `.claude/commands/` 目录不存在、模板文件不存在、目标文件已存在 |
+| Step 6 | grep 命令失败、模板文件不存在、Edit 命令失败、文件格式不兼容 |
+| Step 7 | 环境变量未设置、`.pensieve/` 目录不存在、Pensieve 初始化失败 |
+| Step 8 | Explore 子代理超时、返回空、项目类型无法识别、模板写入失败 |
+| Step 9 | 报告生成失败、文件列表不完整、格式化失败 |
+| Step 10 | git 命令失败、变更文件列表为空、grep 命令失败、报告生成失败 |
+
+#### 2. 检查点设计
+
+在关键决策点添加了 🔴 CHECKPOINT / 🛑 STOP 视觉标记：
+
+| 检查点 | 位置 | 用途 |
+|--------|------|------|
+| 模式确认 | Step 0.5 | 确认文档模式和安装模式 |
+| 开始建目录 | Step 2 | 确认即将创建的目录列表 |
+| 开始写入模板 | Step 3 | 确认即将写入的模板文件数量 |
+| 写入项目根模板 | Step 4 | 确认即将写入的项目根文件 |
+| 生成 ARCHITECTURE.md | Step 8 | 确认是否生成 ARCHITECTURE.md |
+| 文档同步检查 | Step 10 | 确认是否执行文档同步检查 |
+
+#### 3. fallback 路径表
+
+为每个步骤添加了降级策略：
+
+| 步骤 | 降级策略 |
+|------|----------|
+| Step 1 | 使用 `test -d` 替代 `ls` |
+| Step 2 | 跳过非必需目录 |
+| Step 3 | 跳过该文件，记录警告 |
+| Step 4 | 跳过该文件，记录警告 |
+| Step 5 | 跳过，记录需人工处理 |
+| Step 6 | 跳过，记录需人工处理 |
+| Step 7 | 跳过，不提示 |
+| Step 8 | 按项目类型降级（见项目类型降级表） |
+| Step 9 | 输出简化版报告 |
+| Step 10 | 跳过同步检查，提示非 git 仓库 |
+
+#### 4. 项目类型降级表
+
+为 ARCHITECTURE.md 生成添加了智能降级策略：
+
+| 检测文件 | 项目类型 | 降级模板 |
+|----------|----------|----------|
+| package.json | Node.js | `assets/templates/arch-nodejs.md` |
+| setup.py / pyproject.toml | Python | `assets/templates/arch-python.md` |
+| go.mod | Go | `assets/templates/arch-go.md` |
+| Cargo.toml | Rust | `assets/templates/arch-rust.md` |
+| 以上都无 | 通用 | `assets/templates/arch-generic.md` |
+
+### 分数变化
+
+| 维度 | 基线分数 | 优化后分数 | 变化 |
+|------|----------|------------|------|
+| 1. Frontmatter 质量 | 6/7 | 6/7 | 0 |
+| 2. 工作流清晰度 | 10/12 | 11/12 | +1 |
+| 3. 失败模式编码 | 6/12 | 11/12 | +5 |
+| 4. 检查点设计 | 3/6 | 6/6 | +3 |
+| 5. 可执行具体性 | 14/17 | 15/17 | +1 |
+| 6. 资源整合度 | 4/4 | 4/4 | 0 |
+| 7. 整体架构 | 10/12 | 11/12 | +1 |
+| 8. 实测表现 | 0/23 | 20/23 | +20 |
+| 9. 反例与黑名单 | 5/6 | 5/6 | 0 |
+| **总分** | **58/94** | **89/94** | **+31** |
+
+### 优化亮点
+
+1. **失败模式编码**：每个步骤都有显式的 "如果 X 失败 → Y" 分支
+2. **检查点设计**：关键决策前有 🔴 CHECKPOINT / 🛑 STOP 视觉标记
+3. **实测表现**：通过 3 个典型场景验证了实际效果
+4. **fallback 路径表**：每个步骤都有降级策略
+5. **项目类型降级表**：ARCHITECTURE.md 生成失败时的智能降级

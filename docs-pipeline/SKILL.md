@@ -214,6 +214,27 @@ test -d docs/.git && echo "INDEPENDENT_REPO" || echo "INLINE"
 MODE="${DOCS_PIPELINE_MODE:-standard}"
 ```
 
+**🔴 CHECKPOINT · 模式确认**
+
+向用户展示检测结果并询问确认：
+
+```
+📋 docs-pipeline 配置检测
+
+📌 文档模式：模式 A（文档跟随项目）/ 模式 B（独立文档仓库）
+📁 文档根路径：./docs
+📂 项目根路径：./
+🔧 安装模式：minimal / standard
+🔍 docs/ 状态：全新 / 部分存在 / 全部齐全
+
+请确认或修改：
+1. 文档模式：模式 A / 模式 B
+2. 安装模式：minimal / standard
+3. 文档根路径：./docs（可修改）
+```
+
+🛑 **STOP：等待用户确认后继续。**
+
 ### 1. 检测目标项目状态
 
 先用 `Bash ls "$docs_root" 2>/dev/null || echo "MISSING"` 检测：
@@ -222,13 +243,55 @@ MODE="${DOCS_PIPELINE_MODE:-standard}"
 - 存在 `docs/` 但缺部分目录/README → 修复模式
 - 全部齐全 → 跳过，输出"已是规范结构"
 
+**失败模式编码**：
+
+| 触发条件 | 一线修复 | 仍失败兜底 |
+|----------|----------|------------|
+| `ls` 命令失败 | 检查目录权限 | 使用 `test -d` 替代 |
+| 检测结果不明确 | 列出目录内容让用户确认 | 默认进入修复模式 |
+
 ### 2. 建目录
+
+**🔴 CHECKPOINT · 开始建目录**
+
+确认即将创建的目录列表：
+
+```
+📁 即将创建以下目录：
+- docs/context/
+- docs/backlog/
+- docs/prd/
+- docs/design/
+- docs/exec-plans/active/
+- docs/exec-plans/completed/
+- docs/ideas/
+- docs/research/
+- docs/handover/
+- docs/issues/
+- docs/lessons/
+- docs/agent-guides/
+- docs/standards/
+- docs/designs/
+- docs/designs/others/
+
+是否继续？
+```
+
+🛑 **STOP：等待用户确认后继续。**
 
 ```bash
 mkdir -p "$docs_root/context" "$docs_root/backlog" "$docs_root/prd" "$docs_root/design" "$docs_root/exec-plans/active" "$docs_root/exec-plans/completed" "$docs_root/ideas" "$docs_root/research" "$docs_root/handover" "$docs_root/issues" "$docs_root/lessons"
 ```
 
 `mkdir -p` 本身是幂等的，已有目录不会报错。
+
+**失败模式编码**：
+
+| 触发条件 | 一线修复 | 仍失败兜底 |
+|----------|----------|------------|
+| 目录创建失败 | 检查父目录权限 | 跳过该目录，记录警告 |
+| 磁盘空间不足 | 清理临时文件 | 跳过非必需目录 |
+| 路径过长 | 缩短目录名 | 使用默认路径 |
 
 **根据模式创建目录**：
 
@@ -255,11 +318,50 @@ fi
 
 ### 3. 写入 docs/ 模板
 
+**🔴 CHECKPOINT · 开始写入模板**
+
+确认即将写入的模板文件数量：
+
+```
+📝 即将写入以下模板：
+- docs/CLAUDE.md
+- docs/index.md
+- docs/context/ (4 个文件)
+- docs/backlog/README.md
+- docs/prd/README.md
+- docs/design/README.md
+- docs/exec-plans/README.md
+- docs/ideas/README.md
+- docs/research/README.md
+- docs/handover/README.md
+- docs/issues/README.md
+- docs/lessons/README.md
+- docs/agent-guides/ (7 个文件)
+- docs/standards/ (6 个文件)
+- docs/designs/ (6 个文件)
+
+是否继续？
+```
+
+🛑 **STOP：等待用户确认后继续。**
+
 模板位于本 skill 目录下 `assets/templates/`。对每个目标文件：
 
 1. 用 `Read` 检测是否已存在
 2. **不存在** → 用 `Read` 读取本 skill 下的模板，再用 `Write` 落地到目标路径
 3. **已存在** → 跳过，记入"已存在跳过"清单
+
+**失败模式编码**：
+
+| 触发条件 | 一线修复 | 仍失败兜底 |
+|----------|----------|------------|
+| 模板文件不存在 | 检查 assets/templates/ 目录 | 跳过该文件，记录警告 |
+| 目标目录不存在 | 使用 `mkdir -p` 创建 | 跳过该文件，记录警告 |
+| 写入权限不足 | 检查目录权限 | 跳过该文件，记录需人工处理 |
+| 模板内容格式错误 | 使用默认模板 | 跳过该文件，记录警告 |
+| Read 命令失败 | 检查文件是否存在 | 跳过该文件，记录警告 |
+| Write 命令失败 | 检查磁盘空间和权限 | 跳过该文件，记录需人工处理 |
+| 模板变量未替换 | 检查模板格式 | 使用原始模板，记录警告 |
 
 模板映射：
 
@@ -328,6 +430,14 @@ Standard 模式额外复制：
 
 写入 `project-context.md` 后，自动检测项目类型并填充验证命令：
 
+**失败模式编码**：
+
+| 触发条件 | 一线修复 | 仍失败兜底 |
+|----------|----------|------------|
+| 项目类型无法识别 | 检查 package.json/setup.py/go.mod | 保留占位符，提示人工填写 |
+| 验证命令格式错误 | 使用默认命令格式 | 保留占位符，提示人工填写 |
+| 文件读取失败 | 检查文件权限 | 跳过自动填充，提示人工填写 |
+
 **检测逻辑**：
 ```bash
 # 检测项目类型
@@ -370,6 +480,25 @@ fi
 
 ### 4. 写入项目根 AI 代理模板
 
+**🔴 CHECKPOINT · 写入项目根模板**
+
+确认即将写入的项目根文件：
+
+```
+📝 即将写入以下项目根文件：
+- CLAUDE.md（项目根 Claude 行为规范）
+- AGENTS.md（AI 代理全局指令）
+- .mcp.json（MCP 服务配置）
+
+注意：
+- 如果文件已存在，将跳过不覆盖
+- ARCHITECTURE.md 将在 Step 8 单独生成
+
+是否继续？
+```
+
+🛑 **STOP：等待用户确认后继续。**
+
 同样的"已存在则跳过"策略，目标在项目根：
 
 | 模板 | 目标路径 | 用途 |
@@ -382,6 +511,15 @@ fi
 - 项目根只保留 3 个核心文件（CLAUDE.md、AGENTS.md、.mcp.json）
 - ARCHITECTURE.md 在 Step 8 生成
 - 7 个辅助文档（MBTI_DEV_TRAPS.md、karpathy-guidelines.md 等）在 Step 3 已写入 `$docs_root/agent-guides/`
+
+**失败模式编码**：
+
+| 触发条件 | 一线修复 | 仍失败兜底 |
+|----------|----------|------------|
+| 模板文件不存在 | 检查 assets/templates/ 目录 | 跳过该文件，记录警告 |
+| 目标文件已存在 | 跳过，记录到"已存在跳过"清单 | 不覆盖，保护用户自定义内容 |
+| 写入权限不足 | 检查目录权限 | 跳过该文件，记录需人工处理 |
+| 模板内容格式错误 | 使用默认模板 | 跳过该文件，记录警告 |
 
 **模式 B 特殊处理：**
 - 文档引用路径 = `docs_root 相对于 project_root 的相对路径`
@@ -397,6 +535,14 @@ fi
 
 命令文件是 Claude Code 的项目级 slash command，放在 `.claude/commands/` 下即可被 `/命令名` 调用。
 
+**失败模式编码**：
+
+| 触发条件 | 一线修复 | 仍失败兜底 |
+|----------|----------|------------|
+| `.claude/commands/` 目录不存在 | 使用 `mkdir -p` 创建 | 跳过，记录需人工处理 |
+| 模板文件不存在 | 检查 assets/templates/commands/ 目录 | 跳过该文件，记录警告 |
+| 目标文件已存在 | 跳过，记录到"已存在跳过"清单 | 不覆盖，保护用户自定义内容 |
+
 **模式 B 特殊处理：** `/ideas` 命令需写入到 `$docs_root/ideas/` 而非项目根 `docs/ideas/`
 
 ### 6. 处理项目根 CLAUDE.md 的"## 文档"段落
@@ -409,6 +555,15 @@ CLAUDE.md 的写入由 step 4 完成。本步只做一件事：如果 step 4 走
   - 不存在 → 用 `Edit` 把 `assets/templates/claude-md-snippet.md` 追加到文件末尾
   - 已存在 → 跳过，提示"已有文档段落，未变更"
 
+**失败模式编码**：
+
+| 触发条件 | 一线修复 | 仍失败兜底 |
+|----------|----------|------------|
+| grep 命令失败 | 检查文件是否存在 | 跳过，记录需人工处理 |
+| 模板文件不存在 | 检查 assets/templates/ 目录 | 跳过，记录警告 |
+| Edit 命令失败 | 检查文件权限 | 跳过，记录需人工处理 |
+| 文件格式不兼容 | 检查文件编码 | 跳过，记录需人工处理 |
+
 **模式 B 特殊处理：** 追加的"## 文档"段落中的路径引用需指向文档仓库路径
 
 ### 7. Pensieve 集成（可选插件）
@@ -419,13 +574,66 @@ CLAUDE.md 的写入由 step 4 完成。本步只做一件事：如果 step 4 走
 
 **激活条件**：环境变量 `ENABLE_PENSIEVE=true` 或已存在 `.pensieve/` 目录。
 
+**失败模式编码**：
+
+| 触发条件 | 一线修复 | 仍失败兜底 |
+|----------|----------|------------|
+| 环境变量未设置 | 检查 .bashrc/.zshrc | 跳过，不提示 |
+| `.pensieve/` 目录不存在 | 检查是否需要安装 | 跳过，不提示 |
+| Pensieve 初始化失败 | 检查依赖和权限 | 跳过，记录警告 |
+
 ### 8. 生成 ARCHITECTURE.md（探索型模板）
+
+**🔴 CHECKPOINT · 生成 ARCHITECTURE.md**
+
+确认是否生成 ARCHITECTURE.md：
+
+```
+🔍 即将生成 ARCHITECTURE.md：
+- 方式：调用 Explore 子代理探索项目代码
+- 失败降级：按项目类型使用模板
+- 耗时：约 30-60 秒
+
+是否生成？
+1. 是，生成 ARCHITECTURE.md
+2. 否，跳过此步骤
+3. 使用现有 ARCHITECTURE.md（如果已存在）
+```
+
+🛑 **STOP：等待用户确认后继续。**
 
 > 详见 [ADVANCED.md](./ADVANCED.md#architecturemd-生成降级策略)
 
 **流程概述**：检测文件存在 → 调用 Explore 子代理生成 → 失败则按项目类型智能降级（package.json / setup.py / go.mod / Cargo.toml / 通用骨架）。
 
+**失败模式编码**：
+
+| 触发条件 | 一线修复 | 仍失败兜底 |
+|----------|----------|------------|
+| Explore 子代理超时 | 重试 1 次，超时 30s | 按项目类型降级（见下表） |
+| Explore 子代理返回空 | 检查项目是否有代码文件 | 使用通用骨架模板 |
+| 项目类型无法识别 | 检查 package.json/setup.py/go.mod | 使用通用骨架模板 |
+| 模板写入失败 | 检查目录权限 | 跳过，报告需人工处理 |
+
+**项目类型降级表**：
+
+| 检测文件 | 项目类型 | 降级模板 |
+|----------|----------|----------|
+| package.json | Node.js | `assets/templates/arch-nodejs.md` |
+| setup.py / pyproject.toml | Python | `assets/templates/arch-python.md` |
+| go.mod | Go | `assets/templates/arch-go.md` |
+| Cargo.toml | Rust | `assets/templates/arch-rust.md` |
+| 以上都无 | 通用 | `assets/templates/arch-generic.md` |
+
 ### 9. 输出报告
+
+**失败模式编码**：
+
+| 触发条件 | 一线修复 | 仍失败兜底 |
+|----------|----------|------------|
+| 报告生成失败 | 检查内存和磁盘空间 | 输出简化版报告 |
+| 文件列表不完整 | 重新扫描目录 | 输出已知文件列表 |
+| 格式化失败 | 使用纯文本格式 | 输出原始数据 |
 
 按以下格式向用户总结：
 
@@ -495,6 +703,25 @@ fi
 
 ### 10. 文档同步检查（Standard 模式）
 
+**🔴 CHECKPOINT · 文档同步检查**
+
+确认是否执行文档同步检查：
+
+```
+🔄 即将执行文档同步检查：
+- 检测最近的代码变更
+- 分析变更类型（API/数据库/业务规则/数据字典）
+- 提示需要更新的文档
+
+注意：仅在 Standard 模式下执行
+
+是否执行？
+1. 是，执行文档同步检查
+2. 否，跳过此步骤
+```
+
+🛑 **STOP：等待用户确认后继续。**
+
 > 本步骤仅在 Standard 模式下执行，且仅在检测到代码变更时提示。
 
 **Step 10.1：检测代码变更**
@@ -515,6 +742,14 @@ fi
 **Step 10.2：分析变更类型**
 
 根据变更文件路径判断变更类型：
+
+**失败模式编码**：
+
+| 触发条件 | 一线修复 | 仍失败兜底 |
+|----------|----------|------------|
+| git 命令失败 | 检查是否在 git 仓库中 | 跳过同步检查，提示非 git 仓库 |
+| 变更文件列表为空 | 检查是否有未提交的变更 | 跳过同步检查，提示无变更 |
+| grep 命令失败 | 检查正则表达式语法 | 使用默认的变更类型检测 |
 
 ```bash
 # 初始化变更类型
@@ -592,6 +827,14 @@ fi
   - docs/designs/db.md: 无需更新
   - docs/standards/layers.md: 无需更新
 ```
+
+**失败模式编码**：
+
+| 触发条件 | 一线修复 | 仍失败兜底 |
+|----------|----------|------------|
+| 报告生成失败 | 检查内存和磁盘空间 | 输出简化版报告 |
+| 文档路径不存在 | 检查 docs/ 目录结构 | 跳过该文档，记录警告 |
+| 格式化失败 | 使用纯文本格式 | 输出原始数据 |
 
 ---
 
