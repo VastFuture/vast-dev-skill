@@ -173,6 +173,23 @@
       "addedAt": "2026-06-05",
       "updatedAt": "2026-06-05",
       "builtin": true
+    },
+    {
+      "id": "builtin-huashu-bookwriter",
+      "name": "huashu-bookwriter",
+      "description": "花叔风格的书籍创作框架(逆向工程版)，含 3 种书籍蓝图、3 种章节模板、写作风格 DNA、质量检查清单、PDF 导出与多 Agent 协作",
+      "url": "https://github.com/ZeroxZhang/huashu-bookwriter",
+      "tags": [
+        "huashu",
+        "bookwriting",
+        "writing",
+        "reverse-engineering",
+        "pdf-export",
+        "multi-agent"
+      ],
+      "addedAt": "2026-06-05",
+      "updatedAt": "2026-06-05",
+      "builtin": true
     }
   ]
 }
