@@ -190,6 +190,20 @@
       "addedAt": "2026-06-05",
       "updatedAt": "2026-06-05",
       "builtin": true
+    },
+    {
+      "id": "builtin-dbskill",
+      "name": "dbskill",
+      "description": "dontbesilent 的商业诊断 Skills",
+      "url": "https://github.com/dontbesilent2025/dbskill",
+      "tags": [
+        "business",
+        "diagnosis",
+        "skills"
+      ],
+      "addedAt": "2026-06-08",
+      "updatedAt": "2026-06-08",
+      "builtin": true
     }
   ]
 }
