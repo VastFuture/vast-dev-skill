@@ -220,6 +220,22 @@
       "addedAt": "2026-06-08",
       "updatedAt": "2026-06-08",
       "builtin": true
+    },
+    {
+      "id": "builtin-sensenova-skills",
+      "name": "SenseNova-Skills",
+      "description": "模块化 SenseNova 技能集，用于构建 AI 驱动的办公助手和生产力工作流",
+      "url": "https://github.com/OpenSenseNova/SenseNova-Skills",
+      "tags": [
+        "ai-agent",
+        "office-automation",
+        "data-analysis",
+        "document-processing",
+        "presentation-slides"
+      ],
+      "addedAt": "2026-06-08",
+      "updatedAt": "2026-06-08",
+      "builtin": true
     }
   ]
 }
