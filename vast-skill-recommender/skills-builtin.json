@@ -204,6 +204,22 @@
       "addedAt": "2026-06-08",
       "updatedAt": "2026-06-08",
       "builtin": true
+    },
+    {
+      "id": "builtin-last30days-skill",
+      "name": "last30days-skill",
+      "description": "跨 Reddit、X、YouTube、HN、Polymarket 和网络研究任意话题，综合生成基于事实的深度摘要",
+      "url": "https://github.com/mvanhorn/last30days-skill",
+      "tags": [
+        "deep-research",
+        "social-media",
+        "trends",
+        "web-search",
+        "claude-code"
+      ],
+      "addedAt": "2026-06-08",
+      "updatedAt": "2026-06-08",
+      "builtin": true
     }
   ]
 }
