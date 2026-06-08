@@ -236,6 +236,22 @@
       "addedAt": "2026-06-08",
       "updatedAt": "2026-06-08",
       "builtin": true
+    },
+    {
+      "id": "builtin-gitnexus",
+      "name": "GitNexus",
+      "description": "零服务器代码智能引擎，纯浏览器端运行，支持 GitHub 仓库或 ZIP 文件导入，生成交互式知识图谱并内置 Graph RAG Agent",
+      "url": "https://github.com/abhigyanpatwari/GitNexus",
+      "tags": [
+        "code-exploration",
+        "knowledge-graph",
+        "rag",
+        "browser",
+        "code-intelligence"
+      ],
+      "addedAt": "2026-06-08",
+      "updatedAt": "2026-06-08",
+      "builtin": true
     }
   ]
 }
