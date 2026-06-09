@@ -10,9 +10,9 @@
 
 | 优先级 | 项目 | 需求 | Owner Doc | 计划 | 状态 | AI 自主级别 | 阻塞项 | 最后检查 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| P0 | `<第一个切片>` | `docs/prd/<path>` | `docs/design/<path>` | `docs/plans/<path-or-none>` | `needs-requirement` | `blocked` | `模板占位符未替换` | `<YYYY-MM-DD>` |
+| P0 | `<第一个切片>` | `docs/prd/<path>` | `docs/design/<path>` | `docs/exec-plans/active/<path-or-none>` | `needs-requirement` | `blocked` | `模板占位符未替换` | `<YYYY-MM-DD>` |
 | P1 | 修复登录页样式错乱 | `docs/prd/fix-login-style` | `docs/design/ui-fixes` | `none` | `ready` | `implement` | `none` | `2026-06-01` |
-| P2 | 添加用户权限管理模块 | `docs/prd/user-permissions` | `docs/design/auth-system` | `docs/plans/permissions-module` | `ready` | `plan-first` | `none` | `2026-06-01` |
+| P2 | 添加用户权限管理模块 | `docs/prd/user-permissions` | `docs/design/auth-system` | `docs/exec-plans/active/permissions-module` | `ready` | `plan-first` | `none` | `2026-06-01` |
 
 ## 就绪不变量
 

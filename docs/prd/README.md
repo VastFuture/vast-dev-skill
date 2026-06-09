@@ -45,4 +45,4 @@ Expert at transforming complex product requirements into structured, detailed sp
 |------|------|
 | `backlog/` | backlog/ 是待定事项，prd/ 是已确定的需求 |
 | `design/` | prd/ 是输入（要什么），design/ 是输出（怎么做） |
-| `plans/` | prd/ 定义需求，plans/ 规划实现 |
+| `exec-plans/` | prd/ 定义需求，plans/ 规划实现 |

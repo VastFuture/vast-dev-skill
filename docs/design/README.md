@@ -38,4 +38,4 @@ design/
 | `prd/` | PRD 是输入，design/ 是输出 |
 | `architecture/` | architecture/ 是技术约束，design/ 是业务实现 |
 | `standards/` | standards/ 是规范，design/ 是应用 |
-| `plans/` | plans/ 规划如何实现，design/ 定义实现什么 |
+| `exec-plans/` | plans/ 规划如何实现，design/ 定义实现什么 |

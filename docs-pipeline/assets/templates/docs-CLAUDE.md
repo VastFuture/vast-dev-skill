@@ -5,14 +5,14 @@
 ## 产物链路
 
 ```
-ideas（随手记）→ research（调研）→ prd（需求）→ plans/active（计划进行中）→ plans/completed（计划完成）
+ideas（随手记）→ research（调研）→ prd（需求）→ exec-plans/active（计划进行中）→ exec-plans/completed（计划完成）
                                                                                ↓
                                                                            lessons（踩坑教训，按需横切）
 ```
 
 **按需推进，不强制全流程：**
-- 小功能：直接进 `plans/`，无需 PRD
-- 中功能：`prd/` → `plans/` → `completed/`
+- 小功能：直接进 `exec-plans/active/`，无需 PRD
+- 中功能：`prd/` → `exec-plans/active/` → `completed/`
 - 大功能（schema 变更 / 跨 3+ 模块 / 分阶段交付）：走全流程
 - 踩坑了：当下写 `lessons/`，不等流程结束
 
@@ -29,7 +29,7 @@ ideas（随手记）→ research（调研）→ prd（需求）→ plans/active�
 | `requirements/` | 可实施需求综合 | 需求层面 |
 | `design/` | 稳定应用层业务和功能设计 | **应用层最高** |
 | `architecture/` | 跨领域技术和模块边界 | **技术层最高** |
-| `plans/` | 执行和闭包标准 | 无决策权威 |
+| `exec-plans/` | 执行和闭包标准 | 无决策权威 |
 | `audits/` | 审计工作流记录和方法论 | 审计权威 |
 
 ---
@@ -56,8 +56,8 @@ ideas（随手记）→ research（调研）→ prd（需求）→ plans/active�
 | `backlog/` | 工作队列、优先级排序 | 有任务时追加 |
 | `prd/` | 需求规格（做什么、为什么） | 需求明确时写 |
 | `design/` | 应用层设计 + 系统现状（SDD 双向同步） | 功能开发前写设计意图，代码完成后同步为现状 |
-| `plans/` | 执行计划（怎么做、做到哪） | 开工时建，频繁更新状态 |
-| `plans/completed/` | 已完成的历史计划 | 计划完成后从 `plans/` 搬家 |
+| `exec-plans/active/` | 执行计划（怎么做、做到哪） | 开工时建，频繁更新状态 |
+| `exec-plans/completed/` | 已完成的历史计划 | 计划完成后从 `active/` 搬家 |
 | `architecture/` | 技术基线、模块边界 | 架构决策时更新 |
 | `standards/` | 开发规范、代码标准 | 规则变更时更新 |
 | `lessons/` | 踩坑教训（XX 不能这么做） | 当下记录，独立于流程 |

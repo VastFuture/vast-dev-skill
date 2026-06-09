@@ -60,7 +60,7 @@ DOCS_PIPELINE_MODE=minimal /docs-pipeline
 
 #### Minimal（最小化）
 
-**目录**：context, backlog, prd, plans, lessons, agent-guides（6 个必需目录）
+**目录**：context, backlog, prd, exec-plans, lessons, agent-guides（6 个必需目录）
 
 **特点**：
 - 最快上手（< 5 分钟理解全部结构）
@@ -111,8 +111,9 @@ DOCS_PIPELINE_MODE=minimal /docs-pipeline
     │   └── README.md
     ├── design/               # ★ 应用层设计 + 系统现状（SDD）【必需】
     │   └── README.md
-    ├── plans/                # 执行计划、里程碑规划【必需】
+    ├── exec-plans/            # 执行计划、里程碑规划【必需】
     │   ├── README.md
+    │   ├── active/
     │   └── completed/
     ├── architecture/         # 技术基线、模块边界【推荐】
     │   └── README.md
@@ -165,7 +166,7 @@ docs/
 │                               │   ├── ideas/
 │                               │   ├── research/
 │                               │   ├── prd/
-│                               │   ├── plans/
+│                               │   ├── exec-plans/
 │                               │   ├── handover/
 │                               │   ├── issues/
 │                               │   └── lessons/
@@ -265,8 +266,9 @@ MODE="${DOCS_PIPELINE_MODE:-standard}"
 - docs/backlog/
 - docs/prd/
 - docs/design/
-- docs/plans/
-- docs/plans/completed/
+- docs/exec-plans/
+- docs/exec-plans/active/
+- docs/exec-plans/completed/
 - docs/ideas/
 - docs/research/
 - docs/handover/
@@ -283,7 +285,7 @@ MODE="${DOCS_PIPELINE_MODE:-standard}"
 🛑 **STOP：等待用户确认后继续。**
 
 ```bash
-mkdir -p "$docs_root/context" "$docs_root/backlog" "$docs_root/prd" "$docs_root/design" "$docs_root/plans" "$docs_root/plans/completed" "$docs_root/ideas" "$docs_root/research" "$docs_root/handover" "$docs_root/issues" "$docs_root/lessons"
+mkdir -p "$docs_root/context" "$docs_root/backlog" "$docs_root/prd" "$docs_root/design" "$docs_root/exec-plans/active" "$docs_root/exec-plans/completed" "$docs_root/ideas" "$docs_root/research" "$docs_root/handover" "$docs_root/issues" "$docs_root/lessons"
 ```
 
 `mkdir -p` 本身是幂等的，已有目录不会报错。
@@ -301,22 +303,22 @@ mkdir -p "$docs_root/context" "$docs_root/backlog" "$docs_root/prd" "$docs_root/
 ```bash
 # Minimal 模式（7 个必需目录）
 if [ "$MODE" = "minimal" ]; then
-  mkdir -p "$docs_root/context" "$docs_root/backlog" "$docs_root/prd" "$docs_root/plans" "$docs_root/plans/completed" "$docs_root/lessons" "$docs_root/agent-guides"
+  mkdir -p "$docs_root/context" "$docs_root/backlog" "$docs_root/prd" "$docs_root/exec-plans/active" "$docs_root/exec-plans/completed" "$docs_root/lessons" "$docs_root/agent-guides"
 
 # Standard 模式（11 个核心目录，默认）
 elif [ "$MODE" = "standard" ]; then
-  mkdir -p "$docs_root/context" "$docs_root/backlog" "$docs_root/prd" "$docs_root/design" "$docs_root/plans" "$docs_root/plans/completed" "$docs_root/research" "$docs_root/issues" "$docs_root/handover" "$docs_root/ideas" "$docs_root/lessons" "$docs_root/agent-guides" "$docs_root/standards" "$docs_root/logs"
+  mkdir -p "$docs_root/context" "$docs_root/backlog" "$docs_root/prd" "$docs_root/design" "$docs_root/exec-plans/active" "$docs_root/exec-plans/completed" "$docs_root/research" "$docs_root/issues" "$docs_root/handover" "$docs_root/ideas" "$docs_root/lessons" "$docs_root/agent-guides" "$docs_root/standards" "$docs_root/logs"
 fi
 ```
 
 **目录对照表**：
 
-| 模式 | context | backlog | prd | plans | lessons | research | design | issues | handover | ideas | agent-guides | standards |
+| 模式 | context | backlog | prd | exec-plans | lessons | research | design | issues | handover | ideas | agent-guides | standards |
 |------|---------|---------|-----|-------|---------|----------|--------|--------|----------|-------|--------------|-----------|
 | minimal | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ | ❌ |
 | standard | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 
-**核心目录**：context、backlog、prd、plans、lessons、design、standards、agent-guides
+**核心目录**：context、backlog、prd、exec-plans、lessons、design、standards、agent-guides
 **可选目录**：research、ideas、handover、issues（以及按需激活的 logs、input、discussions、audits、bugs、testing、skills、retrospectives）
 
 ### 3. 写入 docs/ 模板
@@ -333,7 +335,7 @@ fi
 - docs/backlog/README.md
 - docs/prd/README.md
 - docs/design/ (4 个文件：README + api + db + data-dict)
-- docs/plans/README.md
+- docs/exec-plans/README.md
 - docs/architecture/README.md
 - docs/standards/ (6 个文件)
 - docs/lessons/README.md
@@ -381,8 +383,8 @@ fi
 | `assets/templates/prd-README.md` | `$docs_root/prd/README.md` |
 | `assets/templates/prd-TEMPLATE.md` | `$docs_root/prd/TEMPLATE.md` |
 | `assets/templates/design-README.md` | `$docs_root/design/README.md` |
-| `assets/templates/plans-README.md` | `$docs_root/plans/README.md` |
-| `assets/templates/plans-TEMPLATE.md` | `$docs_root/plans/TEMPLATE.md` |
+| `assets/templates/exec-plans-README.md` | `$docs_root/exec-plans/README.md` |
+| `assets/templates/exec-plans-TEMPLATE.md` | `$docs_root/exec-plans/TEMPLATE.md` |
 | `assets/templates/ideas-README.md` | `$docs_root/ideas/README.md` |
 | `assets/templates/research-README.md` | `$docs_root/research/README.md` |
 | `assets/templates/handover-README.md` | `$docs_root/handover/README.md` |
@@ -416,11 +418,11 @@ fi
 所有模式都复制：
 - docs-CLAUDE.md, docs-index.md
 - context/ 下 4 个文件
-- backlog-README.md, prd-README.md, plans-README.md, lessons-README.md
+- backlog-README.md, prd-README.md, exec-plans-README.md, lessons-README.md
 - agent-guides/ 下 7 个辅助文档
 
 Standard 模式额外复制：
-- prd-TEMPLATE.md, plans-TEMPLATE.md
+- prd-TEMPLATE.md, exec-plans-TEMPLATE.md
 - research-README.md, design-README.md, issues-README.md, issues-TEMPLATE.md
 - handover-README.md, handover-TEMPLATE.md, ideas-README.md
 - architecture-README.md, logs-README.md

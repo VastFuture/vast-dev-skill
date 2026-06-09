@@ -1,10 +1,10 @@
 ## 文档
 
-**产物链路**：`prd/` → `design/` → `plans/` → `plans/completed/`；`lessons/` 横切（踩坑当下记）。
+**产物链路**：`prd/` → `design/` → `exec-plans/active/` → `exec-plans/completed/`；`lessons/` 横切（踩坑当下记）。
 
 - `docs/prd/` — 产品需求（做什么、为什么）
 - `docs/design/` — 应用层设计 + 系统现状（SDD 双向同步）
-- `docs/plans/` — 执行计划（怎么做、做到哪）
+- `docs/exec-plans/` — 执行计划（怎么做、做到哪）
 - `docs/architecture/` — 技术基线、模块边界
 - `docs/lessons/` — 踩坑教训（XX 不能这么做）
 

@@ -36,7 +36,7 @@ SKILL=<本 skill 绝对路径>
 
 # Round 1: 全新初始化
 mkdir -p $TARGET
-mkdir -p $TARGET/docs/{research,prd,plans,plans/completed,handover,lessons,logs}
+mkdir -p $TARGET/docs/{research,prd,exec-plans/active,exec-plans/completed,handover,lessons,logs}
 # 对每个模板: cp $SKILL/assets/templates/X $TARGET/X
 
 # Round 2: 幂等性测试 (重跑应该全部跳过)

@@ -1,4 +1,4 @@
-# plans/
+# exec-plans/
 
 执行计划、任务拆解、变更记录
 
@@ -11,16 +11,17 @@
 ## 目录结构
 
 ```
-plans/
-├── completed/          # 已完成的计划归档
-├── 2026-06-09-auth.md  # 带日期的计划文件
+exec-plans/
+├── active/                  # 进行中的执行计划
+├── completed/               # 已完成的计划归档
+├── TEMPLATE.md              # 计划模板
 └── README.md
 ```
 
 ## 命名规范
 
-- 活跃计划：`YYYY-MM-DD-功能名.md`
-- 已完成计划：移动到 `completed/` 目录
+- 活跃计划：放入 `active/` 目录，文件名格式 `YYYY-MM-DD-功能名.md`
+- 已完成计划：从 `active/` 移动到 `completed/` 目录
 
 ## 计划模板
 

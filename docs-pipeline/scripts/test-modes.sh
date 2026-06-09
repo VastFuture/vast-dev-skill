@@ -34,9 +34,9 @@ test_mode() {
     DOCS_ROOT="$TEST_DIR/docs"
 
     if [ "$MODE" = "minimal" ]; then
-        mkdir -p "$DOCS_ROOT/context" "$DOCS_ROOT/backlog" "$DOCS_ROOT/prd" "$DOCS_ROOT/plans" "$DOCS_ROOT/plans/completed" "$DOCS_ROOT/lessons" "$DOCS_ROOT/agent-guides"
+        mkdir -p "$DOCS_ROOT/context" "$DOCS_ROOT/backlog" "$DOCS_ROOT/prd" "$DOCS_ROOT/exec-plans/active" "$DOCS_ROOT/exec-plans/completed" "$DOCS_ROOT/lessons" "$DOCS_ROOT/agent-guides"
     elif [ "$MODE" = "standard" ]; then
-        mkdir -p "$DOCS_ROOT/context" "$DOCS_ROOT/backlog" "$DOCS_ROOT/prd" "$DOCS_ROOT/design" "$DOCS_ROOT/plans" "$DOCS_ROOT/plans/completed" "$DOCS_ROOT/architecture" "$DOCS_ROOT/standards" "$DOCS_ROOT/lessons" "$DOCS_ROOT/logs" "$DOCS_ROOT/issues" "$DOCS_ROOT/research" "$DOCS_ROOT/handover" "$DOCS_ROOT/ideas" "$DOCS_ROOT/agent-guides"
+        mkdir -p "$DOCS_ROOT/context" "$DOCS_ROOT/backlog" "$DOCS_ROOT/prd" "$DOCS_ROOT/design" "$DOCS_ROOT/exec-plans/active" "$DOCS_ROOT/exec-plans/completed" "$DOCS_ROOT/architecture" "$DOCS_ROOT/standards" "$DOCS_ROOT/lessons" "$DOCS_ROOT/logs" "$DOCS_ROOT/issues" "$DOCS_ROOT/research" "$DOCS_ROOT/handover" "$DOCS_ROOT/ideas" "$DOCS_ROOT/agent-guides"
     fi
 
     ACTUAL_DIRS=$(find "$DOCS_ROOT" -type d -mindepth 1 | wc -l)
@@ -54,8 +54,8 @@ test_mode() {
     echo ""
 }
 
-test_mode "minimal" 7
-test_mode "standard" 15
+test_mode "minimal" 8
+test_mode "standard" 16
 
 echo "✅ 所有模式测试通过!"
 echo ""

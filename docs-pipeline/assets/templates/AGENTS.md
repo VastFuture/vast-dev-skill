@@ -151,7 +151,7 @@
 3. 写或更新 `docs/prd/`
 4. 基线变更时更新 `docs/design/` 或 `docs/architecture/`
 5. 路由任务并选择候选可复用技能
-6. 计划触发器满足时写或更新 `docs/plans/`
+6. 计划触发器满足时写或更新 `docs/exec-plans/active/`
 7. 实施前审计计划
 8. 实现最小完整切片
 9. 运行验证
@@ -169,8 +169,8 @@
 | `docs/design/` | 应用层设计 + 系统现状（SDD 双向同步） | Tech Lead |
 | `docs/architecture/` | 技术基线、模块边界、分层规范 | Architect |
 | `docs/standards/` | 开发规范、代码标准 | Tech Lead |
-| `docs/plans/` | 执行计划、里程碑规划 | PM |
-| `docs/plans/completed/` | 已完成的历史计划 | PM |
+| `docs/exec-plans/` | 执行计划、里程碑规划 | PM |
+| `docs/exec-plans/completed/` | 已完成的历史计划 | PM |
 | `docs/lessons/` | 经验教训、复盘文档 | 全员 |
 | `docs/logs/` | 开发日志、每日记录 | 全员 |
 | `docs/issues/` | 问题追踪、Bug 记录 | QA |
@@ -302,14 +302,14 @@
 ```
 prd（需求）→ design/（设计意图）→ 实现代码 → 测试验证 → 同步设计（实现现状）
     ↓
-plans/（执行计划）→ plans/completed/（计划完成）
+plans/（执行计划）→ exec-plans/completed/（计划完成）
     ↓
 lessons/（踩坑教训，按需横切）+ logs/（开发日志）+ issues/（问题追踪）
 ```
 
 **按需推进，不强制全流程：**
-- 小功能：直接进 `docs/plans/`，无需 PRD
-- 中功能：`docs/prd/` → `docs/plans/` → `completed/`
+- 小功能：直接进 `docs/exec-plans/`，无需 PRD
+- 中功能：`docs/prd/` → `docs/exec-plans/` → `completed/`
 - 大功能：走全流程
 - 踩坑了：当下写 `docs/lessons/`
 

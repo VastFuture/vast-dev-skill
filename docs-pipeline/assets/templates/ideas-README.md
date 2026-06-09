@@ -11,7 +11,7 @@
 ## 生命周期
 
 ```
-ideas/（随手记）→ research/（调研）→ prd/（需求）→ plans/（执行）
+ideas/（随手记）→ research/（调研）→ prd/（需求）→ exec-plans/（执行）
 ```
 
 - **成熟**：想法足够清晰时，摘到 `research/` 开始正式调研

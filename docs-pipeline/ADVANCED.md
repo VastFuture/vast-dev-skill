@@ -13,7 +13,7 @@ docs-pipeline 默认创建的 docs/ 结构服务于 **AI 协作链路**（prd、
 由 docs-pipeline 自动创建：
 - `docs/prd/` — 需求文档
 - `docs/design/` — 架构设计
-- `docs/plans/` — 执行计划
+- `docs/exec-plans/` — 执行计划
 - `docs/handover/` — 交接清单
 - `docs/context/` — AI 上下文（验证命令、环境变量）
 - `docs/backlog/`、`docs/issues/`、`docs/lessons/`

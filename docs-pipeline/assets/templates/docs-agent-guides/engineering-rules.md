@@ -89,7 +89,7 @@
 3. 写或更新 `docs/prd/`
 4. 基线变更时更新 `docs/design/` 或 `ARCHITECTURE.md`
 5. 路由任务并选择候选可复用技能
-6. 计划触发器满足时写或更新 `docs/plans/`
+6. 计划触发器满足时写或更新 `docs/exec-plans/active/`
 7. 实施前审计计划
 8. 实现最小完整切片
 9. 运行验证
@@ -119,7 +119,7 @@
 | `docs/backlog/` | 工作队列、待办事项、优先级排序 |
 | `docs/prd/` | 需求规格、用户故事、验收标准 |
 | `docs/design/` | 应用层设计 + 系统现状（SDD 双向同步） |
-| `docs/plans/` | 执行计划、里程碑规划 |
+| `docs/exec-plans/active/` | 执行计划、里程碑规划 |
 | `docs/architecture/` | 技术基线、模块边界、分层规范 |
 | `docs/standards/` | 开发规范、代码标准 |
 | `docs/lessons/` | 经验教训、复盘文档 |

@@ -52,7 +52,7 @@ export DOCS_ROOT=/path/to/docs/repo
 ## 产物链路
 
 ```
-backlog → prd → design → plans → plans/completed
+backlog → prd → design → plans → exec-plans/completed
                                                   ↓
                                               lessons（踩坑教训）
 ```

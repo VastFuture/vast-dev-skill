@@ -18,8 +18,8 @@
 | `design/` | 设计意图 + 实现现状（SDD 双向同步） | Tech Lead |
 | `architecture/` | 架构决策、系统设计、技术选型 | Architect |
 | `standards/` | 编码规范、最佳实践、团队约定 | Tech Lead |
-| `plans/` | 执行计划、里程碑规划 | PM |
-| `plans/completed/` | 已完成的历史计划 | PM |
+| `exec-plans/` | 执行计划、里程碑规划 | PM |
+| `exec-plans/completed/` | 已完成的历史计划 | PM |
 | `lessons/` | 经验教训、复盘文档 | 全员 |
 | `logs/` | 变更日志、操作记录 | 全员 |
 | `issues/` | 问题追踪、Bug 记录 | QA |
@@ -30,7 +30,7 @@
 |----------|----------|----------|
 | 新增需求 | `prd/` | `TEMPLATE.md` |
 | 问题追踪 | `issues/` | `TEMPLATE.md` |
-| 执行计划 | `plans/` | `TEMPLATE.md` |
+| 执行计划 | `exec-plans/` | `TEMPLATE.md` |
 | 架构设计 | `architecture/` | - |
 | 编码规范 | `standards/` | - |
 | 经验复盘 | `lessons/` | - |
@@ -45,7 +45,7 @@
 | Tech Lead | `design/` | 驱动 SDD 双向同步 |
 | Architect | `architecture/` | 维护架构决策 |
 | Tech Lead | `standards/` | 维护编码规范 |
-| PM | `plans/` | 制定和跟踪执行计划 |
+| PM | `exec-plans/` | 制定和跟踪执行计划 |
 | 全员 | `lessons/` | 记录经验教训 |
 | 全员 | `logs/` | 记录操作日志 |
 | QA | `issues/` | 追踪和管理问题 |

@@ -26,7 +26,7 @@
 | 了解当前应用层基线 | `docs/design/README.md` | 按功能模块组织的设计文档 |
 | 了解真相优先级和 owner doc 边界 | `docs/context/source-of-truth-and-precedence.md` | 相关 owner doc |
 | 读取实现就绪的需求 | `docs/prd/README.md` | 活跃需求文件 |
-| 开始或审查非平凡实现 | `AGENTS.md` | `docs/plans/README.md`、活跃计划 |
+| 开始或审查非平凡实现 | `AGENTS.md` | `docs/exec-plans/README.md`、活跃计划 |
 | 审查持久可复用的工程教训 | `docs/lessons/README.md` | 相关教训 |
 
 ## 任务路由
@@ -37,7 +37,7 @@
 |---------|---------|---------|-----------|
 | 需求澄清 | `context/project-context.md`, `prd/` | `docs/prd/<topic>.md` | 否 |
 | 设计变更 | `context/source-of-truth-and-precedence.md`, `design/` | `docs/design/<topic>.md` | 视规模 |
-| 架构变更 | `context/codebase-map.md`, `design/`, `architecture/` | `docs/plans/<task>.md` | 必须 |
+| 架构变更 | `context/codebase-map.md`, `design/`, `architecture/` | `docs/exec-plans/<task>.md` | 必须 |
 | 纯实现 | `context/project-context.md`, `prd/`, `design/` | 代码 + 测试 | 视规模 |
 | Bug 调查 | `context/codebase-map.md`, `issues/` | `docs/issues/<issue>.md` | 视风险 |
 | 验证审计 | `context/project-context.md` | 测试结果摘要 | 否 |
@@ -56,7 +56,7 @@
 2. `docs/backlog/` — 选择下一个工作项
 3. `docs/prd/` — 确认实现就绪的需求
 4. `docs/design/` — 确认稳定的设计基线（SDD 双向同步）
-5. `docs/plans/` — 计划触发器满足时写或更新计划
+5. `docs/exec-plans/` — 计划触发器满足时写或更新计划
 6. 实现
 7. 验证
 8. `docs/lessons/` — 需要时记录教训
@@ -73,8 +73,8 @@
 | `docs/design/` | 应用层设计 + 系统现状（SDD 双向同步） | Tech Lead |
 | `docs/architecture/` | 技术基线、模块边界、分层规范 | Architect |
 | `docs/standards/` | 开发规范、代码标准 | Tech Lead |
-| `docs/plans/` | 执行计划、里程碑规划 | PM |
-| `docs/plans/completed/` | 已完成的历史计划 | PM |
+| `docs/exec-plans/` | 执行计划、里程碑规划 | PM |
+| `docs/exec-plans/completed/` | 已完成的历史计划 | PM |
 | `docs/lessons/` | 经验教训、复盘文档 | 全员 |
 | `docs/logs/` | 开发日志、每日记录 | 全员 |
 | `docs/issues/` | 问题追踪、Bug 记录 | QA |
@@ -89,7 +89,7 @@
 - design 承载应用层设计 + 系统现状（SDD 双向同步）
 - architecture 承载技术基线、模块边界、分层规范
 - standards 承载开发规范、代码标准
-- plans 承载执行计划、里程碑规划
+- exec-plans 承载执行计划、里程碑规划
 - lessons 承载经验教训、复盘文档
 - logs 承载开发日志、每日记录
 - issues 承载问题追踪、Bug 记录

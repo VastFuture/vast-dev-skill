@@ -186,7 +186,7 @@
 
 所有创建的计划**必须**在实施前通过独立计划审计，在标记完成前通过独立闭包审计。
 
-计划放 `docs/plans/`，完成后移至 `completed/`，模板见 `docs/plans/README.md`。
+计划放 `docs/exec-plans/active/`，完成后移至 `completed/`，模板见 `docs/exec-plans/README.md`。
 
 ### 验证基线
 
@@ -212,7 +212,7 @@
 3. 写或更新 `docs/prd/`
 4. 基线变更时更新 `docs/design/` 或 `docs/architecture/`
 5. 路由任务并选择候选可复用技能
-6. 计划触发器满足时写或更新 `docs/plans/`
+6. 计划触发器满足时写或更新 `docs/exec-plans/active/`
 7. 实施前审计计划
 8. 实现最小完整切片
 9. 运行验证
@@ -230,8 +230,8 @@
 | `docs/design/` | 应用层设计 + 系统现状（SDD 双向同步） | Tech Lead |
 | `docs/architecture/` | 技术基线、模块边界、分层规范 | Architect |
 | `docs/standards/` | 开发规范、代码标准 | Tech Lead |
-| `docs/plans/` | 执行计划、里程碑规划 | PM |
-| `docs/plans/completed/` | 已完成的历史计划 | PM |
+| `docs/exec-plans/` | 执行计划、里程碑规划 | PM |
+| `docs/exec-plans/completed/` | 已完成的历史计划 | PM |
 | `docs/lessons/` | 经验教训、复盘文档 | 全员 |
 | `docs/logs/` | 开发日志、每日记录 | 全员 |
 | `docs/issues/` | 问题追踪、Bug 记录 | QA |
