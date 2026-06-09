@@ -1,26 +1,63 @@
-# 设计文档索引
+# design/
 
-## 用途
+> 应用层设计 + 系统现状 — AGE × DDD 融合驱动
 
-`docs/design/` 存放稳定的应用层 owner docs。
+## 两大哲学
 
-此目录用于：
+### 吸引子（AGE）
 
-- 产品功能基线
-- 页面和流程行为
-- 角色和权限
-- 应用外壳行为
+> [Attractor-Guided Engineering](https://github.com/entropy-cloud/attractor-guided-engineering-template)
 
-## 范围边界
+**"设计是稳定的吸引子，代码向设计收敛。"**
+先写设计，再写代码，设计即文档。
 
-- `docs/prd/` 负责当前切片应该构建什么
-- `docs/design/` 负责该切片被接受后的稳定应用层基线
-- `ARCHITECTURE.md` 负责技术设计和跨功能结构
+### 代码即真相（DDD）
 
-当一个功能同时依赖业务设计和技术设计时，将两个关注点放在不同文件中并交叉引用。
+> [ddd-harness-microservices](https://github.com/domain-driven-design/ddd-harness-microservices)
 
-## 起步文件
+**"代码是唯一真相，设计文档必须跟上代码。"**
+每次代码变更后，design/ 必须同步更新。
 
-- `app-overview.md` — 当前应用表面、角色和核心工作流
-- `feature-inventory.md` — 功能清单和状态
-- `roles-and-permissions.md` — 角色定义和访问规则
+## SDD 融合循环
+
+```
+① 写设计意图 ──▶ ② 按设计实现 ──▶ ③ 测试验证 ──▶ ④ 同步到设计（反映现状）
+      AGE                AGE             两者              DDD
+```
+
+## 目录结构
+
+```
+design/
+├── README.md              # 本文件
+├── api.yaml               # API 接口列表
+├── db.md                  # 数据库表结构
+├── business-rule.md       # 业务规则（不变量、状态机）
+├── data-dict.md           # 数据字典（枚举值、字段映射）
+├── <module>/              # 按模块组织（可选）
+│   ├── api.md
+│   ├── db.md
+│   └── overview.md
+└── <module>/
+```
+
+**两种组织方式**：小项目用扁平文件，多模块项目用模块目录。
+
+## 与其他目录的关系
+
+| 目录 | 关系 |
+|------|------|
+| `prd/` | PRD 定义"要做什么" → design/ 定义"怎么做" |
+| `architecture/` | architecture/ 是技术约束 → design/ 在此约束下设计 |
+| `standards/` | standards/ 是编码规范 → design/ 应用这些规范 |
+| `exec-plans/active/` | 实现后回写 design/ |
+| `lessons/` | 设计失误的教训 → design/ 避免重蹈覆辙 |
+
+## 同步 Checklist
+
+- [ ] 新增/修改 API → 更新 `api.yaml`
+- [ ] 新增/修改数据表 → 更新 `db.md`
+- [ ] 新增/修改业务规则 → 更新 `business-rule.md`
+- [ ] 新增/修改数据字段 → 更新 `data-dict.md`
+
+**铁律**：代码合入即同步，不积压。

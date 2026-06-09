@@ -1,0 +1,32 @@
+# API 接口清单
+
+> 新增/修改 API 后更新此文件。删除接口时同步移除对应条目。
+
+## 接口列表
+
+<!-- TODO: 按模块或资源分组列出 API -->
+
+### 示例
+
+```yaml
+# /api/users
+GET /api/users:
+  description: 获取用户列表
+  params:
+    page: int (optional, 默认 1)
+    size: int (optional, 默认 20)
+  response: { users: [{ id, name, email }], total: int }
+
+POST /api/users:
+  description: 创建用户
+  body: { name: str, email: str, password: str }
+  response: { id, name, email }
+  errors:
+    409: 邮箱已存在
+```
+
+## 更新记录
+
+| 日期 | 变更 | 关联 PR |
+|------|------|---------|
+| - | - | - |
