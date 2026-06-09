@@ -52,7 +52,7 @@ export DOCS_ROOT=/path/to/docs/repo
 ## 产物链路
 
 ```
-backlog → prd → design → exec-plans/active → exec-plans/completed
+backlog → prd → design → plans → plans/completed
                                                   ↓
                                               lessons（踩坑教训）
 ```
@@ -65,10 +65,10 @@ backlog → prd → design → exec-plans/active → exec-plans/completed
 | `docs/backlog/` | 工作队列、AI 自主级别标签 |
 | `docs/prd/` | 实现就绪的需求文档 |
 | `docs/design/` | 稳定的应用层设计基线 |
-| `docs/exec-plans/` | 执行计划（含 Plan/Closure 审计） |
+| `docs/plans/` | 执行计划（含 Plan/Closure 审计） |
 | `docs/lessons/` | 可复用的工程教训 |
 | `docs/standards/` | 开发规范（分层、API、DB、安全、命名），相对稳定 |
-| `docs/designs/` | 系统设计现状（API、DB、业务规则、数据字典），高频更新 |
+| `docs/design/` | 系统设计现状（API、DB、业务规则、数据字典），高频更新 |
 
 ## 行为契约
 

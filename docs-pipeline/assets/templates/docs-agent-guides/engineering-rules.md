@@ -89,7 +89,7 @@
 3. 写或更新 `docs/prd/`
 4. 基线变更时更新 `docs/design/` 或 `ARCHITECTURE.md`
 5. 路由任务并选择候选可复用技能
-6. 计划触发器满足时写或更新 `docs/exec-plans/`
+6. 计划触发器满足时写或更新 `docs/plans/`
 7. 实施前审计计划
 8. 实现最小完整切片
 9. 运行验证
@@ -115,10 +115,13 @@
 
 | 目录 | 职责 |
 |------|------|
-| `docs/context/` | 强制 AI 上下文、真相优先级、项目约定 |
-| `docs/backlog/` | 工作队列、AI 自主级别标签 |
-| `docs/research/` | 调研文档（技术方案、可行性分析） |
-| `docs/prd/` | 实现就绪的需求综合 |
-| `docs/design/` | 稳定的应用层业务和功能设计 |
-| `docs/exec-plans/` | 非平凡工作的执行和闭包标准 |
-| `docs/lessons/` | 持久可复用的工程教训 |
+| `docs/context/` | 项目上下文、背景信息、全局约束 |
+| `docs/backlog/` | 工作队列、待办事项、优先级排序 |
+| `docs/prd/` | 需求规格、用户故事、验收标准 |
+| `docs/design/` | 应用层设计 + 系统现状（SDD 双向同步） |
+| `docs/plans/` | 执行计划、里程碑规划 |
+| `docs/architecture/` | 技术基线、模块边界、分层规范 |
+| `docs/standards/` | 开发规范、代码标准 |
+| `docs/lessons/` | 经验教训、复盘文档 |
+| `docs/logs/` | 开发日志、每日记录 |
+| `docs/issues/` | 问题追踪、Bug 记录 |

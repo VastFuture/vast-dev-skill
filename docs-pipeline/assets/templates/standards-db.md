@@ -106,4 +106,4 @@ V<YYYYMMDD>__<description>.sql
 |------|------|------|
 | <!-- 待补充 --> | | |
 
-详细设计参见 `docs/designs/db.md`。
+详细设计参见 `docs/design/db.md`。

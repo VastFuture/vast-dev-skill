@@ -6,7 +6,7 @@ description: |
   Use for: "初始化文档结构", "搭建 docs pipeline", "set up docs structure".
 metadata:
   author: tracker-system
-  version: "4.4.0"
+  version: "4.5.0"
 allowed-tools: Bash Read Write Edit Glob Agent
 ---
 
@@ -19,7 +19,7 @@ allowed-tools: Bash Read Write Edit Glob Agent
 ## ⚡ 快速入门（30 秒）
 
 ```bash
-# 标准模式（默认，12 个核心目录）
+# 标准模式（默认，14 个核心目录）
 /docs-pipeline
 
 # 最小化模式（7 个必需目录，适合小项目）
@@ -43,8 +43,8 @@ docs-pipeline 提供 2 种安装模式，适应不同项目规模。
 
 | 模式 | 适用场景 | 目录数 | 学习曲线 |
 |------|---------|--------|---------|
-| **minimal**（最小化） | 个人项目、快速原型、初学者 | 7 个必需目录 | 最低 |
-| **standard**（标准，默认） | 大多数团队项目 | 12 个核心目录 + 模板 | 中等 |
+| **minimal**（最小化） | 个人项目、快速原型、初学者 | 6 个必需目录 | 最低 |
+| **standard**（标准，默认） | 大多数团队项目 | 14 个核心目录 + 模板 | 中等 |
 
 ### 指定模式
 
@@ -60,7 +60,7 @@ DOCS_PIPELINE_MODE=minimal /docs-pipeline
 
 #### Minimal（最小化）
 
-**目录**：context, backlog, prd, exec-plans, lessons（7 个必需目录）
+**目录**：context, backlog, prd, plans, lessons, agent-guides（6 个必需目录）
 
 **特点**：
 - 最快上手（< 5 分钟理解全部结构）
@@ -71,7 +71,7 @@ DOCS_PIPELINE_MODE=minimal /docs-pipeline
 
 #### Standard（标准，默认）
 
-**目录**：minimal 的 7 个 + research, design, issues, handover, ideas（12 个核心目录）
+**目录**：minimal 的 6 个 + design, architecture, standards, logs, research, issues, handover, ideas（14 个核心目录）
 
 **特点**：
 - 平衡完整性与复杂度
@@ -107,24 +107,28 @@ DOCS_PIPELINE_MODE=minimal /docs-pipeline
     │   └── source-of-truth-and-precedence.md  # 真相优先级
     ├── backlog/              # ★ 工作队列、AI 自主级别标签【必需】
     │   └── README.md
-    ├── prd/                  # 实现就绪的需求【必需】
+    ├── prd/                  # 需求规格、用户故事【必需】
     │   └── README.md
-    ├── design/               # ★ 稳定的应用层设计基线【推荐】
+    ├── design/               # ★ 应用层设计 + 系统现状（SDD）【必需】
     │   └── README.md
-    ├── exec-plans/           # 执行计划（含 Plan/Closure 审计）【必需】
+    ├── plans/                # 执行计划、里程碑规划【必需】
     │   ├── README.md
-    │   ├── active/
     │   └── completed/
-    │       └── tech-debt-tracker.md
-    ├── ideas/                # 灵感池（随手记，零结构）【可选】
+    ├── architecture/         # 技术基线、模块边界【推荐】
     │   └── README.md
-    ├── research/             # 调研文档【推荐】
+    ├── standards/            # 开发规范、代码标准【推荐】
     │   └── README.md
-    ├── handover/             # 项目交接【可选】
+    ├── lessons/              # 经验教训【必需】
+    │   └── README.md
+    ├── logs/                 # 开发日志【推荐】
     │   └── README.md
     ├── issues/               # Bug 追踪【推荐】
     │   └── README.md
-    └── lessons/              # 经验教训【必需】
+    ├── ideas/                # 灵感池（随手记，零结构）【可选】
+    │   └── README.md
+    ├── research/             # 调研文档【可选】
+    │   └── README.md
+    └── handover/             # 项目交接【可选】
         └── README.md
 ```
 
@@ -135,7 +139,7 @@ DOCS_PIPELINE_MODE=minimal /docs-pipeline
 
 ### 可选目录（按需手动创建）
 
-如果项目需要更细粒度的分类，可以手动创建以下目录：
+如果项目需要更细粒度度的分类，可以手动创建以下目录：
 
 ```
 docs/
@@ -143,7 +147,6 @@ docs/
 ├── discussions/      # 需求澄清讨论
 ├── audits/           # 审计记录
 ├── bugs/             # 非显而易见的 bug 历史
-├── logs/             # 每日实现记录
 ├── testing/          # 手动/探索性测试记录
 ├── skills/           # 可复用提示词模板
 └── retrospectives/   # 交付后复盘
@@ -162,7 +165,7 @@ docs/
 │                               │   ├── ideas/
 │                               │   ├── research/
 │                               │   ├── prd/
-│                               │   ├── exec-plans/
+│                               │   ├── plans/
 │                               │   ├── handover/
 │                               │   ├── issues/
 │                               │   └── lessons/
@@ -206,8 +209,8 @@ test -d docs/.git && echo "INDEPENDENT_REPO" || echo "INLINE"
 **Step 0.5：检测安装模式**
 
 检查环境变量 `DOCS_PIPELINE_MODE`：
-- `minimal` → 最小化模式（7 个必需目录）
-- `standard` → 标准模式（12 个核心目录，默认）
+- `minimal` → 最小化模式（6 个必需目录）
+- `standard` → 标准模式（14 个核心目录，默认）
 - 未设置 → 默认 `standard`
 
 ```bash
@@ -262,8 +265,8 @@ MODE="${DOCS_PIPELINE_MODE:-standard}"
 - docs/backlog/
 - docs/prd/
 - docs/design/
-- docs/exec-plans/active/
-- docs/exec-plans/completed/
+- docs/plans/
+- docs/plans/completed/
 - docs/ideas/
 - docs/research/
 - docs/handover/
@@ -271,8 +274,8 @@ MODE="${DOCS_PIPELINE_MODE:-standard}"
 - docs/lessons/
 - docs/agent-guides/
 - docs/standards/
-- docs/designs/
-- docs/designs/others/
+- docs/logs/
+- docs/architecture/
 
 是否继续？
 ```
@@ -280,7 +283,7 @@ MODE="${DOCS_PIPELINE_MODE:-standard}"
 🛑 **STOP：等待用户确认后继续。**
 
 ```bash
-mkdir -p "$docs_root/context" "$docs_root/backlog" "$docs_root/prd" "$docs_root/design" "$docs_root/exec-plans/active" "$docs_root/exec-plans/completed" "$docs_root/ideas" "$docs_root/research" "$docs_root/handover" "$docs_root/issues" "$docs_root/lessons"
+mkdir -p "$docs_root/context" "$docs_root/backlog" "$docs_root/prd" "$docs_root/design" "$docs_root/plans" "$docs_root/plans/completed" "$docs_root/ideas" "$docs_root/research" "$docs_root/handover" "$docs_root/issues" "$docs_root/lessons"
 ```
 
 `mkdir -p` 本身是幂等的，已有目录不会报错。
@@ -298,23 +301,23 @@ mkdir -p "$docs_root/context" "$docs_root/backlog" "$docs_root/prd" "$docs_root/
 ```bash
 # Minimal 模式（7 个必需目录）
 if [ "$MODE" = "minimal" ]; then
-  mkdir -p "$docs_root/context" "$docs_root/backlog" "$docs_root/prd" "$docs_root/exec-plans/active" "$docs_root/exec-plans/completed" "$docs_root/lessons" "$docs_root/agent-guides"
+  mkdir -p "$docs_root/context" "$docs_root/backlog" "$docs_root/prd" "$docs_root/plans" "$docs_root/plans/completed" "$docs_root/lessons" "$docs_root/agent-guides"
 
-# Standard 模式（14 个核心目录，默认）
+# Standard 模式（11 个核心目录，默认）
 elif [ "$MODE" = "standard" ]; then
-  mkdir -p "$docs_root/context" "$docs_root/backlog" "$docs_root/prd" "$docs_root/design" "$docs_root/exec-plans/active" "$docs_root/exec-plans/completed" "$docs_root/research" "$docs_root/issues" "$docs_root/handover" "$docs_root/ideas" "$docs_root/lessons" "$docs_root/agent-guides" "$docs_root/standards" "$docs_root/designs" "$docs_root/designs/others"
+  mkdir -p "$docs_root/context" "$docs_root/backlog" "$docs_root/prd" "$docs_root/design" "$docs_root/plans" "$docs_root/plans/completed" "$docs_root/research" "$docs_root/issues" "$docs_root/handover" "$docs_root/ideas" "$docs_root/lessons" "$docs_root/agent-guides" "$docs_root/standards" "$docs_root/logs"
 fi
 ```
 
 **目录对照表**：
 
-| 模式 | context | backlog | prd | exec-plans | lessons | research | design | issues | handover | ideas | agent-guides | standards | designs |
-|------|---------|---------|-----|------------|---------|----------|--------|--------|----------|-------|--------------|-----------|---------|
-| minimal | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ | ❌ | ❌ |
-| standard | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 模式 | context | backlog | prd | plans | lessons | research | design | issues | handover | ideas | agent-guides | standards |
+|------|---------|---------|-----|-------|---------|----------|--------|--------|----------|-------|--------------|-----------|
+| minimal | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ | ❌ |
+| standard | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 
-**核心目录**：context、backlog、research、prd、design、exec-plans、lessons、agent-guides、standards、designs
-**可选目录**：ideas、handover、issues（以及按需激活的 input、discussions、audits、bugs、logs、testing、skills、retrospectives）
+**核心目录**：context、backlog、prd、plans、lessons、design、standards、agent-guides
+**可选目录**：research、ideas、handover、issues（以及按需激活的 logs、input、discussions、audits、bugs、testing、skills、retrospectives）
 
 ### 3. 写入 docs/ 模板
 
@@ -329,16 +332,17 @@ fi
 - docs/context/ (4 个文件)
 - docs/backlog/README.md
 - docs/prd/README.md
-- docs/design/README.md
-- docs/exec-plans/README.md
+- docs/design/ (4 个文件：README + api + db + data-dict)
+- docs/plans/README.md
+- docs/architecture/README.md
+- docs/standards/ (6 个文件)
+- docs/lessons/README.md
+- docs/logs/README.md
+- docs/issues/README.md
 - docs/ideas/README.md
 - docs/research/README.md
 - docs/handover/README.md
-- docs/issues/README.md
-- docs/lessons/README.md
 - docs/agent-guides/ (7 个文件)
-- docs/standards/ (6 个文件)
-- docs/designs/ (6 个文件)
 
 是否继续？
 ```
@@ -377,8 +381,8 @@ fi
 | `assets/templates/prd-README.md` | `$docs_root/prd/README.md` |
 | `assets/templates/prd-TEMPLATE.md` | `$docs_root/prd/TEMPLATE.md` |
 | `assets/templates/design-README.md` | `$docs_root/design/README.md` |
-| `assets/templates/exec-plans-README.md` | `$docs_root/exec-plans/README.md` |
-| `assets/templates/exec-plans-TEMPLATE.md` | `$docs_root/exec-plans/TEMPLATE.md` |
+| `assets/templates/plans-README.md` | `$docs_root/plans/README.md` |
+| `assets/templates/plans-TEMPLATE.md` | `$docs_root/plans/TEMPLATE.md` |
 | `assets/templates/ideas-README.md` | `$docs_root/ideas/README.md` |
 | `assets/templates/research-README.md` | `$docs_root/research/README.md` |
 | `assets/templates/handover-README.md` | `$docs_root/handover/README.md` |
@@ -399,32 +403,29 @@ fi
 | `assets/templates/standards-db.md` | `$docs_root/standards/db.md` |
 | `assets/templates/standards-security.md` | `$docs_root/standards/security.md` |
 | `assets/templates/standards-naming.md` | `$docs_root/standards/naming.md` |
-| `assets/templates/designs-README.md` | `$docs_root/designs/README.md` |
-| `assets/templates/designs-api.yaml` | `$docs_root/designs/api.yaml` |
-| `assets/templates/designs-db.md` | `$docs_root/designs/db.md` |
-| `assets/templates/designs-others-README.md` | `$docs_root/designs/others/README.md` |
-| `assets/templates/designs-others-businessrule.md` | `$docs_root/designs/others/businessrule.md` |
-| `assets/templates/designs-others-data-dict.md` | `$docs_root/designs/others/data-dict.md` |
+| `assets/templates/design-README.md` | `$docs_root/design/README.md` |
+| `assets/templates/design-api.yaml` | `$docs_root/design/api.yaml` |
+| `assets/templates/design-db.md` | `$docs_root/design/db.md` |
+| `assets/templates/design-business-rule.md` | `$docs_root/design/business-rule.md` |
+| `assets/templates/design-data-dict.md` | `$docs_root/design/data-dict.md` |
+| `assets/templates/architecture-README.md` | `$docs_root/architecture/README.md` |
+| `assets/templates/logs-README.md` | `$docs_root/logs/README.md` |
 
 **根据模式选择模板**：
 
 所有模式都复制：
 - docs-CLAUDE.md, docs-index.md
 - context/ 下 4 个文件
-- backlog-README.md, prd-README.md, exec-plans-README.md, lessons-README.md
+- backlog-README.md, prd-README.md, plans-README.md, lessons-README.md
 - agent-guides/ 下 7 个辅助文档
 
 Standard 模式额外复制：
-- prd-TEMPLATE.md, exec-plans-TEMPLATE.md
+- prd-TEMPLATE.md, plans-TEMPLATE.md
 - research-README.md, design-README.md, issues-README.md, issues-TEMPLATE.md
 - handover-README.md, handover-TEMPLATE.md, ideas-README.md
+- architecture-README.md, logs-README.md
 - standards/ 下 6 个文件（README.md, layers.md, api.md, db.md, security.md, naming.md）
-- designs/ 下 6 个文件（README.md, api.yaml, db.md, others/README.md, others/businessrule.md, others/data-dict.md）
-
-Standard 模式额外复制：
-- prd-TEMPLATE.md, exec-plans-TEMPLATE.md
-- research-README.md, design-README.md, issues-README.md, issues-TEMPLATE.md
-- handover-README.md, handover-TEMPLATE.md, ideas-README.md
+- design/ 下 4 个文件（README.md, api.yaml, db.md, data-dict.md）
 
 #### 自动填充验证命令
 
@@ -666,10 +667,10 @@ CLAUDE.md 的写入由 step 4 完成。本步只做一件事：如果 step 4 走
   - Pensieve: 未激活（设置 ENABLE_PENSIEVE=true 启用）
 
 🔄 文档同步状态（Standard 模式）：
-  - docs/designs/api.yaml: 无需更新 / 需要更新
-  - docs/designs/db.md: 无需更新 / 需要更新
-  - docs/designs/others/businessrule.md: 无需更新 / 需要更新
-  - docs/designs/others/data-dict.md: 无需更新 / 需要更新
+  - docs/design/api.yaml: 无需更新 / 需要更新
+  - docs/design/db.md: 无需更新 / 需要更新
+  - docs/design/business-rule.md: 无需更新 / 需要更新
+  - docs/design/data-dict.md: 无需更新 / 需要更新
   - docs/standards/: 无需更新 / 需要更新
 
 ---
@@ -797,16 +798,16 @@ if [ -n "$CHANGED_TYPES" ]; then
 
   # 根据变更类型提示对应文档
   if echo "$CHANGED_TYPES" | grep -q "API 变更"; then
-    echo "  - docs/designs/api.yaml（API 现状）"
+    echo "  - docs/design/api.yaml（API 现状）"
   fi
   if echo "$CHANGED_TYPES" | grep -q "数据库变更"; then
-    echo "  - docs/designs/db.md（数据库现状）"
+    echo "  - docs/design/db.md（数据库现状）"
   fi
   if echo "$CHANGED_TYPES" | grep -q "业务规则变更"; then
-    echo "  - docs/designs/others/businessrule.md（业务规则现状）"
+    echo "  - docs/design/business-rule.md（业务规则现状）"
   fi
   if echo "$CHANGED_TYPES" | grep -q "数据字典变更"; then
-    echo "  - docs/designs/others/data-dict.md（数据字典现状）"
+    echo "  - docs/design/data-dict.md（数据字典现状）"
   fi
   if echo "$CHANGED_TYPES" | grep -q "规范变更"; then
     echo "  - docs/standards/（开发规范）"
@@ -823,8 +824,8 @@ fi
 
 ```
 🔄 文档同步状态：
-  - docs/designs/api.yaml: 需要更新（检测到 API 变更）
-  - docs/designs/db.md: 无需更新
+  - docs/design/api.yaml: 需要更新（检测到 API 变更）
+  - docs/design/db.md: 无需更新
   - docs/standards/layers.md: 无需更新
 ```
 

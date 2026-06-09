@@ -1,5 +1,44 @@
 # docs-pipeline 更新日志
 
+## [4.5.0] - 2026-06-09
+
+### Breaking Changes
+
+#### 目录结构重构：10 目录 SDD 驱动
+
+基于 AGE 和 DDD 模板的深度研究，将目录结构从 14 个精炼为 10 个核心目录：
+
+**删除的目录**：
+- `designs/` — 合并到 `design/`，采用 SDD 双向同步（设计意图 + 实现现状在同一目录）
+- `research/` — 改为可选目录
+- `handover/` — 改为可选目录  
+- `ideas/` — 改为可选目录
+
+**新增/重命名的目录**：
+- `architecture/` — 技术基线、模块边界、分层规范（新增）
+- `logs/` — 开发日志、每日记录（新增，从可选升为核心）
+- `prd/` — 需求规格（取代 `features/`）
+- `plans/` — 执行计划（取代 `exec-plans/`，扁平化不再有 `active/` 子目录）
+
+**保留的目录**：
+- `context/`, `backlog/`, `design/`, `standards/`, `lessons/`, `issues/`
+
+#### SDD 驱动替代 designs/ 
+
+`design/` 现在同时承载：
+- 设计意图（功能开发前写）
+- 实现现状（代码完成后同步）
+- 消除了 `design/` vs `designs/` 的哲学冲突
+
+详见 `docs/prd/2026-06-09-docs-pipeline-目录重构.md`
+
+### 模板更新
+
+- CLAUDE.md 模板：更新文档所有权为 11 目录
+- AGENTS.md 模板：更新工作流和产物链路
+- docs-index.md 模板：更新路由表和目录职责
+- SKILL.md：更新核心工作流和模板映射
+
 ## [4.4.0] - 2026-06-05
 
 ### 新增

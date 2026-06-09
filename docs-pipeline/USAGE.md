@@ -22,7 +22,7 @@
    - 设计取舍：为什么这样设计
    - 模块边界：影响哪些模块
 
-3. **docs/exec-plans/active/**：创建执行计划（如触发计划触发器）
+3. **docs/plans/**：创建执行计划（如触发计划触发器）
    - 触发条件：> 5 文件或 > 200 行
    - 分阶段：将大特性拆分为多个阶段
    - 风险与依赖：记录已知风险
@@ -89,16 +89,16 @@
 
 ## 场景 6：代码变更后文档同步
 
-**重要**：每次代码变更后，检查 `docs/designs/` 和 `docs/standards/` 是否需要更新。
+**重要**：每次代码变更后，检查 `docs/design/` 和 `docs/standards/` 是否需要更新。
 
 **同步检查规则**：
 
 | 变更类型 | 需要更新的文档 |
 |----------|---------------|
-| 新增/修改 API | `docs/designs/api.yaml` |
-| 新增/修改数据表 | `docs/designs/db.md` |
-| 新增/修改业务规则 | `docs/designs/others/businessrule.md` |
-| 新增/修改数据字典 | `docs/designs/others/data-dict.md` |
+| 新增/修改 API | `docs/design/api.yaml` |
+| 新增/修改数据表 | `docs/design/db.md` |
+| 新增/修改业务规则 | `docs/design/businessrule.md` |
+| 新增/修改数据字典 | `docs/design/data-dict.md` |
 | 修改分层架构 | `docs/standards/layers.md` |
 | 修改 API 规范 | `docs/standards/api.md` |
 | 修改数据库规范 | `docs/standards/db.md` |
@@ -116,15 +116,15 @@
 ```markdown
 ## 文档同步检查
 
-- [ ] `docs/designs/` 同步检查（已更新 / 不涉及）
-  - 新增/修改 API → 更新 `docs/designs/api.yaml`
-  - 新增/修改数据表 → 更新 `docs/designs/db.md`
-  - 新增/修改业务规则 → 更新 `docs/designs/others/businessrule.md`
-  - 新增/修改数据字典 → 更新 `docs/designs/others/data-dict.md`
+- [ ] `docs/design/` 同步检查（已更新 / 不涉及）
+  - 新增/修改 API → 更新 `docs/design/api.yaml`
+  - 新增/修改数据表 → 更新 `docs/design/db.md`
+  - 新增/修改业务规则 → 更新 `docs/design/businessrule.md`
+  - 新增/修改数据字典 → 更新 `docs/design/data-dict.md`
 ```
 
 **为什么重要**：
-- `docs/designs/` 反映系统当前状态，必须与代码保持同步
+- `docs/design/` 反映系统当前状态，必须与代码保持同步
 - 新人可以通过文档快速了解系统现状
 - 减少沟通成本，避免"代码已改但文档过时"的问题
 
@@ -146,7 +146,7 @@
   ↓
 开始开发
   ├─ 架构设计 → design/（数据流、设计取舍、模块边界）
-  ├─ 执行计划 → exec-plans/active/（>5文件或>200行触发）
+  ├─ 执行计划 → plans/（>5文件或>200行触发）
   ↓
 遇到问题
   ├─ Bug → issues/（问题描述、复现步骤、根因分析）
@@ -157,15 +157,15 @@
   ↓
 文档同步
   ├─ 开发规范 → standards/（分层、API、DB、安全、命名，相对稳定）
-  ├─ 系统现状 → designs/（API、DB、业务规则、数据字典，高频更新）
+  ├─ 系统现状 → design/（API、DB、业务规则、数据字典，高频更新）
 ```
 
 **关键区别**：
 - **ideas/** vs **backlog/**：ideas 是零结构的灵感池，backlog 是已明确的待办任务
 - **backlog/** vs **prd/**：backlog 标记"要做"，prd 详细说明"怎么做"
 - **issues/** vs **lessons/**：issues 记录单个 bug，lessons 提取可复用的教训
-- **standards/** vs **designs/**：standards 是开发规范（相对稳定），designs 是系统现状（高频更新）
-- **design/** vs **designs/**：design 是稳定的应用层设计基线，designs 是系统当前状态的快照
+- **standards/** vs **design/**：standards 是开发规范（相对稳定），designs 是系统现状（高频更新）
+- **design/** vs **design/**：design 是稳定的应用层设计基线，designs 是系统当前状态的快照
 
 ---
 

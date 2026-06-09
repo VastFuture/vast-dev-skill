@@ -6,14 +6,14 @@
 
 ## 渐进披露 - 两层文档系统
 
-docs-pipeline 默认创建的 docs/ 结构服务于 **AI 协作链路**（prd、design、exec-plans），但当项目需要对外发布（SDK、API、开源库）时，需要增加**对外文档层**。
+docs-pipeline 默认创建的 docs/ 结构服务于 **AI 协作链路**（prd、design、plans），但当项目需要对外发布（SDK、API、开源库）时，需要增加**对外文档层**。
 
 ### 内层（必需，所有项目）：AI 协作链路
 
 由 docs-pipeline 自动创建：
 - `docs/prd/` — 需求文档
 - `docs/design/` — 架构设计
-- `docs/exec-plans/` — 执行计划
+- `docs/plans/` — 执行计划
 - `docs/handover/` — 交接清单
 - `docs/context/` — AI 上下文（验证命令、环境变量）
 - `docs/backlog/`、`docs/issues/`、`docs/lessons/`

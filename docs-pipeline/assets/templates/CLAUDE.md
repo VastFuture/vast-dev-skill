@@ -186,7 +186,7 @@
 
 所有创建的计划**必须**在实施前通过独立计划审计，在标记完成前通过独立闭包审计。
 
-计划放 `docs/exec-plans/active/`，完成后移至 `completed/`，模板见 `docs/exec-plans/README.md`。
+计划放 `docs/plans/`，完成后移至 `completed/`，模板见 `docs/plans/README.md`。
 
 ### 验证基线
 
@@ -196,13 +196,13 @@
 
 1. **文件进文件出**：重要指令、计划和结论必须落在文件中，不能只在聊天里。
 2. **聊天不是持久记忆**：不要把聊天摘要当作项目持久记忆。
-3. **不要从原始输入直接跳到代码**：范围不清晰时，先在 `docs/prd/` 或 `docs/discussions/` 中澄清。
-4. **非平凡实现前确认设计基线**：确认 `docs/design/` 和 `ARCHITECTURE.md` 反映当前支持的基线。如果过时，先更新再执行。
-5. **记录非显而易见的回归**：在 `docs/bugs/` 中记录。
+3. **不要从原始输入直接跳到代码**：范围不清晰时，先在 `docs/prd/` 或 `docs/design/` 中澄清。
+4. **非平凡实现前确认设计基线**：确认 `docs/design/` 和 `docs/architecture/` 反映当前支持的基线。如果过时，先更新再执行。
+5. **记录非显而易见的回归**：在 `docs/issues/` 中记录。
 6. **技能是方法选择器**：不能替代需求、设计、架构或 owner docs。先搞清楚"要做什么"，再选"用什么方法做"。
 7. **重复错误模式必须升级**：散文笔记 → 可复用审计提示 → 检查清单 → 静态检查 → lint 规则 → CI 防护。
 8. **不要生成完整产品**：不要从单个功能列表生成完整产品。偏好小而完整的切片。
-9. **信息缺失时写入文件**：将缺失的假设写入需求、讨论或计划文件，而非默默发明。
+9. **信息缺失时写入文件**：将缺失的假设写入需求、设计或计划文件，而非默默发明。
 10. **使用 backlog 和自主策略**：用 `docs/backlog/` 和 `docs/context/ai-autonomy-policy.md` 决定 AI 是否可以自行选择和执行下一个任务。
 
 ### 默认工作流（12步）
@@ -210,29 +210,31 @@
 1. 读取或更新 `docs/context/`
 2. 选择工作时查看 `docs/backlog/`
 3. 写或更新 `docs/prd/`
-4. 基线变更时更新 `docs/design/` 或 `ARCHITECTURE.md`
+4. 基线变更时更新 `docs/design/` 或 `docs/architecture/`
 5. 路由任务并选择候选可复用技能
-6. 计划触发器满足时写或更新 `docs/exec-plans/`
+6. 计划触发器满足时写或更新 `docs/plans/`
 7. 实施前审计计划
 8. 实现最小完整切片
 9. 运行验证
 10. 闭包审计
-11. 文档同步检查（代码变更 → 提示更新 `docs/standards/` + `docs/designs/`）
+11. 文档同步检查（代码变更 → 提示更新 `docs/standards/` + `docs/design/`）
 12. 需要时记录 `docs/lessons/`
 
 ### 文档所有权
 
-| 目录 | 职责 |
-|------|------|
-| `docs/context/` | 强制 AI 上下文、真相优先级、项目约定 |
-| `docs/backlog/` | 工作队列、AI 自主级别标签 |
-| `docs/research/` | 调研文档（技术方案、可行性分析） |
-| `docs/prd/` | 实现就绪的需求综合 |
-| `docs/design/` | 稳定的应用层业务和功能设计 |
-| `docs/exec-plans/` | 非平凡工作的执行和闭包标准 |
-| `docs/lessons/` | 持久可复用的工程教训 |
-| `docs/standards/` | 开发规范（分层、API、DB、安全、命名），相对稳定 |
-| `docs/designs/` | 系统设计现状（API、DB、业务规则、数据字典），高频更新 |
+| 目录 | 职责 | Owner |
+|------|------|-------|
+| `docs/context/` | 项目上下文、背景信息、全局约束 | PM |
+| `docs/backlog/` | 工作队列、待办事项、优先级排序 | PM |
+| `docs/prd/` | 需求规格、用户故事、验收标准 | PM |
+| `docs/design/` | 应用层设计 + 系统现状（SDD 双向同步） | Tech Lead |
+| `docs/architecture/` | 技术基线、模块边界、分层规范 | Architect |
+| `docs/standards/` | 开发规范、代码标准 | Tech Lead |
+| `docs/plans/` | 执行计划、里程碑规划 | PM |
+| `docs/plans/completed/` | 已完成的历史计划 | PM |
+| `docs/lessons/` | 经验教训、复盘文档 | 全员 |
+| `docs/logs/` | 开发日志、每日记录 | 全员 |
+| `docs/issues/` | 问题追踪、Bug 记录 | QA |
 
 ## 自检命令
 
@@ -252,11 +254,11 @@
 
 ### 文档同步（强制）
 
-- [ ] `docs/designs/` 同步检查（已更新 / 不涉及）
-  - 新增/修改 API → 更新 `docs/designs/api.yaml`
-  - 新增/修改数据表 → 更新 `docs/designs/db.md`
-  - 新增/修改业务规则 → 更新 `docs/designs/others/businessrule.md`
-  - 新增/修改数据字典 → 更新 `docs/designs/others/data-dict.md`
+- [ ] `docs/design/` 同步检查（已更新 / 不涉及）
+  - 新增/修改 API → 更新 `docs/design/api.yaml`
+  - 新增/修改数据表 → 更新 `docs/design/db.md`
+  - 新增/修改业务规则 → 更新 `docs/design/business-rule.md`
+  - 新增/修改数据字典 → 更新 `docs/design/data-dict.md`
 
 ### 代码质量
 
