@@ -49,26 +49,46 @@ export DOCS_ROOT=/path/to/docs/repo
 
 或检测到 `docs/` 目录本身是一个独立的 git 仓库时自动启用。
 
+## 设计哲学：AGE × DDD 融合
+
+docs-pipeline 融合了两套看似对立的设计哲学，形成 **SDD（Spec-Driven Development）**：
+
+| 哲学 | 来源 | 核心主张 | design/ 的定位 |
+|------|------|---------|---------------|
+| AGE | [Attractor-Guided Engineering](https://github.com/entropy-cloud/attractor-guided-engineering-template) | "设计是吸引子，代码向设计收敛" | 先写设计意图，代码按设计实现 |
+| DDD | [ddd-harness-microservices](https://github.com/domain-driven-design/ddd-harness-microservices) | "代码是真相，设计文档必须跟上代码" | 代码变更后，设计文档同步更新 |
+
+**SDD 循环**：
+
+```
+① 写设计意图 ──▶ ② 按设计实现 ──▶ ③ 测试验证 ──▶ ④ 同步到设计
+    (AGE)           (AGE)           (两者)         (DDD)
+```
+
+一个 `design/` 目录，同时承载设计意图和系统现状。详见 [design/README.md](assets/templates/design-README.md)。
+
 ## 产物链路
 
 ```
-backlog → prd → design → plans → exec-plans/completed
-                                                  ↓
-                                              lessons（踩坑教训）
+prd（需求）→ design/（设计意图）→ exec-plans/active/（执行计划）→ exec-plans/completed/（已完成）
+                                                                              ↓
+                                                                          lessons（踩坑教训）
 ```
 
 ## 核心目录（默认初始化）
 
-| 目录 | 职责 |
-|------|------|
-| `docs/context/` | 强制 AI 上下文、真相优先级、项目约定 |
-| `docs/backlog/` | 工作队列、AI 自主级别标签 |
-| `docs/prd/` | 实现就绪的需求文档 |
-| `docs/design/` | 稳定的应用层设计基线 |
-| `docs/plans/` | 执行计划（含 Plan/Closure 审计） |
-| `docs/lessons/` | 可复用的工程教训 |
-| `docs/standards/` | 开发规范（分层、API、DB、安全、命名），相对稳定 |
-| `docs/design/` | 系统设计现状（API、DB、业务规则、数据字典），高频更新 |
+| 目录 | 职责 | 频率 |
+|------|------|------|
+| `docs/context/` | 项目上下文、真相优先级、验证命令 | 中频 |
+| `docs/backlog/` | 工作队列、待办事项 | 高频 |
+| `docs/prd/` | 需求规格、用户故事 | 中频 |
+| `docs/design/` | 应用层设计 + 系统现状（SDD 双向同步） | 中频 |
+| `docs/architecture/` | 技术基线、模块边界 | 低频 |
+| `docs/standards/` | 开发规范、代码标准 | 低频 |
+| `docs/exec-plans/` | 执行计划（active 进行中 / completed 已完成） | 中频 |
+| `docs/lessons/` | 经验教训、复盘 | 低频 |
+| `docs/logs/` | 开发日志、每日记录 | 高频 |
+| `docs/issues/` | 问题追踪、Bug 记录 | 高频 |
 
 ## 行为契约
 
