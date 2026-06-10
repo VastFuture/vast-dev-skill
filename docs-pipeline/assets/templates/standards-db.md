@@ -1,6 +1,7 @@
 # 数据库规范 (Database Standard)
 
 > 最后更新: [YYYY-MM-DD]
+> ⚠️ **技术栈适配**：以下为 Java/MyBatis-Plus 示例。Python/SQLAlchemy、Go/GORM 等项目请替换 ORM 特有语法。
 
 ## 1. 通用约定
 

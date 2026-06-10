@@ -1,6 +1,7 @@
 # 命名规范 (Naming Standard)
 
 > 最后更新: [YYYY-MM-DD]
+> ⚠️ **技术栈适配**：以下为 Java 示例命名。Python（snake_case）、TypeScript（camelCase）、Rust（snake_case）等项目请替换为对应语言规范。
 
 ## 1. 通用原则
 

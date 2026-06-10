@@ -1,9 +1,10 @@
 # AGENTS 全局配置
 
-> 版本: 4.2
-> 最后更新: 2026-06-02
-> 说明: Codex CLI 全局指令，为 AI 编码代理提供统一行为约束，基于 AGE 增强
+> 版本: 4.3
+> 最后更新: 2026-06-09
+> 说明: AI 编码代理统一入口（Claude Code / Codex CLI），为所有 AI 代理提供统一行为约束，基于 AGE 增强
 > 来源: https://github.com/entropy-cloud/attractor-guided-engineering-template
+> 入口: CLAUDE.md → @AGENTS.md (本项目唯一规则入口)
 
 ---
 
@@ -130,6 +131,8 @@
 ### 验证基线
 
 **不要假设本项目的验证命令与模板相同。** 使用 `docs/context/project-context.md` 中列出的真实命令。**如果验证命令为空或仍是占位符，停止并填充，不要报告验证成功。**
+> **操作细节归属**：自检命令、测试环境、系统启动流程、CDP 验证步骤等操作细节应放在 `docs/context/project-context.md` 中。本文件只定义验证流程规则。
+
 
 ### 运营规则（10条铁律）
 
@@ -300,11 +303,9 @@
 **产物链路：**
 
 ```
-prd（需求）→ design/（设计意图）→ 实现代码 → 测试验证 → 同步设计（实现现状）
-    ↓
-plans/（执行计划）→ exec-plans/completed/（计划完成）
-    ↓
-lessons/（踩坑教训，按需横切）+ logs/（开发日志）+ issues/（问题追踪）
+research/（调研）→ prd/（需求）→ exec-plans/active/（计划进行中）→ exec-plans/completed/（计划完成）
+                                                                ↓
+                                                            lessons/（踩坑教训，按需横切）
 ```
 
 **按需推进，不强制全流程：**

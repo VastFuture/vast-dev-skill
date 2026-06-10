@@ -1,6 +1,7 @@
 # 安全规范 (Security Standard)
 
 > 最后更新: [YYYY-MM-DD]
+> ⚠️ **技术栈适配**：以下为 Java/BFF 示例。Python/FastAPI、Go 等项目请替换框架特有安全机制。
 
 ## 1. 认证架构
 

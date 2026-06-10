@@ -1,5 +1,36 @@
 # docs-pipeline 更新日志
 
+## [4.5.3] - 2026-06-10
+
+### Changed
+
+- **CLAUDE.md 模板改为薄引用** — 从 281 行全文缩减为 5 行 `@AGENTS.md` 入口，消除初始化时人造的 CLAUDE.md↔AGENTS.md 双重行。
+- **AGENTS.md 模板标记为统一入口** — 头部加 `入口: CLAUDE.md → @AGENTS.md` 声明。
+- **standards/ 模板加技术栈警告** — 5 个文件顶部加 `⚠️ 技术栈适配` 提示，明确 Java/Spring 示例需本地化。
+
+## [4.5.2] - 2026-06-09
+
+### Added
+
+- **`project-context.md` 模板扩展 4 个操作章节** — 自检命令、测试环境要求、系统启动流程、CDP 验证流程（UI 改动必跑）
+- **`AGENTS.md` 模板加职责边界声明** — 验证基线节注：操作细节归 `project-context.md`，本文件只定义验证流程规则
+
+### Design
+
+- **AGENTS.md vs project-context.md 职责划分**：AGENTS.md = AI 怎么工作（流程规则），project-context.md = 项目怎么跑（操作命令）。消除两者混装操作细节的反模式。
+
+## [4.5.1] - 2026-06-09
+
+### Fixed
+
+- **删除 `docs-CLAUDE.md` 模板** — 与 `docs/index.md` + `source-of-truth` 三重重复。内容（Owner Docs 职责、真相优先级、铁律）已合入 `docs-index.md`。
+- **修复 AGENTS.md 产物链路 `plans/` 不一致** — ASCII 图统一为 `exec-plans/active/` → `exec-plans/completed/`。
+
+### Added
+
+- **`project-context.md` 模板加 AI 自主维护规则** — "在 exec-plans/active/ 新建/移动计划文件时必须同步更新此表"。
+- **`codebase-map.md` 模板加强占位符提醒** — 文件顶部加 ⚠️ 警告，明确要求 AI 首次使用时填充所有 `<...>` 占位符。
+
 ## [4.5.0] - 2026-06-09
 
 ### Breaking Changes

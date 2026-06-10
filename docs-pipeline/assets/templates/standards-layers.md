@@ -1,6 +1,7 @@
 # 分层架构规范 (Layers Standard)
 
 > 最后更新: [YYYY-MM-DD]
+> ⚠️ **技术栈适配**：以下为 Java/Spring 示例。Python/FastAPI、Go、Rust 等项目请将分层名称替换为对应技术栈的术语（如 Python: router→service→model→repository）。
 
 ## 概述
 

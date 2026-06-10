@@ -98,7 +98,6 @@ DOCS_PIPELINE_MODE=minimal /docs-pipeline
 │   └── commands/
 │       └── ideas.md          # 不存在则建（/ideas 随手记命令）
 └── docs/
-    ├── CLAUDE.md             # 总规则（含 Owner Docs 职责）
     ├── index.md              # ★ 文档路由中枢
     ├── context/              # ★ 强制 AI 上下文【必需】
     │   ├── project-context.md       # 项目上下文、验证命令
@@ -323,13 +322,15 @@ fi
 
 ### 3. 写入 docs/ 模板
 
+> **注意**：本 skill 不生成 `docs/CLAUDE.md`。其内容（Owner Docs 职责、真相优先级、铁律）已合入 `docs/index.md`，避免与 `docs/context/source-of-truth-and-precedence.md` 三重重复。
+> 如果项目深度依赖 **Claude Code 的目录级自动加载机制**（进入 `docs/` 时原生加载 `CLAUDE.md`），可手动从 `docs/index.md` 复制关键规则到 `docs/CLAUDE.md`。
+
 **🔴 CHECKPOINT · 开始写入模板**
 
 确认即将写入的模板文件数量：
 
 ```
 📝 即将写入以下模板：
-- docs/CLAUDE.md
 - docs/index.md
 - docs/context/ (4 个文件)
 - docs/backlog/README.md
@@ -373,7 +374,6 @@ fi
 
 | 模板 | 目标路径 |
 |------|---------|
-| `assets/templates/docs-CLAUDE.md` | `$docs_root/CLAUDE.md` |
 | `assets/templates/docs-index.md` | `$docs_root/index.md` |
 | `assets/templates/context/project-context.md` | `$docs_root/context/project-context.md` |
 | `assets/templates/context/ai-autonomy-policy.md` | `$docs_root/context/ai-autonomy-policy.md` |
@@ -416,7 +416,7 @@ fi
 **根据模式选择模板**：
 
 所有模式都复制：
-- docs-CLAUDE.md, docs-index.md
+- docs-index.md
 - context/ 下 4 个文件
 - backlog-README.md, prd-README.md, exec-plans-README.md, lessons-README.md
 - agent-guides/ 下 7 个辅助文档
