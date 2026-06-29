@@ -284,6 +284,22 @@
       "addedAt": "2026-06-29",
       "updatedAt": "2026-06-29",
       "builtin": true
+    },
+    {
+      "id": "builtin-deep-research-prompt",
+      "name": "deep-research-prompt",
+      "description": "将简单的 deepresearch 需求转化为结构化、专业的提示词，适用于各种 AI 深度研究工具",
+      "url": "https://github.com/Raymond-Hear/deep-research-prompt",
+      "tags": [
+        "ai",
+        "claude-code",
+        "deep-research",
+        "prompt-engineering",
+        "skills"
+      ],
+      "addedAt": "2026-06-29",
+      "updatedAt": "2026-06-29",
+      "builtin": true
     }
   ]
 }
