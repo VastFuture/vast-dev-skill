@@ -252,6 +252,38 @@
       "addedAt": "2026-06-08",
       "updatedAt": "2026-06-08",
       "builtin": true
+    },
+    {
+      "id": "builtin-qiaomu-knowledge-site-creator",
+      "name": "qiaomu-knowledge-site-creator",
+      "description": "一句话生成任何领域的知识学习网站 - AI 理解主题，自动创作内容，生成页面，一键部署",
+      "url": "https://github.com/VastFuture/qiaomu-knowledge-site-creator",
+      "tags": [
+        "ai",
+        "claude-code",
+        "knowledge",
+        "website-generator",
+        "learning"
+      ],
+      "addedAt": "2026-06-29",
+      "updatedAt": "2026-06-29",
+      "builtin": true
+    },
+    {
+      "id": "builtin-skill-knowledge-extractor",
+      "name": "skill-knowledge-extractor",
+      "description": "从对话、文档和工作经验中提取可复用的知识模式",
+      "url": "https://github.com/VastFuture/skill-knowledge-extractor",
+      "tags": [
+        "ai",
+        "claude-code",
+        "knowledge-extraction",
+        "patterns",
+        "skills"
+      ],
+      "addedAt": "2026-06-29",
+      "updatedAt": "2026-06-29",
+      "builtin": true
     }
   ]
 }
