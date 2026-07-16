@@ -300,6 +300,24 @@
       "addedAt": "2026-06-29",
       "updatedAt": "2026-06-29",
       "builtin": true
+    },
+    {
+      "id": "builtin-taste-skill",
+      "name": "taste-skill",
+      "description": "AI 前端反平庸框架 - 为 AI Agent 生成的界面注入设计品味，提供更强的布局、排版、动效和间距，彻底告别千篇一律的样板 UI",
+      "url": "https://github.com/leonxlnx/taste-skill",
+      "tags": [
+        "ai-agent",
+        "claude-code",
+        "frontend",
+        "design",
+        "ui",
+        "anti-slop",
+        "skills"
+      ],
+      "addedAt": "2026-07-16",
+      "updatedAt": "2026-07-16",
+      "builtin": true
     }
   ]
 }
