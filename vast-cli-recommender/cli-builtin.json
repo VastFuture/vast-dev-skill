@@ -1,0 +1,85 @@
+{
+  "tools": [
+    {
+      "id": "builtin-opencli",
+      "name": "opencli",
+      "description": "通过 opencli CLI 与主流社交和内容平台交互，支持 Bilibili、知乎、Twitter/X、YouTube、微博、小红书、V2EX、Reddit、HackerNews、雪球、BOSS直聘等",
+      "url": "https://github.com/joeseesun/qiaomu-opencli-skills",
+      "installCommand": "npm install -g opencli",
+      "category": "内容平台",
+      "tags": [
+        "social-media",
+        "content-platform",
+        "automation"
+      ],
+      "addedAt": "2026-07-17",
+      "updatedAt": "2026-07-17",
+      "builtin": true
+    },
+    {
+      "id": "builtin-claude-hud",
+      "name": "claude-hud",
+      "description": "Claude Code 状态栏插件，实时显示上下文用量、活跃工具、运行中的 agent 和 todo 进度",
+      "url": "https://github.com/jarrodwatts/claude-hud",
+      "installCommand": "npm install -g @jarrodwatts/claude-hud",
+      "category": "监控工具",
+      "tags": [
+        "claude-code",
+        "statusline",
+        "monitoring"
+      ],
+      "addedAt": "2026-07-17",
+      "updatedAt": "2026-07-17",
+      "builtin": true
+    },
+    {
+      "id": "builtin-codex-cli",
+      "name": "codex",
+      "description": "OpenAI Codex CLI 编排工具，用于并行任务执行、上下文注入和多代理工作流协调",
+      "url": "https://github.com/openai/openai-cli",
+      "installCommand": "npm install -g @openai/codex-cli",
+      "category": "AI 工具",
+      "tags": [
+        "ai",
+        "codex",
+        "automation",
+        "multi-agent"
+      ],
+      "addedAt": "2026-07-17",
+      "updatedAt": "2026-07-17",
+      "builtin": true
+    },
+    {
+      "id": "builtin-gh-cli",
+      "name": "gh",
+      "description": "GitHub 官方 CLI，用于 PR、Issue、仓库管理和 CI/CD 操作",
+      "url": "https://github.com/cli/cli",
+      "installCommand": "brew install gh",
+      "category": "开发工具",
+      "tags": [
+        "github",
+        "version-control",
+        "automation"
+      ],
+      "addedAt": "2026-07-17",
+      "updatedAt": "2026-07-17",
+      "builtin": true
+    },
+    {
+      "id": "builtin-typeui-cli",
+      "name": "typeui",
+      "description": "TypeUI CLI - 67种设计系统技能的管理工具，支持 pull/list/generate 设计规范",
+      "url": "https://github.com/bergside/awesome-design-skills",
+      "installCommand": "npx typeui.sh",
+      "category": "开发工具",
+      "tags": [
+        "design-system",
+        "ui",
+        "skills"
+      ],
+      "addedAt": "2026-07-17",
+      "updatedAt": "2026-07-17",
+      "builtin": true
+    }
+  ]
+}
