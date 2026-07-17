@@ -318,6 +318,24 @@
       "addedAt": "2026-07-16",
       "updatedAt": "2026-07-16",
       "builtin": true
+    },
+    {
+      "id": "builtin-awesome-design-skills",
+      "name": "awesome-design-skills",
+      "description": "精选的67种设计系统技能库 - 包含玻璃态、粗野主义、极简、材料设计等完整设计规范，通过 TypeUI CLI 一键拉取，遵循 WCAG 2.2 AA 无障碍标准",
+      "url": "https://github.com/bergside/awesome-design-skills",
+      "tags": [
+        "ai-agent",
+        "claude-code",
+        "design-system",
+        "ui",
+        "skills",
+        "wcag",
+        "accessibility"
+      ],
+      "addedAt": "2026-07-17",
+      "updatedAt": "2026-07-17",
+      "builtin": true
     }
   ]
 }
