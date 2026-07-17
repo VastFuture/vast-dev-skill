@@ -1,6 +1,40 @@
 {
   "tools": [
     {
+      "id": "builtin-gh-cli",
+      "name": "gh",
+      "description": "GitHub 官方 CLI，用于 PR、Issue、仓库管理和 CI/CD 操作，AI Agent 可自动创建PR、管理Issue、检查CI状态",
+      "url": "https://github.com/cli/cli",
+      "installCommand": "brew install gh",
+      "category": "开发工具",
+      "tags": [
+        "github",
+        "version-control",
+        "automation",
+        "ai-ready"
+      ],
+      "addedAt": "2026-07-17",
+      "updatedAt": "2026-07-17",
+      "builtin": true
+    },
+    {
+      "id": "builtin-aider",
+      "name": "aider",
+      "description": "AI 配对编程终端工具，支持代码库映射、自动编辑、Git 集成，连接 Claude、DeepSeek、OpenAI 等多种 LLM",
+      "url": "https://github.com/aider-ai/aider",
+      "installCommand": "pip install aider-chat",
+      "category": "AI 工具",
+      "tags": [
+        "ai",
+        "pair-programming",
+        "code-generation",
+        "git-integration"
+      ],
+      "addedAt": "2026-07-17",
+      "updatedAt": "2026-07-17",
+      "builtin": true
+    },
+    {
       "id": "builtin-opencli",
       "name": "opencli",
       "description": "通过 opencli CLI 与主流社交和内容平台交互，支持 Bilibili、知乎、Twitter/X、YouTube、微博、小红书、V2EX、Reddit、HackerNews、雪球、BOSS直聘等",
@@ -10,7 +44,129 @@
       "tags": [
         "social-media",
         "content-platform",
-        "automation"
+        "automation",
+        "ai-ready"
+      ],
+      "addedAt": "2026-07-17",
+      "updatedAt": "2026-07-17",
+      "builtin": true
+    },
+    {
+      "id": "builtin-jq",
+      "name": "jq",
+      "description": "命令行 JSON 处理器，AI Agent 用于解析 API 响应、处理配置文件、数据转换",
+      "url": "https://github.com/stedolan/jq",
+      "installCommand": "brew install jq",
+      "category": "数据处理",
+      "tags": [
+        "json",
+        "data-processing",
+        "api",
+        "ai-ready"
+      ],
+      "addedAt": "2026-07-17",
+      "updatedAt": "2026-07-17",
+      "builtin": true
+    },
+    {
+      "id": "builtin-curl",
+      "name": "curl",
+      "description": "HTTP 客户端，AI Agent 用于调用 API、下载文件、测试端点",
+      "url": "https://curl.se/",
+      "installCommand": "系统自带",
+      "category": "网络工具",
+      "tags": [
+        "http",
+        "api",
+        "download",
+        "ai-ready"
+      ],
+      "addedAt": "2026-07-17",
+      "updatedAt": "2026-07-17",
+      "builtin": true
+    },
+    {
+      "id": "builtin-git",
+      "name": "git",
+      "description": "版本控制系统，AI Agent 用于提交代码、切换分支、查看历史、合并代码",
+      "url": "https://git-scm.com/",
+      "installCommand": "系统自带",
+      "category": "开发工具",
+      "tags": [
+        "version-control",
+        "vcs",
+        "collaboration",
+        "ai-ready"
+      ],
+      "addedAt": "2026-07-17",
+      "updatedAt": "2026-07-17",
+      "builtin": true
+    },
+    {
+      "id": "builtin-ffmpeg",
+      "name": "ffmpeg",
+      "description": "音视频处理工具，AI Agent 用于转码、剪辑、提取音频、压缩视频",
+      "url": "https://ffmpeg.org/",
+      "installCommand": "brew install ffmpeg",
+      "category": "媒体处理",
+      "tags": [
+        "video",
+        "audio",
+        "media",
+        "conversion",
+        "ai-ready"
+      ],
+      "addedAt": "2026-07-17",
+      "updatedAt": "2026-07-17",
+      "builtin": true
+    },
+    {
+      "id": "builtin-imagemagick",
+      "name": "imagemagick",
+      "description": "图像处理工具，AI Agent 用于格式转换、缩放、裁剪、添加水印",
+      "url": "https://imagemagick.org/",
+      "installCommand": "brew install imagemagick",
+      "category": "媒体处理",
+      "tags": [
+        "image",
+        "graphics",
+        "conversion",
+        "ai-ready"
+      ],
+      "addedAt": "2026-07-17",
+      "updatedAt": "2026-07-17",
+      "builtin": true
+    },
+    {
+      "id": "builtin-pandoc",
+      "name": "pandoc",
+      "description": "文档格式转换工具，AI Agent 用于 Markdown 转 PDF、HTML 转 Word、格式互转",
+      "url": "https://pandoc.org/",
+      "installCommand": "brew install pandoc",
+      "category": "文档处理",
+      "tags": [
+        "document",
+        "conversion",
+        "markdown",
+        "pdf",
+        "ai-ready"
+      ],
+      "addedAt": "2026-07-17",
+      "updatedAt": "2026-07-17",
+      "builtin": true
+    },
+    {
+      "id": "builtin-sqlite3",
+      "name": "sqlite3",
+      "description": "嵌入式数据库，AI Agent 用于数据存储、SQL 查询、数据导出",
+      "url": "https://sqlite.org/",
+      "installCommand": "系统自带",
+      "category": "数据库",
+      "tags": [
+        "database",
+        "sql",
+        "storage",
+        "ai-ready"
       ],
       "addedAt": "2026-07-17",
       "updatedAt": "2026-07-17",
@@ -44,22 +200,6 @@
         "codex",
         "automation",
         "multi-agent"
-      ],
-      "addedAt": "2026-07-17",
-      "updatedAt": "2026-07-17",
-      "builtin": true
-    },
-    {
-      "id": "builtin-gh-cli",
-      "name": "gh",
-      "description": "GitHub 官方 CLI，用于 PR、Issue、仓库管理和 CI/CD 操作",
-      "url": "https://github.com/cli/cli",
-      "installCommand": "brew install gh",
-      "category": "开发工具",
-      "tags": [
-        "github",
-        "version-control",
-        "automation"
       ],
       "addedAt": "2026-07-17",
       "updatedAt": "2026-07-17",

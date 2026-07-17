@@ -61,13 +61,38 @@
 
 ## 内置推荐 CLI 工具
 
-当前包含以下内置推荐：
+当前包含以下内置推荐（共13个）：
 
-1. **opencli** - 主流社交和内容平台 CLI
-2. **claude-hud** - Claude Code 状态栏插件
-3. **codex** - OpenAI Codex CLI 编排工具
-4. **gh** - GitHub 官方 CLI
-5. **typeui** - TypeUI 设计系统管理工具
+### 开发工具
+1. **gh** - GitHub 官方 CLI（PR/Issue/CI管理）
+2. **git** - 版本控制系统
+3. **typeui** - TypeUI 设计系统管理工具
+
+### AI 工具
+4. **aider** - AI 配对编程终端工具
+5. **codex** - OpenAI Codex CLI 编排工具
+
+### 内容平台
+6. **opencli** - 主流社交和内容平台 CLI
+
+### 数据处理
+7. **jq** - JSON 处理器
+
+### 网络工具
+8. **curl** - HTTP 客户端
+
+### 媒体处理
+9. **ffmpeg** - 音视频处理工具
+10. **imagemagick** - 图像处理工具
+
+### 文档处理
+11. **pandoc** - 文档格式转换工具
+
+### 数据库
+12. **sqlite3** - 嵌入式数据库
+
+### 监控工具
+13. **claude-hud** - Claude Code 状态栏插件
 
 ## 数据格式
 
