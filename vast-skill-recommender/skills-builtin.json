@@ -336,6 +336,23 @@
       "addedAt": "2026-07-17",
       "updatedAt": "2026-07-17",
       "builtin": true
+    },
+    {
+      "id": "builtin-agent-reach",
+      "name": "agent-reach",
+      "description": "赋予 AI Agent 看见整个互联网的能力，单一 CLI 即可读取和搜索 Twitter、Reddit、YouTube、GitHub、Bilibili、小红书等主流平台，零 API 费用",
+      "url": "https://github.com/Panniantong/Agent-Reach",
+      "tags": [
+        "ai-agent",
+        "claude-code",
+        "web-scraper",
+        "social-media",
+        "search",
+        "mcp"
+      ],
+      "addedAt": "2026-07-22",
+      "updatedAt": "2026-07-22",
+      "builtin": true
     }
   ]
 }
