@@ -1,0 +1,79 @@
+{
+  "plugins": [
+    {
+      "id": "builtin-cc-adapter-v2",
+      "name": "cc-adapter-v2",
+      "description": "Claude Code 生态桥接到 OpenCode。轻量级适配器，支持 Commands、Skills、MCP、Agents、Plugins 五大模块。从 oh-my-openagent 提取，去掉重型编排，只保留兼容层核心",
+      "url": "https://github.com/VastFuture/opencode-cc-adapter",
+      "installCommand": "npm install -g cc-adapter-v2",
+      "configExample": {
+        "plugin": ["cc-adapter-v2"],
+        "claude_code": {
+          "commands": true,
+          "skills": true,
+          "mcp": true,
+          "agents": false,
+          "plugins": false
+        }
+      },
+      "category": "生态桥接",
+      "tags": [
+        "claude-code",
+        "adapter",
+        "commands",
+        "skills",
+        "mcp",
+        "ecosystem"
+      ],
+      "features": [
+        "从 .claude/commands/ 加载命令到 / 自动补全",
+        "从 7 个来源发现技能，注入 system prompt",
+        "加载 .mcp.json MCP 服务器（stdio + HTTP）",
+        "从 .claude/agents/ 加载 Agent 定义（实验性）",
+        "从 .claude/plugins/ 加载 Claude Code 插件（实验性）"
+      ],
+      "addedAt": "2026-08-17",
+      "updatedAt": "2026-08-17",
+      "builtin": true
+    },
+    {
+      "id": "builtin-wecom-ping",
+      "name": "opencode-wecom-ping",
+      "description": "企业微信群机器人通知插件。当 OpenCode 会话完成、出错或需要权限确认时，自动推送到手机微信。默认静默，支持三种启用方式（Agent、斜杠命令、对话关键词）",
+      "url": "https://github.com/VastFuture/opencode-wecom-ping",
+      "installCommand": "npm install -g opencode-wecom-ping",
+      "configExample": {
+        "plugin": ["opencode-wecom-ping"],
+        "agent": {
+          "wecom-notify": {
+            "mode": "primary",
+            "description": "Agent that sends WeChat Work notifications",
+            "prompt": "You are wecom-notify, an agent that notifies the user via WeChat Work.",
+            "color": "#07C160"
+          }
+        }
+      },
+      "envVars": [
+        "WECOM_BOT_KEY"
+      ],
+      "category": "通知提醒",
+      "tags": [
+        "notification",
+        "wecom",
+        "wechat-work",
+        "alert",
+        "ping"
+      ],
+      "features": [
+        "会话完成/出错/权限请求自动推送",
+        "默认静默，三种启用方式（Agent/命令/关键词）",
+        "内置去重，避免循环刷屏",
+        "零依赖，仅用 Node fetch",
+        "支持本地路径、npm、GitHub Release 多种安装方式"
+      ],
+      "addedAt": "2026-08-17",
+      "updatedAt": "2026-08-17",
+      "builtin": true
+    }
+  ]
+}
