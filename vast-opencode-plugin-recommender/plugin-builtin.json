@@ -7,7 +7,9 @@
       "url": "https://github.com/VastFuture/opencode-cc-adapter",
       "installCommand": "npm install -g cc-adapter-v2",
       "configExample": {
-        "plugin": ["cc-adapter-v2"],
+        "plugin": [
+          "cc-adapter-v2"
+        ],
         "claude_code": {
           "commands": true,
           "skills": true,
@@ -43,7 +45,9 @@
       "url": "https://github.com/VastFuture/opencode-wecom-ping",
       "installCommand": "npm install -g opencode-wecom-ping",
       "configExample": {
-        "plugin": ["opencode-wecom-ping"],
+        "plugin": [
+          "opencode-wecom-ping"
+        ],
         "agent": {
           "wecom-notify": {
             "mode": "primary",
@@ -73,6 +77,54 @@
       ],
       "addedAt": "2026-08-17",
       "updatedAt": "2026-08-17",
+      "builtin": true
+    },
+    {
+      "id": "builtin-ralph-loop",
+      "name": "ralph-loop",
+      "description": "Ralph Loop 自动续写插件。实现自我引用的完成循环，让 AI Agent 持续工作直到任务真正 100% 完成。支持 /ralph-loop、/ulw-loop 命令和 ebuilder agent 自动续写模式",
+      "url": "https://github.com/VastFuture/opencode-ralph-loop",
+      "installCommand": "cd ~/.cache/opencode && npm install FountainChan/opencode-ralph-loop",
+      "configExample": {
+        "plugin": [
+          "ralph-loop"
+        ],
+        "agent": {
+          "ebuilder": {
+            "mode": "primary",
+            "description": "Autonomous agent with auto-continuation.",
+            "prompt": "You are ebuilder, an autonomous agent that works continuously until the task is 100% complete. When FULLY done, output: <promise>DONE</promise>"
+          }
+        }
+      },
+      "category": "工作流增强",
+      "tags": [
+        "automation",
+        "ralph-loop",
+        "auto-continuation",
+        "workflow",
+        "loop"
+      ],
+      "features": [
+        "/ralph-loop - 标准完成循环（最多 100 次迭代）",
+        "/ulw-loop - 超强工作模式（最多 500 次迭代）",
+        "/cancel-ralph - 取消活动循环",
+        "ebuilder agent - 切换到 ebuilder agent 自动启用续写",
+        "完成承诺检测 - 扫描 Agent 输出中的 <promise>DONE</promise>",
+        "Toast 通知 - 实时迭代和完成状态更新",
+        "防重复处理 - 避免重复 idle 事件",
+        "自定义参数 - 支持 --max-iterations 和 --completion-promise",
+        "零依赖 - 单文件实现，无外部依赖"
+      ],
+      "usageNotes": [
+        "Agent 完成任务时需要输出 <promise>DONE</promise> 标记",
+        "循环状态保存在 .ralph-loop.state.json 和 .ebuilder.state.json",
+        "切换回 build/plan agent 会自动停止 ebuilder 循环",
+        "受 oh-my-opencode 的 Ralph Loop 和 Sisyphus 启发",
+        "轻量级单文件实现，比 oh-my-opencode 更简单"
+      ],
+      "addedAt": "2026-08-18",
+      "updatedAt": "2026-08-18",
       "builtin": true
     }
   ]
