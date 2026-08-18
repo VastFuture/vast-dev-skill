@@ -136,3 +136,67 @@ export WECOM_BOT_KEY="你的群机器人key"
 ## License
 
 MIT
+
+### 3. ralph-loop
+
+Ralph Loop 自动续写插件。实现自我引用的完成循环，让 AI Agent 持续工作直到任务真正 100% 完成。
+
+**安装**:
+```bash
+cd ~/.cache/opencode
+npm install FountainChan/opencode-ralph-loop
+```
+
+**配置**:
+```json
+{
+  "plugin": ["ralph-loop"],
+  "agent": {
+    "ebuilder": {
+      "mode": "primary",
+      "description": "Autonomous agent with auto-continuation.",
+      "prompt": "You are ebuilder, an autonomous agent that works continuously until the task is 100% complete. When FULLY done, output: <promise>DONE</promise>"
+    }
+  }
+}
+```
+
+**使用方式**:
+
+1. **命令模式**:
+```bash
+# 标准循环（最多 100 次迭代）
+/ralph-loop "重构认证模块并确保所有测试通过"
+
+# 超强工作模式（最多 500 次迭代）
+/ulw-loop "迁移所有 API 客户端到 v2"
+
+# 自定义参数
+/ralph-loop "构建仪表板" --max-iterations=50 --completion-promise=SHIPPED
+
+# 取消循环
+/cancel-ralph
+```
+
+2. **ebuilder Agent 模式**（推荐用于长任务）:
+   - 在 TUI 中切换到 **ebuilder** agent
+   - 正常输入任务
+   - Agent 将持续工作，无需停止
+   - 切换回 **build** agent 即可停止自动续写
+
+**特性**:
+- `/ralph-loop` - 标准完成循环（最多 100 次迭代）
+- `/ulw-loop` - 超强工作模式（最多 500 次迭代）
+- `/cancel-ralph` - 取消活动循环
+- ebuilder agent - 切换到 ebuilder agent 自动启用续写
+- 完成承诺检测 - 扫描 Agent 输出中的 `<promise>DONE</promise>`
+- Toast 通知 - 实时迭代和完成状态更新
+- 防重复处理 - 避免重复 idle 事件
+- 自定义参数 - 支持 `--max-iterations` 和 `--completion-promise`
+- 零依赖 - 单文件实现，无外部依赖
+
+**注意事项**:
+- Agent 完成任务时需要输出 `<promise>DONE</promise>` 标记
+- 循环状态保存在 `.ralph-loop.state.json` 和 `.ebuilder.state.json`
+- 受 oh-my-opencode 的 Ralph Loop 和 Sisyphus 启发，轻量级单文件实现
+
