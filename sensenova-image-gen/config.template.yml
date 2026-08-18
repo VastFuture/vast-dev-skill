@@ -1,0 +1,8 @@
+# SenseNova 用户配置文件
+# 路径: ~/.sensenova/config.yml
+#
+# 获取 API Key: https://platform.sensenova.cn/console
+
+api_key: ""          # 必填: 你的 SenseNova API Key
+default_size: "2752x1536"   # 默认尺寸: 16:9 横屏
+output_dir: "~/Pictures/sensenova"  # 图片保存目录
