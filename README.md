@@ -63,6 +63,25 @@
 | :--- | :--- | :--- |
 | **vast-trading-cognitive-guardrails** | 反确认偏误协议：确保客观、中立的财务投资分析。 | `vast-trading-cognitive-guardrails` |
 
+### 🔗 外链与 SEO (Backlink & SEO)
+| 技能名称 | 说明 | 对应目录 | 来源 |
+| :--- | :--- | :--- | :--- |
+| **vast-backlink-spd-v1-batch** | 批量提交 URL 到免费目录网站，验证优先、断点恢复。 | `vast-backlink-spd-v1-batch` | [flaqai/backlink_skills](https://github.com/flaqai/backlink_skills) |
+| **vast-backlink-spd-v2-quality** | 精细化提交 URL 到高质量目录网站，逐动作授权。 | `vast-backlink-spd-v2-quality` | [flaqai/backlink_skills](https://github.com/flaqai/backlink_skills) |
+| **vast-seo-writer** | 通用 SEO 写作、技能（选词、提纲、事实核查、humanization）。 | `vast-seo-writer` | [flaqai/backlink_skills](https://github.com/flaqai/backlink_skills) |
+| **vast-rankup** | 网站全生命周期管理：选词、建站、部署、SEO、外链、复盘。 | `vast-rankup` | [yan-labs/yan-skills](https://github.com/yan-labs/yan-skills) |
+| **vast-backlink** | 外链渠道库（492 个入口）、登录态数据、批量提交流程。 | `vast-backlink` | [yan-labs/yan-skills](https://github.com/yan-labs/yan-skills) |
+| **vast-autopilot** | 一句话到无人值守执行完，自动调查、拆解、执行、部署。 | `vast-autopilot` | [yan-labs/yan-skills](https://github.com/yan-labs/yan-skills) |
+
+### 📚 知识库管理 (Knowledge Base)
+| 技能名称 | 说明 | 对应目录 | 来源 |
+| :--- | :--- | :--- | :--- |
+| **vast-wiki-init** | 初始化知识库目录结构、系统文件和配置。 | `vast-wiki-init` | [VastFuture/llm-wiki-skills](https://github.com/VastFuture/llm-wiki-skills) |
+| **vast-wiki-ingest** | 摄入资料：下载/保存 → 摘要 → 更新页面 → 记日志。 | `vast-wiki-ingest` | [VastFuture/llm-wiki-skills](https://github.com/VastFuture/llm-wiki-skills) |
+| **vast-wiki-classify** | raw/ 根目录文件智能归类 + frontmatter 标签。 | `vast-wiki-classify` | [VastFuture/llm-wiki-skills](https://github.com/VastFuture/llm-wiki-skills) |
+| **vast-wiki-query** | 先查目录定位 → 深读 → 综合答案带引用 → 归档。 | `vast-wiki-query` | [VastFuture/llm-wiki-skills](https://github.com/VastFuture/llm-wiki-skills) |
+| **vast-wiki-lint** | 健康巡检：矛盾/过时/孤立页面/缺链/数据空白。 | `vast-wiki-lint` | [VastFuture/llm-wiki-skills](https://github.com/VastFuture/llm-wiki-skills) |
+
 ---
 
 ## 📦 安装与使用
@@ -98,6 +117,9 @@ cp -r ~/vast-dev-skill/vast-dev-kickoff ~/.claude/skills/
 - [r.jina.ai](https://r.jina.ai) — Markdown 转换服务
 - [wuwu119/lenny-pm-skills](https://github.com/wuwu119/lenny-pm-skills) — 86 个产品管理技能中文版（基于 [Lenny's Newsletter](https://www.lennysnewsletter.com/) 洞察，[Refound AI](https://refoundai.com/lenny-skills/) 授权翻译）
 - [softaworks/agent-toolkit](https://github.com/softaworks/agent-toolkit) — c4-architecture / draw-io 架构图技能（作者 [@leonardocouy](https://github.com/leonardocouy)，MIT License）
+- [flaqai/backlink_skills](https://github.com/flaqai/backlink_skills) — 外链提交 V1/V2、SEO 写作技能（MIT License）
+- [yan-labs/yan-skills](https://github.com/yan-labs/yan-skills) — rankup / backlink / autopilot 技能（MIT License）
+- [VastFuture/llm-wiki-skills](https://github.com/VastFuture/llm-wiki-skills) — wiki 知识库管理技能包（MIT License）
 
 ## ⚖️ License
 
