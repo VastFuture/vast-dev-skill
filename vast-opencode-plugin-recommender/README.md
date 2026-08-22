@@ -1,202 +1,154 @@
 # vast-opencode-plugin-recommender
 
-OpenCode 插件推荐列表管理器 - 维护和分享值得安装的 OpenCode 插件。
+OpenCode 插件推荐列表管理器，支持维护推荐项，以及通过安全的“预览、确认、应用”流程安装插件。
 
 ## 功能
 
-- 📋 **查看插件列表** - 展示所有推荐的 OpenCode 插件
-- ➕ **添加插件** - 添加新插件到推荐列表
-- 🗑️ **删除插件** - 从列表中移除插件
-- ✏️ **更新插件** - 修改插件的描述或配置
+- 查看内置和用户维护的 OpenCode 插件推荐
+- 添加、更新、删除用户推荐项
+- 区分“可自动安装”和“仅手动安装”插件
+- 将 npm 插件包写入全局或项目 OpenCode 配置
+- 安装前检查重复项、版本冲突、配置冲突和插件目录
+- 使用 SHA-256 检测预览后的陈旧计划
+- 写入失败时自动回滚，并报告验证结果
 
 ## 使用方法
 
-### 查看插件列表
-
-```
+```text
 /opencode-plugin
-```
-
-或自然语言：
-- "查看 OpenCode 插件推荐"
-- "有哪些推荐的插件"
-- "插件列表"
-
-### 添加插件
-
-```
+/opencode-plugin show <id-or-name>
 /opencode-plugin add
+/opencode-plugin update <id-or-name>
+/opencode-plugin delete <id-or-name>
+/opencode-plugin install <id-or-name>
 ```
 
-或自然语言：
-- "添加一个 OpenCode 插件"
-- "我想推荐一个插件"
+也可以使用自然语言，例如：
 
-### 删除插件
+- “查看 OpenCode 插件推荐”
+- “添加一个 OpenCode 插件”
+- “更新这个插件推荐”
+- “删除这个用户插件”
+- “安装 cc-adapter-v2”
+- “把 wecom 插件安装到当前项目”
+- “全局安装这个 OpenCode 插件”
 
+## 安装安全流程
+
+每一次安装都必须重新选择范围：
+
+- **全局**：目标通常是 `~/.config/opencode/opencode.json`，对所有项目生效
+- **项目**：目标是所选 Git 仓库根目录中的 OpenCode 配置，只对该项目生效
+
+选择后，助手先调用 `scripts/install-plugin.mjs` 预览。预览不会写文件：
+
+```bash
+node scripts/install-plugin.mjs --plugin <id-or-name> --scope global
 ```
-/opencode-plugin delete <plugin-id>
+
+```bash
+node scripts/install-plugin.mjs --plugin <id-or-name> --scope project --project-dir <git-root>
 ```
 
-### 更新插件
+助手会展示：
 
+- 安装目标文件
+- 将追加的插件标识，不展示完整现有配置
+- 警告和冲突
+- 所需环境变量的名称，但绝不显示变量值
+- 当前配置的 `beforeSha256`
+
+只有用户看到本次预览并明确确认后，才会应用。应用命令必须携带预览返回的精确 `beforeSha256`：
+
+```bash
+node scripts/install-plugin.mjs --plugin <id-or-name> --scope global --apply --expect-sha256 <beforeSha256>
 ```
-/opencode-plugin update <plugin-id>
+
+项目安装还要带上同一个 `--project-dir <git-root>`。
+
+如果摘要检查前文件已发生变化，安装器返回 `stale-plan`。此时旧计划和旧确认全部失效，必须重新预览、重新确认，再用新的摘要重试。该摘要不是文件系统级 CAS，不能保证阻止检查之后的所有并发写入；验证失败时的回滚会再次检查本次写入摘要，避免覆盖后续修改。
+
+如果发现版本、配置格式或插件目录同名文件冲突，安装会停止，不会猜测或覆盖。项目安装会检查已知全局配置；全局安装没有项目目录时不承诺扫描项目配置，完全相同的 npm spec 由 OpenCode 去重。若写入后的验证失败，安装器会在回滚前再次检查文件摘要；发现后续修改时停止自动回滚并要求人工检查。摘要检查用于降低覆盖并发修改的风险，但不是文件系统级 CAS。
+
+安装成功后必须**完全退出并重新启动 OpenCode**。仅关闭当前会话或刷新界面不能保证插件加载。
+
+## 自动安装与手动安装
+
+只有同时包含以下元数据的推荐项才能自动安装：
+
+```json
+{
+  "packageSpec": "npm-package-name",
+  "installStrategy": "opencode-config",
+  "supportedScopes": ["global", "project"]
+}
 ```
 
-### 查看插件详情
+缺少任一字段的推荐项会标记为“仅手动安装”。`packageSpec` 只接受裸或 scoped npm 包，可带版本或 tag；路径、URL、git spec 和空白字符会被拒绝。`installCommand` 只是显示给人的说明，安装器从不执行它，也绝不会从它推断包名、安装策略或支持范围。
 
-```
-/opencode-plugin show <plugin-id>
-```
-
-## 插件分类
-
-- **生态桥接** - Claude Code、Cursor、其他 AI 编辑器的生态适配器
-- **通知提醒** - 消息推送、状态通知、告警插件
-- **工作流增强** - 自动化、任务编排、流程优化
-- **开发工具** - 代码生成、构建工具、版本控制辅助
-- **AI 增强** - MCP Servers、AI 工具集成、模型扩展
-- **效率工具** - 快捷操作、代码片段、模板管理
-- **其他插件** - 未分类的实用插件
+添加或更新用户推荐时，可以明确提供 `packageSpec`、`installStrategy`、`supportedScopes`。不完整就保持手动安装；系统不会自动补值。名称与任何内置或用户推荐重复时必须拒绝；读取遗留同名数据时内置项优先。环境变量只记录名称，不能录入秘密值。
 
 ## 内置推荐插件
 
-### 1. cc-adapter-v2
+### cc-adapter-v2
 
-Claude Code 生态桥接到 OpenCode。轻量级适配器，支持 Commands、Skills、MCP、Agents、Plugins 五大模块。
+Claude Code 生态到 OpenCode 的轻量桥接器，支持 Commands、Skills、MCP、Agents 和 Plugins。
 
-**安装**:
-```bash
-npm install -g cc-adapter-v2
-```
+- 推荐仓库：<https://github.com/VastFuture/opencode-cc-adapter>
+- npm 包名：`cc-adapter-v2`
+- 安装方式：可自动安装，全局或项目范围
 
-**配置**:
+这两个名字并不矛盾：`opencode-cc-adapter` 是 GitHub 仓库名，`cc-adapter-v2` 是写入 OpenCode 配置的包名。
+
+OpenCode 会根据配置加载 npm 包，不需要也不应先运行 `npm install -g`：
+
 ```json
 {
-  "plugin": ["cc-adapter-v2"],
-  "claude_code": {
-    "commands": true,
-    "skills": true,
-    "mcp": true,
-    "agents": false,
-    "plugins": false
-  }
+  "$schema": "https://opencode.ai/config.json",
+  "plugin": ["cc-adapter-v2"]
 }
 ```
 
-**特性**:
-- 从 `.claude/commands/` 加载命令到 `/` 自动补全
-- 从 7 个来源发现技能，注入 system prompt
-- 加载 `.mcp.json` MCP 服务器（stdio + HTTP）
-- 从 `.claude/agents/` 加载 Agent 定义（实验性）
-- 从 `.claude/plugins/` 加载 Claude Code 插件（实验性）
+插件专属选项不由安装器写入。需要调整行为时，以插件仓库当前文档和 OpenCode Schema 为准。
 
-### 2. opencode-wecom-ping
+### opencode-wecom-ping
 
-企业微信群机器人通知插件。当 OpenCode 会话完成、出错或需要权限确认时，自动推送到手机微信。
+企业微信群机器人通知插件。OpenCode 会话完成、出错或请求权限时，可以向企业微信群机器人发送通知。
 
-**安装**:
-```bash
-npm install -g opencode-wecom-ping
-```
+- 推荐仓库：<https://github.com/VastFuture/opencode-wecom-ping>
+- npm 包名：`opencode-wecom-ping`
+- 安装方式：可自动安装，全局或项目范围
+- 环境变量名称：`WECOM_BOT_KEY`
 
-**配置**:
+同样采用配置驱动安装，不运行 `npm install -g`：
+
 ```json
 {
-  "plugin": ["opencode-wecom-ping"],
-  "agent": {
-    "wecom-notify": {
-      "mode": "primary",
-      "description": "Agent that sends WeChat Work notifications",
-      "prompt": "You are wecom-notify, an agent that notifies the user via WeChat Work.",
-      "color": "#07C160"
-    }
-  }
+  "$schema": "https://opencode.ai/config.json",
+  "plugin": ["opencode-wecom-ping"]
 }
 ```
 
-**环境变量**:
-```bash
-export WECOM_BOT_KEY="你的群机器人key"
-```
+文档和安装预览只显示 `WECOM_BOT_KEY` 这个名称，不读取或展示它的值。
 
-**特性**:
-- 会话完成/出错/权限请求自动推送
-- 默认静默，三种启用方式（Agent/命令/关键词）
-- 内置去重，避免循环刷屏
-- 零依赖，仅用 Node fetch
-- 支持本地路径、npm、GitHub Release 多种安装方式
+### ralph-loop
+
+Ralph Loop 自动续写插件，支持 `/ralph-loop`、`/ulw-loop`、`/cancel-ralph` 和 `ebuilder` agent。
+
+- 推荐仓库：<https://github.com/VastFuture/opencode-ralph-loop>
+- 安装方式：**仅手动安装**
+- 仓库源码版本：`1.0.0`
+- npm `latest`：`0.0.1-alpha.0`
+
+npm 最新发布明显落后于仓库源码，因此本技能不会自动安装，也**不推荐安装陈旧的 npm `ralph-loop` 包**。需要使用时，应先阅读推荐仓库当前版本的手动安装说明并核对源码版本；不要把旧 npm 包写入 OpenCode 配置。
 
 ## 数据存储
 
-- **内置列表**: `plugin-builtin.json`（只读，随技能发布）
-- **用户列表**: `~/.claude/opencode-plugin-recommend.json`（可写，用户自己添加）
+- 内置列表：`plugin-builtin.json`，随技能发布，只读
+- 用户列表：`~/.claude/opencode-plugin-recommend.json`，由用户维护
+
+内置推荐不能更新或删除。用户推荐可以更新或删除，但操作前必须展示目标并取得确认。
 
 ## License
 
 MIT
-
-### 3. ralph-loop
-
-Ralph Loop 自动续写插件。实现自我引用的完成循环，让 AI Agent 持续工作直到任务真正 100% 完成。
-
-**安装**:
-```bash
-cd ~/.cache/opencode
-npm install FountainChan/opencode-ralph-loop
-```
-
-**配置**:
-```json
-{
-  "plugin": ["ralph-loop"],
-  "agent": {
-    "ebuilder": {
-      "mode": "primary",
-      "description": "Autonomous agent with auto-continuation.",
-      "prompt": "You are ebuilder, an autonomous agent that works continuously until the task is 100% complete. When FULLY done, output: <promise>DONE</promise>"
-    }
-  }
-}
-```
-
-**使用方式**:
-
-1. **命令模式**:
-```bash
-# 标准循环（最多 100 次迭代）
-/ralph-loop "重构认证模块并确保所有测试通过"
-
-# 超强工作模式（最多 500 次迭代）
-/ulw-loop "迁移所有 API 客户端到 v2"
-
-# 自定义参数
-/ralph-loop "构建仪表板" --max-iterations=50 --completion-promise=SHIPPED
-
-# 取消循环
-/cancel-ralph
-```
-
-2. **ebuilder Agent 模式**（推荐用于长任务）:
-   - 在 TUI 中切换到 **ebuilder** agent
-   - 正常输入任务
-   - Agent 将持续工作，无需停止
-   - 切换回 **build** agent 即可停止自动续写
-
-**特性**:
-- `/ralph-loop` - 标准完成循环（最多 100 次迭代）
-- `/ulw-loop` - 超强工作模式（最多 500 次迭代）
-- `/cancel-ralph` - 取消活动循环
-- ebuilder agent - 切换到 ebuilder agent 自动启用续写
-- 完成承诺检测 - 扫描 Agent 输出中的 `<promise>DONE</promise>`
-- Toast 通知 - 实时迭代和完成状态更新
-- 防重复处理 - 避免重复 idle 事件
-- 自定义参数 - 支持 `--max-iterations` 和 `--completion-promise`
-- 零依赖 - 单文件实现，无外部依赖
-
-**注意事项**:
-- Agent 完成任务时需要输出 `<promise>DONE</promise>` 标记
-- 循环状态保存在 `.ralph-loop.state.json` 和 `.ebuilder.state.json`
-- 受 oh-my-opencode 的 Ralph Loop 和 Sisyphus 启发，轻量级单文件实现
-

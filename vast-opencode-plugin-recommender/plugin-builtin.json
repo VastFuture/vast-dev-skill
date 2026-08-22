@@ -5,18 +5,17 @@
       "name": "cc-adapter-v2",
       "description": "Claude Code 生态桥接到 OpenCode。轻量级适配器，支持 Commands、Skills、MCP、Agents、Plugins 五大模块。从 oh-my-openagent 提取，去掉重型编排，只保留兼容层核心",
       "url": "https://github.com/VastFuture/opencode-cc-adapter",
-      "installCommand": "npm install -g cc-adapter-v2",
+      "installCommand": "在 OpenCode plugin 配置中添加 cc-adapter-v2，然后重启 OpenCode",
+      "packageSpec": "cc-adapter-v2",
+      "installStrategy": "opencode-config",
+      "supportedScopes": [
+        "global",
+        "project"
+      ],
       "configExample": {
         "plugin": [
           "cc-adapter-v2"
-        ],
-        "claude_code": {
-          "commands": true,
-          "skills": true,
-          "mcp": true,
-          "agents": false,
-          "plugins": false
-        }
+        ]
       },
       "category": "生态桥接",
       "tags": [
@@ -43,19 +42,17 @@
       "name": "opencode-wecom-ping",
       "description": "企业微信群机器人通知插件。当 OpenCode 会话完成、出错或需要权限确认时，自动推送到手机微信。默认静默，支持三种启用方式（Agent、斜杠命令、对话关键词）",
       "url": "https://github.com/VastFuture/opencode-wecom-ping",
-      "installCommand": "npm install -g opencode-wecom-ping",
+      "installCommand": "在 OpenCode plugin 配置中添加 opencode-wecom-ping，然后重启 OpenCode",
+      "packageSpec": "opencode-wecom-ping",
+      "installStrategy": "opencode-config",
+      "supportedScopes": [
+        "global",
+        "project"
+      ],
       "configExample": {
         "plugin": [
           "opencode-wecom-ping"
-        ],
-        "agent": {
-          "wecom-notify": {
-            "mode": "primary",
-            "description": "Agent that sends WeChat Work notifications",
-            "prompt": "You are wecom-notify, an agent that notifies the user via WeChat Work.",
-            "color": "#07C160"
-          }
-        }
+        ]
       },
       "envVars": [
         "WECOM_BOT_KEY"
@@ -84,7 +81,7 @@
       "name": "ralph-loop",
       "description": "Ralph Loop 自动续写插件。实现自我引用的完成循环，让 AI Agent 持续工作直到任务真正 100% 完成。支持 /ralph-loop、/ulw-loop 命令和 ebuilder agent 自动续写模式",
       "url": "https://github.com/VastFuture/opencode-ralph-loop",
-      "installCommand": "cd ~/.cache/opencode && npm install FountainChan/opencode-ralph-loop",
+      "installCommand": "仅手动安装：打开 https://github.com/VastFuture/opencode-ralph-loop 并按仓库当前 README 操作；不要安装陈旧的 npm latest",
       "configExample": {
         "plugin": [
           "ralph-loop"
@@ -117,6 +114,7 @@
         "零依赖 - 单文件实现，无外部依赖"
       ],
       "usageNotes": [
+        "暂不支持自动安装：npm 上的最新版本落后于推荐仓库源码",
         "Agent 完成任务时需要输出 <promise>DONE</promise> 标记",
         "循环状态保存在 .ralph-loop.state.json 和 .ebuilder.state.json",
         "切换回 build/plan agent 会自动停止 ebuilder 循环",
