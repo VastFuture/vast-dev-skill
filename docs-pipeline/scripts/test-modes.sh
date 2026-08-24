@@ -60,5 +60,5 @@ test_mode "standard" 16
 echo "✅ 所有模式测试通过!"
 echo ""
 echo "目录数量对照:"
-echo "  - minimal:  6 个必需目录 + 1 子目录"
-echo "  - standard: 11 个核心目录 + 子目录"
+echo "  - minimal:  6 个顶层目录 + 2 个 exec-plans 子目录 = 8 个目录节点"
+echo "  - standard: 14 个顶层目录 + 2 个 exec-plans 子目录 = 16 个目录节点"

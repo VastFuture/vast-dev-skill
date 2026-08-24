@@ -83,6 +83,10 @@ mkdir -p "$DOCS_ROOT/research"
 mkdir -p "$DOCS_ROOT/handover"
 mkdir -p "$DOCS_ROOT/issues"
 mkdir -p "$DOCS_ROOT/lessons"
+mkdir -p "$DOCS_ROOT/agent-guides"
+mkdir -p "$DOCS_ROOT/standards"
+mkdir -p "$DOCS_ROOT/logs"
+mkdir -p "$DOCS_ROOT/architecture"
 
 echo "✅ 目录结构创建完成"
 
@@ -91,81 +95,126 @@ echo ""
 echo "📝 Step 5: 复制真实模板文件..."
 
 # 复制 context 模板
-cp "$TEMPLATES_DIR/context/project-context.md" "$DOCS_ROOT/context/"
-cp "$TEMPLATES_DIR/context/ai-autonomy-policy.md" "$DOCS_ROOT/context/"
-cp "$TEMPLATES_DIR/context/codebase-map.md" "$DOCS_ROOT/context/"
-cp "$TEMPLATES_DIR/context/source-of-truth-and-precedence.md" "$DOCS_ROOT/context/"
+cp "$TEMPLATES_DIR/context/project-context.md" "$DOCS_ROOT/context/project-context.md"
+cp "$TEMPLATES_DIR/context/ai-autonomy-policy.md" "$DOCS_ROOT/context/ai-autonomy-policy.md"
+cp "$TEMPLATES_DIR/context/codebase-map.md" "$DOCS_ROOT/context/codebase-map.md"
+cp "$TEMPLATES_DIR/context/source-of-truth-and-precedence.md" "$DOCS_ROOT/context/source-of-truth-and-precedence.md"
 
 # 复制 docs 根目录模板
-cp "$TEMPLATES_DIR/docs-CLAUDE.md" "$DOCS_ROOT/CLAUDE.md"
 cp "$TEMPLATES_DIR/docs-index.md" "$DOCS_ROOT/index.md"
 
-# 复制 README 模板
+# 复制 README 和模板文件
 cp "$TEMPLATES_DIR/backlog-README.md" "$DOCS_ROOT/backlog/README.md"
 cp "$TEMPLATES_DIR/prd-README.md" "$DOCS_ROOT/prd/README.md"
-cp "$TEMPLATES_DIR/design-README.md" "$DOCS_ROOT/design/README.md"
-cp "$TEMPLATES_DIR/exec-plans-README.md" "$DOCS_ROOT/exec-plans/"
-cp "$TEMPLATES_DIR/ideas-README.md" "$DOCS_ROOT/ideas/"
-cp "$TEMPLATES_DIR/research-README.md" "$DOCS_ROOT/research/"
-cp "$TEMPLATES_DIR/handover-README.md" "$DOCS_ROOT/handover/"
-cp "$TEMPLATES_DIR/issues-README.md" "$DOCS_ROOT/issues/"
-cp "$TEMPLATES_DIR/lessons-README.md" "$DOCS_ROOT/lessons/"
-
-# 复制模板文件
 cp "$TEMPLATES_DIR/prd-TEMPLATE.md" "$DOCS_ROOT/prd/TEMPLATE.md"
+cp "$TEMPLATES_DIR/design-README.md" "$DOCS_ROOT/design/README.md"
+cp "$TEMPLATES_DIR/design-api.yaml" "$DOCS_ROOT/design/api.yaml"
+cp "$TEMPLATES_DIR/design-db.md" "$DOCS_ROOT/design/db.md"
+cp "$TEMPLATES_DIR/design-business-rule.md" "$DOCS_ROOT/design/business-rule.md"
+cp "$TEMPLATES_DIR/design-data-dict.md" "$DOCS_ROOT/design/data-dict.md"
+cp "$TEMPLATES_DIR/exec-plans-README.md" "$DOCS_ROOT/exec-plans/README.md"
 cp "$TEMPLATES_DIR/exec-plans-TEMPLATE.md" "$DOCS_ROOT/exec-plans/TEMPLATE.md"
+cp "$TEMPLATES_DIR/ideas-README.md" "$DOCS_ROOT/ideas/README.md"
+cp "$TEMPLATES_DIR/research-README.md" "$DOCS_ROOT/research/README.md"
+cp "$TEMPLATES_DIR/handover-README.md" "$DOCS_ROOT/handover/README.md"
 cp "$TEMPLATES_DIR/handover-TEMPLATE.md" "$DOCS_ROOT/handover/TEMPLATE.md"
+cp "$TEMPLATES_DIR/issues-README.md" "$DOCS_ROOT/issues/README.md"
 cp "$TEMPLATES_DIR/issues-TEMPLATE.md" "$DOCS_ROOT/issues/TEMPLATE.md"
+cp "$TEMPLATES_DIR/lessons-README.md" "$DOCS_ROOT/lessons/README.md"
+cp "$TEMPLATES_DIR/logs-README.md" "$DOCS_ROOT/logs/README.md"
+cp "$TEMPLATES_DIR/architecture-README.md" "$DOCS_ROOT/architecture/README.md"
+cp "$TEMPLATES_DIR/standards-README.md" "$DOCS_ROOT/standards/README.md"
+cp "$TEMPLATES_DIR/standards-layers.md" "$DOCS_ROOT/standards/layers.md"
+cp "$TEMPLATES_DIR/standards-api.md" "$DOCS_ROOT/standards/api.md"
+cp "$TEMPLATES_DIR/standards-db.md" "$DOCS_ROOT/standards/db.md"
+cp "$TEMPLATES_DIR/standards-security.md" "$DOCS_ROOT/standards/security.md"
+cp "$TEMPLATES_DIR/standards-naming.md" "$DOCS_ROOT/standards/naming.md"
 
-echo "✅ 模板文件复制完成"
+# 复制 agent-guides 到 docs/agent-guides/
+cp "$TEMPLATES_DIR/docs-agent-guides/MBTI_DEV_TRAPS.md" "$DOCS_ROOT/agent-guides/MBTI_DEV_TRAPS.md"
+cp "$TEMPLATES_DIR/docs-agent-guides/karpathy-guidelines.md" "$DOCS_ROOT/agent-guides/karpathy-guidelines.md"
+cp "$TEMPLATES_DIR/docs-agent-guides/output-modes.md" "$DOCS_ROOT/agent-guides/output-modes.md"
+cp "$TEMPLATES_DIR/docs-agent-guides/engineering-rules.md" "$DOCS_ROOT/agent-guides/engineering-rules.md"
+cp "$TEMPLATES_DIR/docs-agent-guides/plan-mode.md" "$DOCS_ROOT/agent-guides/plan-mode.md"
+cp "$TEMPLATES_DIR/docs-agent-guides/requirement-confirmation.md" "$DOCS_ROOT/agent-guides/requirement-confirmation.md"
+cp "$TEMPLATES_DIR/docs-agent-guides/content-organization.md" "$DOCS_ROOT/agent-guides/content-organization.md"
 
-# 6. 创建根级 AI 代理模板（使用真实模板）
-echo ""
-echo "🤖 Step 6: 创建根级 AI 代理模板..."
-
-# 复制根级模板
-cp "$TEMPLATES_DIR/CLAUDE.md" "$TEST_DIR/"
-cp "$TEMPLATES_DIR/AGENTS.md" "$TEST_DIR/"
-cp "$TEMPLATES_DIR/docs-agent-guides/MBTI_DEV_TRAPS.md" "$TEST_DIR/"
-cp "$TEMPLATES_DIR/docs-agent-guides/karpathy-guidelines.md" "$TEST_DIR/"
-cp "$TEMPLATES_DIR/docs-agent-guides/output-modes.md" "$TEST_DIR/"
-cp "$TEMPLATES_DIR/docs-agent-guides/engineering-rules.md" "$TEST_DIR/"
-cp "$TEMPLATES_DIR/docs-agent-guides/plan-mode.md" "$TEST_DIR/"
-cp "$TEMPLATES_DIR/docs-agent-guides/requirement-confirmation.md" "$TEST_DIR/"
-cp "$TEMPLATES_DIR/docs-agent-guides/content-organization.md" "$TEST_DIR/"
+# 复制根级 AI 代理模板
+cp "$TEMPLATES_DIR/CLAUDE.md" "$TEST_DIR/CLAUDE.md"
+cp "$TEMPLATES_DIR/AGENTS.md" "$TEST_DIR/AGENTS.md"
 cp "$TEMPLATES_DIR/mcp.json" "$TEST_DIR/.mcp.json"
 
 # 创建 .claude/commands/ideas.md
 mkdir -p "$TEST_DIR/.claude/commands"
-cp "$TEMPLATES_DIR/commands/ideas.md" "$TEST_DIR/.claude/commands/"
+cp "$TEMPLATES_DIR/commands/ideas.md" "$TEST_DIR/.claude/commands/ideas.md"
 
-echo "✅ 根级 AI 代理模板创建完成"
+echo "✅ 模板文件复制完成"
 
-# 7. 验证文件完整性
+# 6. 验证文件完整性
 echo ""
-echo "🔍 Step 7: 验证文件完整性..."
-echo ""
+echo "🔍 Step 6: 验证文件完整性..."
 
-echo "根目录文件:"
-ls -la "$TEST_DIR" | grep -E "\.(md|json)$"
+REQUIRED_FILES=(
+  "$DOCS_ROOT/index.md"
+  "$DOCS_ROOT/context/project-context.md"
+  "$DOCS_ROOT/context/ai-autonomy-policy.md"
+  "$DOCS_ROOT/context/codebase-map.md"
+  "$DOCS_ROOT/context/source-of-truth-and-precedence.md"
+  "$DOCS_ROOT/backlog/README.md"
+  "$DOCS_ROOT/prd/README.md"
+  "$DOCS_ROOT/prd/TEMPLATE.md"
+  "$DOCS_ROOT/design/README.md"
+  "$DOCS_ROOT/design/api.yaml"
+  "$DOCS_ROOT/design/db.md"
+  "$DOCS_ROOT/design/business-rule.md"
+  "$DOCS_ROOT/design/data-dict.md"
+  "$DOCS_ROOT/exec-plans/README.md"
+  "$DOCS_ROOT/exec-plans/TEMPLATE.md"
+  "$DOCS_ROOT/ideas/README.md"
+  "$DOCS_ROOT/research/README.md"
+  "$DOCS_ROOT/handover/README.md"
+  "$DOCS_ROOT/handover/TEMPLATE.md"
+  "$DOCS_ROOT/issues/README.md"
+  "$DOCS_ROOT/issues/TEMPLATE.md"
+  "$DOCS_ROOT/lessons/README.md"
+  "$DOCS_ROOT/logs/README.md"
+  "$DOCS_ROOT/architecture/README.md"
+  "$DOCS_ROOT/standards/README.md"
+  "$DOCS_ROOT/standards/layers.md"
+  "$DOCS_ROOT/standards/api.md"
+  "$DOCS_ROOT/standards/db.md"
+  "$DOCS_ROOT/standards/security.md"
+  "$DOCS_ROOT/standards/naming.md"
+  "$DOCS_ROOT/agent-guides/MBTI_DEV_TRAPS.md"
+  "$DOCS_ROOT/agent-guides/karpathy-guidelines.md"
+  "$DOCS_ROOT/agent-guides/output-modes.md"
+  "$DOCS_ROOT/agent-guides/engineering-rules.md"
+  "$DOCS_ROOT/agent-guides/plan-mode.md"
+  "$DOCS_ROOT/agent-guides/requirement-confirmation.md"
+  "$DOCS_ROOT/agent-guides/content-organization.md"
+  "$TEST_DIR/CLAUDE.md"
+  "$TEST_DIR/AGENTS.md"
+  "$TEST_DIR/.mcp.json"
+  "$TEST_DIR/.claude/commands/ideas.md"
+)
 
-echo ""
-echo "docs/ 目录文件:"
-find "$DOCS_ROOT" -name "*.md" | sort
+for file in "${REQUIRED_FILES[@]}"; do
+  if [ ! -f "$file" ]; then
+    echo "❌ 缺失文件: $file"
+    exit 1
+  fi
+done
 
-echo ""
-echo "context/ 目录文件:"
-ls -la "$DOCS_ROOT/context/"
+echo "✅ 必需文件全部存在"
 
-# 8. 验证文件内容质量
+# 7. 验证文件内容质量
 echo ""
-echo "📊 Step 8: 验证文件内容质量..."
+echo "📊 Step 7: 验证文件内容质量..."
 echo ""
 
 echo "关键文件行数统计:"
 echo "- CLAUDE.md (根): $(wc -l < "$TEST_DIR/CLAUDE.md") 行"
 echo "- AGENTS.md (根): $(wc -l < "$TEST_DIR/AGENTS.md") 行"
-echo "- docs/CLAUDE.md: $(wc -l < "$DOCS_ROOT/CLAUDE.md") 行"
 echo "- docs/index.md: $(wc -l < "$DOCS_ROOT/index.md") 行"
 echo "- context/project-context.md: $(wc -l < "$DOCS_ROOT/context/project-context.md") 行"
 echo "- context/ai-autonomy-policy.md: $(wc -l < "$DOCS_ROOT/context/ai-autonomy-policy.md") 行"
@@ -184,10 +233,12 @@ echo "- prd/TEMPLATE.md: $(test -f "$DOCS_ROOT/prd/TEMPLATE.md" && echo "✅" ||
 echo "- exec-plans/TEMPLATE.md: $(test -f "$DOCS_ROOT/exec-plans/TEMPLATE.md" && echo "✅" || echo "❌")"
 echo "- handover/TEMPLATE.md: $(test -f "$DOCS_ROOT/handover/TEMPLATE.md" && echo "✅" || echo "❌")"
 echo "- issues/TEMPLATE.md: $(test -f "$DOCS_ROOT/issues/TEMPLATE.md" && echo "✅" || echo "❌")"
+echo "- architecture/README.md: $(test -f "$DOCS_ROOT/architecture/README.md" && echo "✅" || echo "❌")"
+echo "- logs/README.md: $(test -f "$DOCS_ROOT/logs/README.md" && echo "✅" || echo "❌")"
 
-# 9. 模拟 Claude Code 使用场景
+# 8. 模拟 Claude Code 使用场景
 echo ""
-echo "🎯 Step 9: 模拟 Claude Code 使用场景..."
+echo "🎯 Step 8: 模拟 Claude Code 使用场景..."
 echo ""
 
 echo "场景 1: 读取项目上下文"
@@ -225,7 +276,7 @@ else
   echo "  ❌ 无法使用 PRD 模板"
 fi
 
-# 10. 总结
+# 9. 总结
 echo ""
 echo "📊 测试总结"
 echo "=================================="

@@ -146,7 +146,7 @@
   ↓
 开始开发
   ├─ 架构设计 → design/（数据流、设计取舍、模块边界）
-  ├─ 执行计划 → plans/（>5文件或>200行触发）
+  ├─ 执行计划 → exec-plans/（>5文件或>200行触发）
   ↓
 遇到问题
   ├─ Bug → issues/（问题描述、复现步骤、根因分析）
@@ -208,7 +208,7 @@
 - ❌ 不要做 `--reset` / `--uninstall`（用户手动决定）
 - ❌ 不要假设项目用 Python/Node/Rust
 - ❌ 不要修改项目根 CLAUDE.md 已有内容（只追加"## 文档"段落，不改其他）
-- ❌ 不要覆盖已有的 CLAUDE.md / AGENTS.md / MBTI_DEV_TRAPS.md / karpathy-guidelines.md / .mcp.json / ARCHITECTURE.md（用户可能已有定制版本）
+- ❌ 不要覆盖已有的 CLAUDE.md / AGENTS.md / .mcp.json / ARCHITECTURE.md；辅助文档位于 docs/agent-guides/，如检测到项目根旧版辅助文档，仅提示迁移，不覆盖
 - ❌ 不要让 Explore 子代理偏离 5 章节固定结构（保持跨项目一致）
 - ❌ 模式 B 不要往项目根写 docs/ 目录（文档完全在独立仓库）
 - ❌ 模式 B 不要硬编码文档仓库路径（用 `DOCS_ROOT` 环境变量或自动检测）

@@ -19,10 +19,10 @@ allowed-tools: Bash Read Write Edit Glob Agent
 ## ⚡ 快速入门（30 秒）
 
 ```bash
-# 标准模式（默认，14 个核心目录）
+# 标准模式（默认，14 个顶层目录 + 2 个 exec-plans 子目录）
 /docs-pipeline
 
-# 最小化模式（7 个必需目录，适合小项目）
+# 最小化模式（6 个顶层目录 + 2 个 exec-plans 子目录，适合小项目）
 DOCS_PIPELINE_MODE=minimal /docs-pipeline
 ```
 
@@ -43,8 +43,8 @@ docs-pipeline 提供 2 种安装模式，适应不同项目规模。
 
 | 模式 | 适用场景 | 目录数 | 学习曲线 |
 |------|---------|--------|---------|
-| **minimal**（最小化） | 个人项目、快速原型、初学者 | 6 个必需目录 | 最低 |
-| **standard**（标准，默认） | 大多数团队项目 | 14 个核心目录 + 模板 | 中等 |
+| **minimal**（最小化） | 个人项目、快速原型、初学者 | 6 个顶层目录 + 2 个 exec-plans 子目录 | 最低 |
+| **standard**（标准，默认） | 大多数团队项目 | 14 个顶层目录 + 2 个 exec-plans 子目录 + 模板 | 中等 |
 
 ### 指定模式
 
@@ -60,7 +60,7 @@ DOCS_PIPELINE_MODE=minimal /docs-pipeline
 
 #### Minimal（最小化）
 
-**目录**：context, backlog, prd, exec-plans, lessons, agent-guides（6 个必需目录）
+**目录**：context, backlog, prd, exec-plans, lessons, agent-guides（6 个顶层目录 + 2 个 exec-plans 子目录）
 
 **特点**：
 - 最快上手（< 5 分钟理解全部结构）
@@ -71,7 +71,7 @@ DOCS_PIPELINE_MODE=minimal /docs-pipeline
 
 #### Standard（标准，默认）
 
-**目录**：minimal 的 6 个 + design, architecture, standards, logs, research, issues, handover, ideas（14 个核心目录）
+**目录**：minimal 的 6 个顶层目录 + design, architecture, standards, logs, research, issues, handover, ideas（14 个顶层目录 + 2 个 exec-plans 子目录）
 
 **特点**：
 - 平衡完整性与复杂度
@@ -159,7 +159,7 @@ docs/
 ```
 项目根/                          文档仓库根/
 ├── CLAUDE.md                   ├── .git/
-├── AGENTS.md                   ├── CLAUDE.md             # docs-pipeline 模板
+├── AGENTS.md                   ├── docs/index.md         # docs-pipeline 路由中枢
 ├── ...（项目代码）              ├── docs/                 # 标准 docs 结构
 │                               │   ├── CLAUDE.md
 │                               │   ├── ideas/
@@ -284,7 +284,11 @@ MODE="${DOCS_PIPELINE_MODE:-standard}"
 🛑 **STOP：等待用户确认后继续。**
 
 ```bash
-mkdir -p "$docs_root/context" "$docs_root/backlog" "$docs_root/prd" "$docs_root/design" "$docs_root/exec-plans/active" "$docs_root/exec-plans/completed" "$docs_root/ideas" "$docs_root/research" "$docs_root/handover" "$docs_root/issues" "$docs_root/lessons"
+# Minimal 模式（6 个顶层目录 + 2 个 exec-plans 子目录）
+mkdir -p "$docs_root/context" "$docs_root/backlog" "$docs_root/prd" "$docs_root/exec-plans/active" "$docs_root/exec-plans/completed" "$docs_root/lessons" "$docs_root/agent-guides"
+
+# Standard 模式（14 个顶层目录 + 2 个 exec-plans 子目录，默认）
+mkdir -p "$docs_root/context" "$docs_root/backlog" "$docs_root/prd" "$docs_root/design" "$docs_root/exec-plans/active" "$docs_root/exec-plans/completed" "$docs_root/research" "$docs_root/issues" "$docs_root/handover" "$docs_root/ideas" "$docs_root/lessons" "$docs_root/agent-guides" "$docs_root/standards" "$docs_root/logs" "$docs_root/architecture"
 ```
 
 `mkdir -p` 本身是幂等的，已有目录不会报错。
@@ -300,13 +304,13 @@ mkdir -p "$docs_root/context" "$docs_root/backlog" "$docs_root/prd" "$docs_root/
 **根据模式创建目录**：
 
 ```bash
-# Minimal 模式（7 个必需目录）
+# Minimal 模式（6 个顶层目录 + 2 个 exec-plans 子目录）
 if [ "$MODE" = "minimal" ]; then
   mkdir -p "$docs_root/context" "$docs_root/backlog" "$docs_root/prd" "$docs_root/exec-plans/active" "$docs_root/exec-plans/completed" "$docs_root/lessons" "$docs_root/agent-guides"
 
-# Standard 模式（11 个核心目录，默认）
+# Standard 模式（14 个顶层目录 + 2 个 exec-plans 子目录，默认）
 elif [ "$MODE" = "standard" ]; then
-  mkdir -p "$docs_root/context" "$docs_root/backlog" "$docs_root/prd" "$docs_root/design" "$docs_root/exec-plans/active" "$docs_root/exec-plans/completed" "$docs_root/research" "$docs_root/issues" "$docs_root/handover" "$docs_root/ideas" "$docs_root/lessons" "$docs_root/agent-guides" "$docs_root/standards" "$docs_root/logs"
+  mkdir -p "$docs_root/context" "$docs_root/backlog" "$docs_root/prd" "$docs_root/design" "$docs_root/exec-plans/active" "$docs_root/exec-plans/completed" "$docs_root/research" "$docs_root/issues" "$docs_root/handover" "$docs_root/ideas" "$docs_root/lessons" "$docs_root/agent-guides" "$docs_root/standards" "$docs_root/logs" "$docs_root/architecture"
 fi
 ```
 
@@ -335,7 +339,7 @@ fi
 - docs/context/ (4 个文件)
 - docs/backlog/README.md
 - docs/prd/README.md
-- docs/design/ (4 个文件：README + api + db + data-dict)
+- docs/design/ (5 个文件：README + api + db + business-rule + data-dict)
 - docs/exec-plans/README.md
 - docs/architecture/README.md
 - docs/standards/ (6 个文件)
@@ -382,7 +386,6 @@ fi
 | `assets/templates/backlog-README.md` | `$docs_root/backlog/README.md` |
 | `assets/templates/prd-README.md` | `$docs_root/prd/README.md` |
 | `assets/templates/prd-TEMPLATE.md` | `$docs_root/prd/TEMPLATE.md` |
-| `assets/templates/design-README.md` | `$docs_root/design/README.md` |
 | `assets/templates/exec-plans-README.md` | `$docs_root/exec-plans/README.md` |
 | `assets/templates/exec-plans-TEMPLATE.md` | `$docs_root/exec-plans/TEMPLATE.md` |
 | `assets/templates/ideas-README.md` | `$docs_root/ideas/README.md` |
@@ -684,7 +687,7 @@ CLAUDE.md 的写入由 step 4 完成。本步只做一件事：如果 step 4 走
 4. 🧪 验证初始化：运行项目测试命令
 5. 🔄 同步文档：根据文档同步状态更新对应文档
 
-💡 快速入门指南：docs/CLAUDE.md
+💡 快速入门指南：docs/index.md
 ```
 
 **迁移检测逻辑**（在 Step 9 执行）：
