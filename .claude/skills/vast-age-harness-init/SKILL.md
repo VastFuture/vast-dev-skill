@@ -1,414 +1,197 @@
 ---
 name: vast-age-harness-init
-description: 为项目初始化 Attractor-Guided Engineering (AGE) harness 系统。搭建 docs/ 目录结构、写入 AGENTS.md、安装 mattpocock/skills、重组现有文档。触发词：init AGE、setup AGE harness、apply AGE template、initialize project with AGE、set up docs system、add AGE to project、init harness、初始化 harness、建立文档体系、给项目加 harness
-allowed-tools: Read, Bash, Glob, Grep, Write
+description: Use when initializing, repairing, or completing an Attractor-Guided Engineering (AGE) harness or AGE-style docs system in an existing project. Triggers include init AGE, setup AGE harness, apply AGE template, initialize harness, 初始化 harness, 建立文档体系, and 给项目加 harness.
+allowed-tools: Read, Bash, Glob, Grep
 ---
 
 # Vast AGE Harness Init
 
-用 AGE（Attractor-Guided Engineering）体系把一个项目从零搭建到 AI Agent 可用状态。
+Install the complete AGE consumer scaffold from the reference template. The template installer and `install-age.manifest` are the only source of truth; this skill is a safe orchestration layer, not a second template implementation.
 
-## 核心目标
+## Invariants
 
-让项目拥有一套**跨会话持久化**的 AI 协作基础设施：
-- `docs/context/` — AI 必须读的先读文件，保证每次会话上下文一致
-- `AGENTS.md` — 项目级的 Agent 行为宪法
-- `.agents/skills/` + `docs/skills/` — 可复用的技能库
+- Never hand-write substitutes for files owned by `install-age.manifest`.
+- Never move, rename, delete, or reorganize existing project documents.
+- Never install unrelated skill collections such as `mattpocock/skills`.
+- Never overwrite an existing manifest destination. The upstream installer skips it and fills only missing files.
+- Do not stop merely because `AGENTS.md` or `docs/context/` exists. A partial harness must be repaired incrementally.
+- State the two non-manifest mutations before installation: `.env` may gain `MISSION_DRIVER_HOME`; `.gitignore` may gain `.env`, `_tmp/`, and `tmp/`.
+- Do not claim that onboarding or project-specific verification is complete just because scaffold installation succeeded.
 
-> **铁律**：一次初始化，永久受益。不要在已有 harness 的项目上重复运行。
+## Inputs
 
----
+Resolve these values before running:
 
-## 前置检查 ⚠️ REQUIRED
+| Input | Rule |
+|---|---|
+| Target | Existing project root; ask only when it cannot be inferred; current upstream orchestration accepts only paths made of letters, numbers, `/`, `\`, `:`, `.`, `_`, and `-` |
+| Project name | Explicit user value, otherwise target directory basename; allow only letters, numbers, spaces, `.`, `_`, `@`, `+`, `,`, and `-` |
+| Template root | Trusted persistent checkout under the current workspace's `.ref-project/`; apply the same safe path character restriction as Target |
+| Pi support | Off by default; enable only when the user asks for pi support |
+| Smoke executor | `opencode` by default; `pi` only when explicitly selected, independent of whether pi skill files are installed |
+| Pi model | Required when the smoke executor is `pi`; allow only letters, numbers, `/`, `:`, `.`, `_`, `@`, `+`, and `-` in the verified Pi-compatible ID |
 
-在动手之前，先确认当前状态：
+Do not require a README. The installer can scaffold an empty existing directory.
+
+The installed shim keeps using `<template-root>/tools/mission-driver/` through `MISSION_DRIVER_HOME`. The checkout is a runtime dependency, not disposable installation media. Do not default to `.working/`, `_sandbox/`, `/tmp`, or another path that cleanup will remove. If the user explicitly selects an ephemeral checkout, explain that dependency and require a persistent location before installation.
+
+Do not execute an installer from an arbitrary user-provided checkout. A checkout outside the workspace's trusted `.ref-project/` boundary requires the user to establish its source and approve it explicitly; otherwise stop. Path character checks prevent shell injection but do not make code trustworthy.
+
+## Workflow
+
+### 1. Preflight
+
+Read the template's `install-age.manifest` and verify:
+
+- target exists and is a directory
+- Node.js 18 or newer is available
+- Bash is available for the installed `tools/mission-driver.sh`; native Windows without Git Bash, WSL, or equivalent is unsupported by the current upstream scaffold
+- `<template-root>/install-age.manifest` exists
+- `<template-root>/tools/install-age.mjs` exists
+- `<template-root>/tools/mission-driver/src/main.js` exists
+- every enabled manifest source exists; `pi-only` entries are enabled only for a pi install
+- every manifest source and installer file resolves inside the trusted template root
+- no existing manifest destination, destination parent component, `.env`, or `.gitignore` is a symbolic link; every resolved write path remains inside the target root
+- target and template paths, project name, and Pi model match the safe character sets above; reject rather than interpolate shell metacharacters into commands
+- project name is non-empty; the restricted character set also avoids JavaScript replacement tokens that the upstream installer does not preserve safely
+- the computed relative `MISSION_DRIVER_HOME` contains only letters, numbers, `.`, `_`, `/`, and `-`; the upstream installer writes it unquoted into `.env`, so spaces or shell metacharacters are unsafe
+- an existing `.env` is safe for the installer to append to: allow only blank lines, comments, and simple `NAME=value` lines whose values use letters, numbers, `.`, `_`, `/`, `:`, `@`, `%`, `+`, `,`, or `-`; reject command substitution, backticks, shell operators, whitespace-bearing values, quotes, expansions, or other shell syntax
+- before smoke testing, `.env` contains no environment-control names such as `PATH`, `BASH_ENV`, `ENV`, `SHELLOPTS`, `NODE_OPTIONS`, `NODE_PATH`, `LD_PRELOAD`, or language/runtime loader variables; if it does, scaffold installation may proceed but smoke testing is blocked because the upstream shim sources the whole file
+- an existing non-empty `.env` ends with a newline when it lacks `MISSION_DRIVER_HOME`; otherwise stop and ask the user to add the newline because the upstream installer would concatenate the new assignment onto the last value
+- the chosen smoke executor is installed and configured; installing pi skill files does not automatically select pi as the executor
+- when the executor is pi, a Pi-compatible model ID is known; do not reuse the scaffold's default OpenCode model ID because the engine does not translate model formats
+
+The `.env` restriction is deliberate. The installed upstream shim uses Bash `source` on the whole file. If the target needs richer dotenv syntax, stop before smoke testing and report that upstream incompatibility rather than executing the file or rewriting user configuration.
+
+Parse manifest destinations only to report conflicts and validate the result. Do not reproduce its copy logic. Report existing destinations as `will skip`, not as a reason to abort the whole install.
+
+Before mutation, summarize:
+
+- target and project name
+- persistent template path and the fact that the target depends on it at runtime
+- enabled manifest entry count
+- existing destinations that the installer will preserve
+- `.env` and `.gitignore` append behavior
+- runtime prerequisites and selected executor
+- guarantee that no existing docs will be moved or deleted
+
+If the target contains an existing `AGENTS.md` or AGE owner docs, preserve them. The installer will add the missing scaffold around them.
+
+### 2. Install From The Reference Template
+
+Prefer the Node installer entry point so manifest copying behaves consistently across platforms that also provide Bash for the installed runtime shim:
 
 ```bash
-# 检查是否已有 AGENTS.md
-ls AGENTS.md
-
-# 检查是否已有 docs/
-ls docs/ 2>/dev/null
-
-# 检查是否已有 .agents/
-ls .agents/ 2>/dev/null
+node "<template-root>/tools/install-age.mjs" "<target>" "<project-name>"
 ```
 
-如果 `AGENTS.md` 已存在且 `docs/context/` 下有 6 个文件，说明项目已初始化过，跳过整个流程并告知用户。
-
----
-
-## Phase 1: 收集项目上下文
-
-静默执行，不输出，只读信息：
-
-| 文件 | 读取目的 |
-|------|---------|
-| `README.md` | 项目名、定位、技术栈 |
-| `package.json` / `pyproject.toml` / `Cargo.toml` / `Gemfile` | 语言、依赖、构建命令 |
-| `.git/config` + `git remote -v` | 仓库远程地址 |
-| 关键源码目录 | 入口文件、模块结构 |
-
-用 `Grep` 快速扫一遍：项目有没有测试框架？有没有 CI？有没有已有的文档？
-
----
-
-## Phase 2: 创建 docs/ 目录结构
+For requested pi skill-file support:
 
 ```bash
-mkdir -p docs/{analysis,archive,articles,audits,backlog,bugs,context,design,discussions,examples,input,lessons,logs,plans,process,references,requirements,retrospectives,skills,testing}
+node "<template-root>/tools/install-age.mjs" "<target>" "<project-name>" --pi
 ```
 
-创建完成后，每个目录写一个 `README.md`，说明该目录的用途（一行即可）。
+Run from any working directory. Quote every path. Do not clone another repository when a local reference checkout is available.
 
----
+Treat all values as data, not shell fragments. Never accept embedded quotes, backticks, `$`, command substitutions, newlines, or shell operators and then interpolate them into these commands.
 
-## Phase 3: 写入 docs/context/ 六个核心文件
+The installer is intentionally incremental:
 
-### 3.1 `docs/context/README.md`
+- missing manifest files are copied
+- existing manifest files are skipped without content comparison
+- `.env` and `.gitignore` receive idempotent line additions
+- runtime directories `docs/plans/{demo,onboarding}/` and `docs/logs/<year>/` are created
 
-列出本目录下所有文件，并说明读取顺序：
+Re-running repairs missing files; it does not upgrade customized files. Template upgrades to existing files require a later manual diff and merge.
 
-```markdown
-# Context 文件索引
+### 3. Validate The Installed Contract
 
-按顺序阅读：
-1. `project-context.md` — 先读这个，了解项目
-2. `ai-autonomy-policy.md` — AI 能做什么、不能做什么
-3. `codebase-map.md` — 代码结构地图
-4. `source-of-truth-and-precedence.md` — 冲突解决规则
-5. `conventions.md` — 约定和规则
-```
+After installation, fail the task if any enabled manifest destination is absent. Also verify:
 
-### 3.2 `docs/context/project-context.md`
+- `AGENTS.md` and `docs/index.md` exist
+- all six `docs/context/` files exist
+- `docs/architecture/` exists
+- `tools/mission-driver.sh` exists and is executable on Unix
+- `.env.example` and `.env` contain `MISSION_DRIVER_HOME=`
+- `missions/base.json`, `missions/demo.json`, and `missions/onboarding.json` parse as JSON
+- `missions/onboarding.json` points to `docs/backlog/onboarding-roadmap.md` and `docs/plans/onboarding`
+- `.opencode/skills/mission-driver/SKILL.md` exists
+- pi destinations exist when pi support was requested
+- `docs/plans/demo/`, `docs/plans/onboarding/`, and `docs/logs/<current-year>/` exist
+- `.gitignore` contains at least one exact line for each of `.env`, `_tmp/`, and `tmp/`; report duplicates as optional cleanup, not installation failure
+- newly copied fill-in Markdown has no `<project-name>` placeholder
 
-基于 Phase 1 收集的信息填写：
+Validate manifest destinations rather than hard-coding a second 88-file list. The manifest may evolve.
 
-```markdown
-# Project Context
+Before executing the installed shim, compare it byte-for-byte with the trusted manifest source `template/install/tools/mission-driver.sh`. If the target already contained a different shim, preserve it but do not run it; report `Scaffold installed` at most and require explicit human review. Apply the same trust rule to any executable that the smoke path would load.
 
-## 项目身份
-- 名称：{从 README 提取}
-- 一句话描述：{一句话}
-- 技术栈：{语言 + 关键依赖}
+Resolve the effective `MISSION_DRIVER_HOME` exactly as the shim will: a process environment value overrides the target `.env`. Its canonical path must equal `<template-root>/tools/mission-driver/` from this installation. If an exported or existing value points elsewhere, do not smoke test until the user resolves the conflict; otherwise the test would validate a different engine than the installed manifest.
 
-## 验证命令
-| 操作 | 命令 |
-|------|------|
-| 运行测试 | `{test cmd}` |
-| 构建项目 | `{build cmd}` |
-| 启动开发服务 | `{dev cmd}` |
+### 4. Smoke Test The Harness
 
-## AI 禁止操作（Protected Areas）
-- {列出不能动的文件/目录，如数据库迁移脚本、生产配置等}
-```
-
-### 3.3 `docs/context/ai-autonomy-policy.md`
-
-定义 AI 的自主级别：
-
-```markdown
-# AI Autonomy Policy
-
-## 自主级别
-
-| 级别 | 含义 | 示例场景 |
-|------|------|---------|
-| Implement | 直接执行，无需确认 | 修复已知 bug、格式化代码 |
-| Plan-First | 先出计划，确认后执行 | 新增功能、重构模块 |
-| Ask-First | 必须先问用户 | 改架构、换技术栈、删文件 |
-| Research-Only | 只收集信息，不做决定 | 调研依赖、分析现状 |
-| Blocked | 完全禁止 | {Protected Areas} |
-
-## 决策规则
-- 改动 < 3 个文件 → Implement
-- 改动涉及公共 API → Plan-First
-- 涉及数据库 schema / 生产配置 → Ask-First
-- 涉及安全 / 密钥 / 凭证 → Research-Only
-```
-
-### 3.4 `docs/context/codebase-map.md`
-
-从 Phase 1 扫描结果填写：
-
-```markdown
-# Codebase Map
-
-## 入口点
-- {entry point 1}: {what it does}
-- {entry point 2}: {what it does}
-
-## 高频改动路径
-- {模块A} → {模块B}: {什么情况下会同时改}
-
-## 脆弱文件（改了容易出 bug）
-- {文件路径}: {为什么脆弱}
-
-## 搜索提示
-- 找路由：grep -r "router" src/
-- 找状态管理：grep -r "useState\|store" src/
-```
-
-### 3.5 `docs/context/source-of-truth-and-precedence.md`
-
-```markdown
-# Source of Truth & Precedence
-
-当不同文档发生冲突时，优先级如下：
-
-1. `AGENTS.md`（项目宪法）
-2. `docs/context/` 下的文件（运行时约束）
-3. `docs/design/`（功能设计）
-4. `docs/requirements/`（需求规格）
-5. `docs/analysis/`（分析结论）
-6. 其他文档
-
-冲突解决原则：后写的覆盖先写的，但必须在对应文档中记录修改原因。
-```
-
-### 3.6 `docs/context/conventions.md`
-
-```markdown
-# Conventions
-
-## 文件命名
-- 源码：kebab-case（`user-service.ts`）
-- 测试：`*.test.ts` / `*.spec.ts`
-- 文档：kebab-case，按功能分组
-
-## 注释策略
-- 为什么这样写（WHY），不写这是什么（WHAT）
-- 没有 WHY 的注释=垃圾注释，删掉
-
-## 验证规则
-- 每次改动后必须能跑通测试
-- PR 必须有 Review Checklist 更新
-
-## 项目特定约定
-- {根据 Phase 1 扫描结果填写}
-```
-
----
-
-## Phase 4: 写入 docs/index.md
-
-```markdown
----
-title: "Docs Index"
----
-
-# {项目名} Docs
-
-## 目的
-这套文档是项目的 AI 协作文档中枢。AI Agent 读它，比读代码更快理解项目。
-
-## 必读顺序
-1. `AGENTS.md`（根目录）— 先看 Agent 该干什么
-2. `docs/context/project-context.md` — 了解项目身份
-3. `docs/context/ai-autonomy-policy.md` — 知道 AI 边界
-
-## 目录速查
-
-| 需求 | 去哪找 |
-|------|--------|
-| 这个项目是干什么的 | `docs/context/project-context.md` |
-| AI 能做什么不能做什么 | `docs/context/ai-autonomy-policy.md` |
-| 代码结构 | `docs/context/codebase-map.md` |
-| 怎么写新功能 | `docs/process/application-development-workflow.md` |
-| 技能列表 | `docs/skills/README.md` |
-
-## 核心原则
-- Context 优先于代码：AI 读 docs/context/ 再读源码
-- 文档过时比没有文档更糟：改了代码就更新文档
-```
-
----
-
-## Phase 5: 写入 AGENTS.md
-
-在项目根目录创建 `AGENTS.md`，包含以下章节：
-
-```markdown
-# {项目名} — AGENTS.md
-
-## Project Intent
-{一句话：这个项目是什么，为什么存在}
-
-## Core Philosophy
-{项目的核心工程哲学，来自 README 和代码风格}
-
-## Task Routing
-| 任务类型 | 处理方式 |
-|---------|---------|
-| Bug 修复 | 直接实施，更新 docs/bugs/ |
-| 新功能 | Plan-First，写 design/ |
-| 重构 | Ask-First，先读 codebase-map.md |
-| 文档 | 直接实施，更新对应 docs/ 子目录 |
-
-## Operating Rules
-- 读 context/ 六文件再动手
-- 不改 Protected Areas
-- 测试必须通过才能提交
-
-## Read This First
-1. `docs/context/project-context.md`
-2. `docs/context/ai-autonomy-policy.md`
-3. `docs/context/codebase-map.md`
-
-## Documentation Ownership
-- AGENTS.md 维护者：{项目维护者}
-- context/ 文件与代码同步变更
-- 每周 review 一次 docs/
-
-## Default Workflow
-Init → Plan → Execute → Verify → Document
-
-## Skill Usage Rule
-- 先查 docs/skills/README.md 看有没有合适的技能
-- 没有技能时直接做，不要编造
-```
-
----
-
-## Phase 6: 写入配套文档
-
-### `docs/process/application-development-workflow.md`
-
-```markdown
-# Application Development Workflow
-
-## 流程概览
-```
-需求 → 设计 → 实现 → 验证 → 文档
-  ↓       ↓       ↓       ↓       ↓
-requirements/ design/  src/    testing/ docs/
-```
-
-## 各阶段产出
-
-| 阶段 | 产出 | 位置 |
-|------|------|------|
-| 需求 | 需求规格 | `docs/requirements/` |
-| 设计 | 设计方案 + Review Checklist | `docs/design/` |
-| 实现 | 代码 + 测试 | `src/` |
-| 验证 | 测试结果 | `docs/testing/` |
-| 文档 | 更新对应 docs/ 子目录 | 各处 |
-
-## 何时触发
-- 新功能 → 完整走一遍
-- Bug 修复 → 验证 + 更新 docs/bugs/
-- 重构 → 设计 + 验证
-```
-
-### `docs/skills/README.md`
-
-列出可用技能路由表（来自 mattpocock/skills）。
-
----
-
-## Phase 7: 安装 mattpocock/skills
+Run from the target project:
 
 ```bash
-git clone https://github.com/mattpocock/skills.git /tmp/mattpocock-skills
-mkdir -p .agents/skills docs/skills
-for dir in engineering productivity misc personal in-progress deprecated; do
-  cp -r /tmp/mattpocock-skills/skills/$dir .agents/skills/ 2>/dev/null
-  cp -r /tmp/mattpocock-skills/skills/$dir docs/skills/ 2>/dev/null
-done
-rm -rf /tmp/mattpocock-skills
+./tools/mission-driver.sh list
+./tools/mission-driver.sh run demo
 ```
 
-写入 `.agents/skills/README.md`：
+When the selected smoke executor is pi, run the equivalent explicit selection instead of the default demo command:
 
-```markdown
-# Skills 目录
-
-## 分类
-
-| 分类 | 用途 |
-|------|------|
-| engineering | 工程类技能（测试、重构、调试等） |
-| productivity | 效率类技能（笔记、写作、规划等） |
-| misc | 杂项技能 |
-| personal | 个人提升技能 |
-| in-progress | 开发中的技能 |
-| deprecated | 已弃用，暂不推荐 |
-
-## 使用方式
-通过 `/skill-name` 或直接描述需求触发。
-详见 `docs/skills/README.md` 的路由表。
+```bash
+MISSION_DRIVER_EXEC=pi OPENCODE_MODEL="<pi-provider>/<pi-model>" ./tools/mission-driver.sh run demo
 ```
 
----
+If the environment cannot run the external engine, report the exact failure and stop. Do not claim a working harness from file checks alone.
 
-## Phase 8: 重组现有文档
+`list` validates the shim and persistent engine path. `run demo` additionally validates the explicitly selected external executor and may require credentials or model configuration; keep these as separate reported gates.
 
-扫描项目中的现有文档，按以下规则归位：
+Do not automatically run onboarding unless the user requested full project personalization. Onboarding can invoke AI tools, inspect the whole codebase, take significant time, and modify owner docs.
 
-| 现有位置/类型 | 目标目录 |
-|-------------|---------|
-| `ARCHITECTURE.md` / 架构图相关 | `docs/architecture/` |
-| Bug 记录、事故复盘 | `docs/bugs/` |
-| 技术方案分析、选型对比 | `docs/analysis/` |
-| 迁移计划、重构方案 | `docs/archive/` |
-| 用户指南、参考文档 | `docs/references/` |
-| 开发日志 | `docs/logs/` |
-| 媒体/视频/课程文件 | `docs/archive/media/` |
-| 探索性研究笔记 | `docs/archive/explore/` |
-| 工程经验教训 | `docs/lessons/` |
-| Changelog | `docs/archive/` |
+When full personalization is requested:
 
-执行前**列出待移动文件清单**，让用户确认再动。
+1. Inspect `missions/base.json` and replace placeholder verification commands with commands proven from the target repository.
+2. Run `./tools/mission-driver.sh run onboarding`.
+3. Review the onboarding diff against the actual codebase before accepting it.
+4. Run the real target-project verification commands.
 
----
+Blank or placeholder verification commands block any `full green` claim.
 
-## Phase 9: 验证
+### 5. Report Truthfully
 
-逐项检查，全部通过才算完成：
+Separate the result into:
 
-```
-□ docs/index.md 是 docs/ 下唯一的根级文件
-□ 所有 20 个子目录已创建
-□ docs/context/ 下有 6 个文件（README.md + 5 个 context 文件）
-□ 根目录有 AGENTS.md
-□ .agents/skills/ 和 docs/skills/ 下有 43+ 个 SKILL.md
-□ 现有文档已归位（如有）
-```
+- copied manifest files
+- preserved existing files
+- runtime files/directories added
+- smoke-test result
+- personalization status
+- remaining manual work
 
-输出验收报告：
+Use one of these outcomes:
 
-```
-✅ AGE Harness 初始化完成
+| Outcome | Meaning |
+|---|---|
+| Scaffold installed | Manifest contract and runtime directories validate |
+| Harness smoke-tested | Installation validates and mission-driver demo passes |
+| Project personalized | Onboarding reviewed and real project verification passes |
+| Partial/blocked | State exactly which gate failed; never collapse this into success |
 
-已创建：
-- docs/ 目录结构（20 个子目录）
-- docs/context/（6 个核心文件）
-- docs/index.md
-- AGENTS.md
-- .agents/skills/（mattpocock/skills）
-- docs/skills/（mattpocock/skills 副本）
+## Common Mistakes
 
-已重组：
-- {列出移动的文件，如无则写"无"}
+| Mistake | Correct behavior |
+|---|---|
+| Treat six context files as a complete harness | Compare every enabled manifest destination and fill missing files |
+| Create `docs/articles/` but omit `docs/architecture/` | Trust the manifest; consumer installs architecture and excludes template methodology articles |
+| Generate shortened `AGENTS.md` or source-of-truth rules | Install the curated upstream files unchanged unless a destination already exists |
+| Copy a third-party skill library into `.agents/skills/` and `docs/skills/` | Install only the AGE operator skill and AGE methodology files listed by the manifest |
+| Reorganize changelogs, architecture docs, or user guides | Preserve all existing paths; migration is a separate, explicit task |
+| Call file existence “full success” | Validate the manifest, then run `list` and `demo` |
+| Say `template/START-HERE-after-copy.md` was installed | Do not assume it; the current manifest is authoritative |
 
-下一步：
-1. 阅读 docs/context/project-context.md 补充项目细节
-2. 阅读 docs/context/ai-autonomy-policy.md 确认 AI 权限边界
-3. 开始用 /kickoff 或 /brainstorming 进入开发流程
-```
+## Reference
 
----
-
-## 反模式
-
-❌ 不要在没有 README 的空项目上运行 —— 先写 README，再跑 init
-❌ 不要在已有成熟 harness 的项目上重复运行 —— 增量更新即可
-❌ 不要跳过 Phase 1 —— 不了解项目就瞎写文档是浪费时间
-❌ 不要手动编辑 mattpocock/skills 下的文件 —— 它们是只读参考
-
----
-
-## 参考
-
-- AGE 模板：https://github.com/entropy-cloud/attractor-guided-engineering-template
-- mattpocock/skills：https://github.com/mattpocock/skills
+- AGE template: `https://github.com/entropy-cloud/attractor-guided-engineering-template`
+- Consumer file contract: `<template-root>/install-age.manifest`
+- Cross-platform installer: `<template-root>/tools/install-age.mjs`
+- Installed maintenance guide: `<target>/docs/references/age-files-guide.md`
