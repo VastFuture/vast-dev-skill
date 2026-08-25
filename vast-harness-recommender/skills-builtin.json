@@ -1,0 +1,48 @@
+{
+  "skills": [
+    {
+      "id": "builtin-better-harness",
+      "name": "better-harness",
+      "description": "开源 Harness Engineering 平台，定义 harness 为代码，运行受控实验，对比结果。支持 Claude Code、Codex、Cursor、Qoder 等多平台",
+      "url": "https://github.com/QoderAI/better-harness",
+      "tags": ["agent-plugin", "claude-code", "codex", "cursor", "harness-design", "harness-engineering", "loop-engineering", "qoder", "skill"],
+      "addedAt": "2026-08-24",
+      "updatedAt": "2026-08-24",
+      "builtin": true,
+      "stars": 1956
+    },
+    {
+      "id": "builtin-attractor-guided-engineering-template",
+      "name": "attractor-guided-engineering-template",
+      "description": "AI 辅助规模化开发的最佳实践模板，让仓库成为机构基础设施，AI Agent 跨会话收敛于文档作为稳定吸引子",
+      "url": "https://github.com/entropy-cloud/attractor-guided-engineering-template",
+      "tags": ["ai-agents", "ai-coding", "ai-engineering", "ai-skills", "attractor-guided-engineering", "context-engineering-framework", "loop-engineering", "project-template", "skills"],
+      "addedAt": "2026-08-24",
+      "updatedAt": "2026-08-24",
+      "builtin": true,
+      "stars": 73
+    },
+    {
+      "id": "builtin-ddd-harness-microservices",
+      "name": "ddd-harness-microservices",
+      "description": "DDD + Harness 设置的样板项目，面向微服务架构",
+      "url": "https://github.com/domain-driven-design/ddd-harness-microservices",
+      "tags": ["ddd", "microservices", "harness", "boilerplate"],
+      "addedAt": "2026-08-24",
+      "updatedAt": "2026-08-24",
+      "builtin": true,
+      "stars": 7
+    },
+    {
+      "id": "builtin-harness-engineering",
+      "name": "harness-engineering",
+      "description": "为 AI Agent 友好的代码库设置和改进 Harness Engineering，覆盖 AGENTS.md、docs/、lint 规则、eval 系统等",
+      "url": "https://github.com/VastFuture/harness-engineering",
+      "tags": ["ai-agents", "agi", "agents", "anthropic", "claude", "code-generation", "context-engineering", "developer-tools", "loop-engineering"],
+      "addedAt": "2026-08-24",
+      "updatedAt": "2026-08-24",
+      "builtin": true,
+      "stars": 0
+    }
+  ]
+}
