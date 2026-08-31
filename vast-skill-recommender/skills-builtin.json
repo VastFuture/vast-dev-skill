@@ -371,6 +371,25 @@
       "addedAt": "2026-07-31",
       "updatedAt": "2026-07-31",
       "builtin": true
+    },
+    {
+      "id": "builtin-archify",
+      "name": "archify",
+      "description": "Agent skill 用于生成美观、可验证的架构图、工作流图、时序图和数据流图——自包含 HTML，带动效和清晰导出，支持 Mermaid/PlantUML 等主流格式",
+      "url": "https://github.com/tt-a1i/archify",
+      "tags": [
+        "ai-agent",
+        "claude-code",
+        "architecture-diagram",
+        "code-visualization",
+        "diagram-as-code",
+        "mermaid",
+        "plantuml",
+        "skills"
+      ],
+      "addedAt": "2026-08-31",
+      "updatedAt": "2026-08-31",
+      "builtin": true
     }
   ]
 }
