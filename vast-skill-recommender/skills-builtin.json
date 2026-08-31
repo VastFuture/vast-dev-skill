@@ -353,6 +353,24 @@
       "addedAt": "2026-07-22",
       "updatedAt": "2026-07-22",
       "builtin": true
+    },
+    {
+      "id": "builtin-effective-html",
+      "name": "effective-html",
+      "description": "专注 HTML 原型的 agent skill 集合，提供 wireframe（低保真布局）、prototype（可交互原型）、plan（路线图）、diagram（架构图）等6个独立可用的技能，无需安装直接使用",
+      "url": "https://github.com/plannotator/effective-html",
+      "tags": [
+        "ai-agent",
+        "claude-code",
+        "html-artifacts",
+        "html-prototype",
+        "html-wireframe",
+        "prototyping",
+        "skills"
+      ],
+      "addedAt": "2026-07-31",
+      "updatedAt": "2026-07-31",
+      "builtin": true
     }
   ]
 }
