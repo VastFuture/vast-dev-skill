@@ -19,6 +19,7 @@
 | **vast-dev-arch-top** | 具有五层结构（策略、功能、交互、数据模型、视觉）的项目开发宪法。 | `vast-dev-arch-top` |
 | **vast-dev-taste-checker** | 使用 Linus Torvalds 的 "Good Taste" 哲学审查代码。 | `vast-dev-taste-checker` |
 | **vast-dev-project-analyzer** | 深度代码库分析，生成架构、模块、测试和部署的白皮书。 | `vast-dev-project-analyzer` |
+| **vast-tmux-agy-workflow** | 使用 tmux 持久化 agy (Antigravity CLI) 后台会话，支持断连恢复与僵尸清理。 | `vast-tmux-agy-workflow` |
 
 ### 📊 产品管理 (Product Management)
 | 技能名称 | 说明 | 对应目录 |
