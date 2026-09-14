@@ -16,6 +16,14 @@
 - 验收标准
 - PRD Design Expert 角色定义
 
+## 当前 PRD
+
+| 文档 | 状态 | 说明 |
+|------|------|------|
+| [2026-08-25-ai-autonomous-userspace-harness-loop-engine.md](2026-08-25-ai-autonomous-userspace-harness-loop-engine.md) | Draft | Userspace Harness、Loop Engine、证据、预算、权限和完成门禁 |
+| [2026-08-25-docs-pipeline-v5-governance-optimization.md](2026-08-25-docs-pipeline-v5-governance-optimization.md) | Draft | docs-pipeline v5 单一契约、安装器、校验器、迁移和 CI 治理闭环 |
+| [2026-06-09-docs-pipeline-目录重构.md](2026-06-09-docs-pipeline-目录重构.md) | 待评审（历史） | v4 目录重构背景；与当前实现不完全一致，后续应标记 superseded |
+
 ## PRD Design Expert
 
 本目录包含 PRD Design Expert 角色定义，用于指导 PRD 编写：
@@ -45,4 +53,4 @@ Expert at transforming complex product requirements into structured, detailed sp
 |------|------|
 | `backlog/` | backlog/ 是待定事项，prd/ 是已确定的需求 |
 | `design/` | prd/ 是输入（要什么），design/ 是输出（怎么做） |
-| `exec-plans/` | prd/ 定义需求，plans/ 规划实现 |
+| `plans/` | prd/ 定义需求，plans/ 规划实现 |
