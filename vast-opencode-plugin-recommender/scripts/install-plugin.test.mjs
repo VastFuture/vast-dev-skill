@@ -348,6 +348,30 @@ test('ralph-loop remains manual while the published npm package is stale', async
   );
 });
 
+test('rapid-agent-team resolves by name with strict:false but rejects install', async (t) => {
+  const paths = await fixture(t);
+  const base = options(paths);
+  const plugin = await resolvePlugin('rapid-agent-team', { ...base, strict: false });
+  assert.equal(plugin.id, 'builtin-rapid-agent-team');
+  assert.equal(plugin.url, 'https://github.com/VastNext/opencode-rapid-agent-team');
+  await assert.rejects(
+    resolvePlugin('rapid-agent-team', base),
+    /packageSpec|installStrategy|supportedScopes/,
+  );
+});
+
+test('rapid-agent-team-config resolves by name with strict:false but rejects install', async (t) => {
+  const paths = await fixture(t);
+  const base = options(paths);
+  const plugin = await resolvePlugin('rapid-agent-team-config', { ...base, strict: false });
+  assert.equal(plugin.id, 'builtin-rapid-agent-team-config');
+  assert.equal(plugin.url, 'https://github.com/VastNext/rapid-agent-team-config');
+  await assert.rejects(
+    resolvePlugin('rapid-agent-team-config', base),
+    /packageSpec|installStrategy|supportedScopes/,
+  );
+});
+
 test('cc-adapter-v2 resolves by fixed ID and by name with its canonical URL', async (t) => {
   const paths = await fixture(t);
   const base = options(paths);

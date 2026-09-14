@@ -85,24 +85,32 @@ function inspectEntries(entries, wanted) {
   return { exact, conflicts };
 }
 
-export function validateInstallMetadata(plugins) {
+export function validateInstallMetadata(plugins, options = {}) {
+  const strict = options.strict !== false;
   const errors = [];
   for (const plugin of plugins) {
     const prefix = plugin.id || plugin.name || '<unknown>';
-    if (typeof plugin.packageSpec !== 'string' || !isPackageSpec(plugin.packageSpec)) {
-      errors.push(`${prefix}: packageSpec must be a bare or scoped npm package`);
-    }
-    if (plugin.installStrategy !== 'opencode-config') {
-      errors.push(`${prefix}: installStrategy must be opencode-config`);
-    }
-    if (
-      !Array.isArray(plugin.supportedScopes) ||
-      plugin.supportedScopes.length === 0 ||
-      plugin.supportedScopes.some(
-        (scope) => scope !== 'global' && scope !== 'project',
-      )
+    if (strict) {
+      if (typeof plugin.packageSpec !== 'string' || !isPackageSpec(plugin.packageSpec)) {
+        errors.push(`${prefix}: packageSpec must be a bare or scoped npm package`);
+      }
+      if (plugin.installStrategy !== 'opencode-config') {
+        errors.push(`${prefix}: installStrategy must be opencode-config`);
+      }
+      if (
+        !Array.isArray(plugin.supportedScopes) ||
+        plugin.supportedScopes.length === 0 ||
+        plugin.supportedScopes.some(
+          (scope) => scope !== 'global' && scope !== 'project',
+        )
+      ) {
+        errors.push(`${prefix}: supportedScopes must contain global or project`);
+      }
+    } else if (
+      typeof plugin.packageSpec === 'string' &&
+      !isPackageSpec(plugin.packageSpec)
     ) {
-      errors.push(`${prefix}: supportedScopes must contain global or project`);
+      errors.push(`${prefix}: invalid packageSpec format`);
     }
   }
   return errors;
@@ -131,7 +139,7 @@ export async function resolvePlugin(query, options = {}) {
   if (matches.length !== 1) {
     throw new Error(matches.length ? 'Ambiguous plugin recommendation' : 'Plugin not found');
   }
-  const errors = validateInstallMetadata(matches);
+  const errors = validateInstallMetadata(matches, { strict: options.strict !== false });
   if (errors.length) throw new Error(errors.join('; '));
   return matches[0];
 }

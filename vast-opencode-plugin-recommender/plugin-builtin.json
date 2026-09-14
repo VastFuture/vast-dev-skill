@@ -124,6 +124,72 @@
       "addedAt": "2026-08-18",
       "updatedAt": "2026-08-18",
       "builtin": true
+    },
+    {
+      "id": "builtin-rapid-agent-team",
+      "name": "rapid-agent-team",
+      "description": "可自安装的异构并发快速开发团队。提供 rapid-dev-team 专用 Primary Agent，支持 Fast/Standard/Strict 自适应执行档位，根据影响面自动决定单 Agent 或异构团队，内置 9 个 Agent Profile（Scout、UI、GLM Pool、DeepSeek Pool、Reviewer、Architect）和 /rapid-dev 命令",
+      "url": "https://github.com/VastNext/opencode-rapid-agent-team",
+      "installCommand": "让任意 OpenCode Agent 读取仓库并按 AGENTS.md 自安装；或手动运行 python scripts/install.py --scope global；Windows 双击 install.bat --scope global",
+      "category": "开发团队",
+      "tags": [
+        "agent-team",
+        "multi-agent",
+        "rapid-dev",
+        "heterogeneous",
+        "parallel"
+      ],
+      "features": [
+        "Fast/Standard/Strict 三档自适应执行策略",
+        "9 个异构 Agent Profile（Scout、UI、GLM、DeepSeek、Reviewer、Architect）",
+        "/rapid-dev 斜杠命令直达开发",
+        "Provider 自动回退（GLM: Zhipu→OpenCode Go；DeepSeek: OpenCode Go→SenseNova）",
+        "安全门禁：Worker 只写、禁止危险 git 操作、Lead 限制 push",
+        "跨平台安装（Python 脚本 + Windows .bat）"
+      ],
+      "usageNotes": [
+        "暂不支持自动安装：使用仓库内置 Python 安装脚本",
+        "安装后需重启 OpenCode",
+        "模型 ID 写在 agents/*.md 的 model: 字段，按 MODEL-MAPPING.example.md 替换",
+        "需要 OPENCODE_EXPERIMENTAL_BACKGROUND_SUBAGENTS=1 环境变量",
+        "最低 OpenCode 版本要求：1.18.23"
+      ],
+      "addedAt": "2026-09-14",
+      "updatedAt": "2026-09-14",
+      "builtin": true
+    },
+    {
+      "id": "builtin-rapid-agent-team-config",
+      "name": "rapid-agent-team-config",
+      "description": "Rapid Agent Team 跨平台桌面图形配置工具（Rust + wry/tao）。可视化监控 9 个 Agent 状态、搜索分配模型、生成变更前 Diff 预览、事务化安全写入配置、支持本地 ZIP/源码/GitHub Release 安装向导",
+      "url": "https://github.com/VastNext/rapid-agent-team-config",
+      "installCommand": "从 https://github.com/VastNext/rapid-agent-team-config/releases 下载对应平台的 Release 二进制，无需 npm 安装",
+      "category": "开发工具",
+      "tags": [
+        "gui",
+        "configurator",
+        "rapid-agent-team",
+        "desktop",
+        "rust"
+      ],
+      "features": [
+        "全局/项目 OpenCode 配置自动探测（兼容 JSON/JSONC）",
+        "9 成员全景状态监控（路径、来源、挂载模型、角色模式）",
+        "可视化模型搜索与一键智能预设分配",
+        "事务化安全写入：Diff 预览、自动备份、mtime 冲突校验、原子写入回滚",
+        "未安装成员安装向导：本地 ZIP/源码文件夹/ GitHub Release 三种方式",
+        "Zero Credential 安全：不读取任何 API Key 或凭据"
+      ],
+      "usageNotes": [
+        "暂不支持自动安装：需从 GitHub Releases 下载桌面二进制",
+        "依赖 Rust WebView 运行时（Windows 自带，Linux 需 libwebkit2gtk-4.1-dev）",
+        "Windows 版本无 Authenticode 签名，首次运行可能触发 SmartScreen 未知发布者提示",
+        "建议核对同目录 .sha256 文件验证完整性",
+        "最新版为 v0.1.12"
+      ],
+      "addedAt": "2026-09-14",
+      "updatedAt": "2026-09-14",
+      "builtin": true
     }
   ]
 }
