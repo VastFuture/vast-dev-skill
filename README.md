@@ -82,6 +82,7 @@
 | **vast-wiki-classify** | raw/ 根目录文件智能归类 + frontmatter 标签。 | `vast-wiki-classify` | [VastFuture/llm-wiki-skills](https://github.com/VastFuture/llm-wiki-skills) |
 | **vast-wiki-query** | 先查目录定位 → 深读 → 综合答案带引用 → 归档。 | `vast-wiki-query` | [VastFuture/llm-wiki-skills](https://github.com/VastFuture/llm-wiki-skills) |
 | **vast-wiki-lint** | 健康巡检：矛盾/过时/孤立页面/缺链/数据空白。 | `vast-wiki-lint` | [VastFuture/llm-wiki-skills](https://github.com/VastFuture/llm-wiki-skills) |
+| **vast-sanyuan-wiki-ingest** | 实体提取式知识库：抽取 concepts/products/patterns → 建页 + 交叉引用。 | `vast-sanyuan-wiki-ingest` | [sanyuan0704/sanyuan-skills](https://github.com/sanyuan0704/sanyuan-skills/tree/main/skills/wiki-ingest) |
 
 ---
 
