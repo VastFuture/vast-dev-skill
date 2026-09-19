@@ -44,19 +44,87 @@ External markdown at `~/.ssh-manager-skill/ssh-context/`:
 ssh-context/
 ├── README.md
 ├── <server-name>.md      ← machine-specific (per server)
-└── lessons/<topic>.md    ← cross-machine, by topic
+├── lessons/<topic>.md    ← cross-machine, by topic
+└── logs/                  ← operational logs (event-driven)
+    └── YYYY-MM-DD-<topic>.md
 ```
 
-### When to read
+### When to read / write
 
-| Situation | Must read |
-|---|---|
-| Before any `exec` / `ssh` | `<server-name>.md` (full) |
-| Task touches a known pitfall | `lessons/<topic>.md` (relevant) |
+| Situation | Action | File |
+|---|---|---|
+| Before any `exec` / `ssh` | **Read** | `<server-name>.md` (full) |
+| Task touches a known pitfall | **Read** | `lessons/<topic>.md` (relevant) |
+| After a major incident / fix / day-end | **Write** | `logs/YYYY-MM-DD-<topic>.md` |
+| User says "记一下 / add server / add lesson" | **Write** | `<server-name>.md` or `lessons/<topic>.md` |
 
 ### When user says "记一下 / add server / add lesson"
 
 AI directly Read / Write the corresponding markdown file. **No CLI tool needed.**
+
+## Operation Logs (重要事件后写)
+
+事件驱动的 markdown 工作日志，存在 `~/.ssh-manager-skill/ssh-context/logs/`。
+
+### When to write a log
+
+| Trigger | Example |
+|---|---|
+| **重大故障修复** | "代理全死 → 2 节点复活"，类似 `2026-09-20-clash-proxy-recovery.md` |
+| **跨多步的复杂操作** | "诊断 + 改配置 + 重启 + 验证" 整套 |
+| **用户明确要求** | "记一下今天的工作" / "总结这次会话" |
+| **周期工作结束** | 一周 / 一天的运维总结 |
+
+**不要**为每个小 exec 都写日志——会刷屏且无信息量。
+
+### Log format
+
+```markdown
+---
+date: YYYY-MM-DD
+topic: <一句话>
+servers: [<server-name>]      # 涉及的服务器
+tags: [<category>]
+status: success | partial | failed
+duration: ~<minutes>
+---
+
+# <标题>
+
+## TL;DR
+一两句话讲清发生了什么。
+
+## 时间线
+| 时间 | 事件 |
+|---|---|
+| HH:MM | ... |
+
+## 关键发现
+每条带"教训 / 正确做法"。
+
+## 当前状态
+表格列出关键指标。
+
+## 后续行动
+按优先级排列。
+
+## 经验沉淀建议
+哪些 lesson 应该新增 / 升级。
+
+## 相关文件
+其他 markdown 的相对路径。
+```
+
+### Logs vs Lessons — 何时用哪个
+
+| 场景 | 用 logs | 用 lessons |
+|---|---|---|
+| 一次性事件记录 | ✓ | — |
+| 跨机器通用的踩坑教训 | — | ✓ |
+| 包含时间线 / 状态变化 | ✓ | — |
+| 长期稳定可复用 | — | ✓ |
+
+**经验**："这次会话学到 X" → 先写 logs，**末尾建议** 哪些可以升级为 lesson。AI 自己评估要不要升级。
 
 ## Common Patterns
 
