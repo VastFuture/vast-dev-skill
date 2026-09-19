@@ -84,6 +84,11 @@
 | **vast-wiki-lint** | 健康巡检：矛盾/过时/孤立页面/缺链/数据空白。 | `vast-wiki-lint` | [VastFuture/llm-wiki-skills](https://github.com/VastFuture/llm-wiki-skills) |
 | **vast-sanyuan-wiki-ingest** | 实体提取式知识库：抽取 concepts/products/patterns → 建页 + 交叉引用。 | `vast-sanyuan-wiki-ingest` | [sanyuan0704/sanyuan-skills](https://github.com/sanyuan0704/sanyuan-skills/tree/main/skills/wiki-ingest) |
 
+### 🔧 运维与基础设施 (Ops & Infrastructure)
+| 技能名称 | 说明 | 对应目录 |
+| :--- | :--- | :--- |
+| **vast-ssh-manager** | 两层 SSH 管理：连接脚本（免密密钥生成）+ 外部 context 系统（per-server 机器特定信息 + 跨机器通用 lessons）。AI 在 exec/ssh 前自动读 context 避开已知坑。 | `vast-ssh-manager` |
+
 ---
 
 ## 📦 安装与使用

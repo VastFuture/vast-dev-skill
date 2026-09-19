@@ -1,0 +1,9 @@
+[
+  {
+    "name": "example_server",
+    "host": "1.2.3.4",
+    "port": 22,
+    "user": "ubuntu",
+    "key_path": "C:\Users\<you>\.ssh\example_server_key"
+  }
+]
