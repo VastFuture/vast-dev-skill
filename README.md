@@ -4,6 +4,9 @@
 
 本项目致力于提供一套完整的 AI 辅助开发与办公技能，涵盖了从需求分析、方案设计、编码执行、代码审查到可视化展示的全流程。
 
+🌐 **在线交互教学站**：[https://vast-dev-skills-tutorial.pages.dev/](https://vast-dev-skills-tutorial.pages.dev/)
+> 涵盖全量 171 个技能的 Apple HIG 极简交互教学体系，内置独家定制 Mermaid 拓扑架构图（支持全屏、拖拽平移与滚轮缩放）及一键实战 Prompt。
+
 ---
 
 ## 🚀 核心技能概览
