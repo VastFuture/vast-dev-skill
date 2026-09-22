@@ -411,6 +411,28 @@
       "addedAt": "2026-09-22",
       "updatedAt": "2026-09-22",
       "builtin": true
+    },
+    {
+      "id": "builtin-visual-model-skill",
+      "name": "visual-model-skill",
+      "description": "可视化建模 Claude Code Skill——把任意复杂系统或知识领域转成可交互 SVG / D3.js 模型图，内置 KSB / SAM·SCBRD / SBR / MBSE 四套规范并按诉求自动路由",
+      "url": "https://github.com/VastFuture/visual-model-skill",
+      "tags": [
+        "ai-agent",
+        "claude-code",
+        "claude-code-skill",
+        "visualization",
+        "diagram",
+        "svg",
+        "d3js",
+        "knowledge-graph",
+        "mbse",
+        "sysml",
+        "skills"
+      ],
+      "addedAt": "2026-09-22",
+      "updatedAt": "2026-09-22",
+      "builtin": true
     }
   ]
 }
