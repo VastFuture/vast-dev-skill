@@ -390,6 +390,27 @@
       "addedAt": "2026-08-31",
       "updatedAt": "2026-08-31",
       "builtin": true
+    },
+    {
+      "id": "builtin-visual-model",
+      "name": "visual-model",
+      "description": "可视化建模提示词规范集合：KSB（知识体系三层建模）/ MBSE（SysML 系统工程）/ SBR（结构-行为-关系）三套中文规范，让 AI 产出高质量、可交互的 SVG / D3.js 模型图",
+      "url": "https://github.com/sharptoolbox/visual-model",
+      "tags": [
+        "ai-agent",
+        "claude-code",
+        "visualization",
+        "diagram",
+        "svg",
+        "d3js",
+        "knowledge-graph",
+        "mbse",
+        "sysml",
+        "skills"
+      ],
+      "addedAt": "2026-09-22",
+      "updatedAt": "2026-09-22",
+      "builtin": true
     }
   ]
 }
