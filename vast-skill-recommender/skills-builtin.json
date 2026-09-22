@@ -392,30 +392,9 @@
       "builtin": true
     },
     {
-      "id": "builtin-visual-model",
-      "name": "visual-model",
-      "description": "可视化建模提示词规范集合：KSB（知识体系三层建模）/ MBSE（SysML 系统工程）/ SBR（结构-行为-关系）三套中文规范，让 AI 产出高质量、可交互的 SVG / D3.js 模型图",
-      "url": "https://github.com/sharptoolbox/visual-model",
-      "tags": [
-        "ai-agent",
-        "claude-code",
-        "visualization",
-        "diagram",
-        "svg",
-        "d3js",
-        "knowledge-graph",
-        "mbse",
-        "sysml",
-        "skills"
-      ],
-      "addedAt": "2026-09-22",
-      "updatedAt": "2026-09-22",
-      "builtin": true
-    },
-    {
       "id": "builtin-visual-model-skill",
       "name": "visual-model-skill",
-      "description": "可视化建模 Claude Code Skill——把任意复杂系统或知识领域转成可交互 SVG / D3.js 模型图，内置 KSB / SAM·SCBRD / SBR / MBSE 四套规范并按诉求自动路由",
+      "description": "可视化建模 Claude Code Skill——把任意复杂系统或知识领域转成可交互 SVG / D3.js 模型图，内置 KSB / SAM·SCBRD / SBR / MBSE 四套规范并按诉求自动路由；规范原文出自 sharptoolbox/visual-model（CC BY 4.0），上游另有 131 个完整样例",
       "url": "https://github.com/VastFuture/visual-model-skill",
       "tags": [
         "ai-agent",
