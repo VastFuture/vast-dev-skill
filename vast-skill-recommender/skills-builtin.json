@@ -412,6 +412,39 @@
       "addedAt": "2026-09-22",
       "updatedAt": "2026-09-22",
       "builtin": true
+    },
+    {
+      "id": "builtin-oh-my-codex",
+      "name": "oh-my-codex",
+      "description": "面向 OpenAI Codex 的扩展套件 (OmX)，提供 Hooks 钩子、Agent 多代理团队、HUD 状态栏与工作流自动化",
+      "url": "https://github.com/Yeachan-Heo/oh-my-codex",
+      "tags": [
+        "ai",
+        "codex",
+        "multi-agent",
+        "agent-teams",
+        "hooks",
+        "automation"
+      ],
+      "addedAt": "2026-09-24",
+      "updatedAt": "2026-09-24",
+      "builtin": true
+    },
+    {
+      "id": "builtin-oh-my-claudecode",
+      "name": "oh-my-claudecode",
+      "description": "面向 Claude Code 的团队优先多 Agent 编排框架 (OMC)，支持多模型协作、任务并行执行与状态管理",
+      "url": "https://github.com/Yeachan-Heo/oh-my-claudecode",
+      "tags": [
+        "claude-code",
+        "multi-agent",
+        "orchestration",
+        "automation",
+        "agentic-coding"
+      ],
+      "addedAt": "2026-09-24",
+      "updatedAt": "2026-09-24",
+      "builtin": true
     }
   ]
 }
