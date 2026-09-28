@@ -61,6 +61,7 @@
 | **vast-pragmatic-clean-code-reviewer** | 严格遵循 Clean Code & Pragmatic Programmer 准则的代码审查。 | `vast-pragmatic-clean-code-reviewer` |
 | **vast-code-review-expert** | 以高级工程师视角检测 SOLID 违反、安全风险。 | `vast-code-review-expert` |
 | **vast-agent-skill-reviewer** | 审查 Agent Skill 目录和 SKILL.md 实现是否符合最佳实践。 | `vast-agent-skill-reviewer` |
+| **vast-test-audit** | 测试审计：authoring 闸门 + audit 扫描 + campaign 清扫，三种模式共用同一价值标尺。 | `vast-test-audit` |
 
 ### 📈 交易决策 (Trading)
 | 技能名称 | 说明 | 对应目录 |
