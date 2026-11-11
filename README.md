@@ -53,6 +53,7 @@
 | **vast-md-translator/summarizer** | Markdown 文件的专业翻译与结构化总结。 | `vast-md-translator/summarizer` |
 | **vast-social-xhs-content-script** | 生成小红书爆款文案和口播脚本。 | `vast-social-xhs-content-script` |
 | **vast-skill-recommender** | 维护并展示本项目及其他推荐技能列表。 | `vast-skill-recommender` |
+| **vast-extract-learnings** | 从已完成工作的计划、总结、验证和复盘产物中提取决策、经验、模式与意外发现，并归档到项目绑定的外部文档系统。 | `vast-extract-learnings` |
 | **vast-marp-slide** | 集成自 [softaworks/agent-toolkit](https://github.com/softaworks/agent-toolkit) 的 Marp 幻灯片技能，Markdown → HTML 演示文稿（7 主题 + 7 模板）。 | `vast-marp-slide` |
 
 ### 🛡️ 专家评审与代码质量 (Review & Quality)
